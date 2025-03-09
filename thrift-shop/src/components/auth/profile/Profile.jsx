@@ -20,7 +20,6 @@ const Profile = () => {
 
                 if (userDoc.exists()) {
                     setUserData(userDoc.data());
-                    console.log(userData);
                 } else {
                     console.log('Няма намерени данни за потребителя.');
                 }
@@ -34,8 +33,8 @@ const Profile = () => {
         return () => unsubscribe();
     }, []);
 
-    if (!user) return <div>Няма влязъл потребител.</div>;
-    if (!userData) return <div>Зареждам...</div>;
+    if (!user) return <div>There is no user.</div>;
+    if (!userData) return <div>Loading...</div>;
 
     return (
         <section className='profile'>

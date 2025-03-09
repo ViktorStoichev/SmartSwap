@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom';
 import './Header.css'
+import { logoutUser } from "../../../firebase";
 
 export default function Header() {
+
+    const handleLogout = async () => {
+        await logoutUser();
+        console.log("Излезе успешно!");
+    }
 
     return (
         <header>
@@ -20,7 +26,7 @@ export default function Header() {
                 <ul>
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/register">Register</Link></li>
-                    <li><Link to="logout">Logout</Link></li>
+                    <li><Link onClick={handleLogout}>Logout</Link></li>
                 </ul>
             </nav>
         </header>

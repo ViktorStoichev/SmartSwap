@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
 import { db, registerUser } from '../../../firebase';
+import { useNavigate } from "react-router-dom";
 import './Register.css';
 
 const Register = () => {
@@ -9,6 +10,7 @@ const Register = () => {
     const [username, setUsername] = useState('');
     const [address, setAddress] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(''); // Просто URL на изображението
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -28,6 +30,7 @@ const Register = () => {
             await setDoc(userRef, userData);
 
             console.log('Потребителят е регистриран успешно с допълнителни данни');
+            navigate('/profile')
         } catch (error) {
             console.error('Грешка при регистрация:', error.message);
         }
