@@ -1,5 +1,5 @@
 /* Основен стил за контейнера */
-.login-container {
+.register-container {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
@@ -13,12 +13,12 @@
   }
   
   /* Промяна на размера при преминаване с мишката */
-  .login-container:hover {
-    transform: scale(1.2) /* Намалява размерите на контейнера */
+  .register-container:hover {
+    transform: scale(1.2); /* Увеличава размера на контейнера */
   }
   
   /* Стил за заглавието */
-  .login-title {
+  .register-title {
     text-align: center;
     font-size: 2rem;
     color: #0F2B31;
@@ -34,7 +34,7 @@
   }
   
   /* Стил за формата */
-  .login-form {
+  .register-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
