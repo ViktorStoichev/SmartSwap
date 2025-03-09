@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
@@ -11,13 +11,15 @@ const Profile = () => {
     // Следим за промени в състоянието на автентикацията (влизане/излизане)
     const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
         setUser(authUser);
-        if (user) {
+
+        if (authUser) {
           // Ако има влязъл потребител, вземаме неговите данни от Firestore
-          const userRef = doc(db, 'users', user.uid);
+          const userRef = doc(db, 'users', authUser.uid);
           const userDoc = await getDoc(userRef);
   
           if (userDoc.exists()) {
             setUserData(userDoc.data());
+            console.log(userData);
           } else {
             console.log('Няма намерени данни за потребителя.');
           }
@@ -29,14 +31,15 @@ const Profile = () => {
   
       // Почистване на слушателя при размонтиране на компонента
       return () => unsubscribe();
-  }, [auth.currentUser]);
+  }, []);
 
+  if (!user) return <div>Няма влязъл потребител.</div>;
   if (!userData) return <div>Зареждам...</div>;
 
   return (
     <div>
       <h2>Профил</h2>
-      <p><strong>Email:</strong> {user.email}</p>
+      <p><strong>Email:</strong> {user?.email}</p>
       <p><strong>Потребителско име:</strong> {userData.username}</p>
       <p><strong>Адрес:</strong> {userData.address}</p>
       <img src={userData.avatarUrl} alt="Avatar" />
