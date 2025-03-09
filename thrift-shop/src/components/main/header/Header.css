@@ -1,0 +1,40 @@
+header {
+    background-color: #0F2B31;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+header>h1 {
+    color: #56A4AC;
+    margin-left: 2rem;
+}
+
+header>nav {
+    display: flex;
+    justify-content: center;
+}
+
+header>nav>ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header>nav>ul>li>a {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+}
+
+header>nav>ul>li>a:hover {
+    background-color: #56A4AC;
+    color: #0F2B31;
+    opacity: 0.8;
+}
+
+header>nav>ul>li>a:active {
+    background-color: #56A4AC;
+    color: #0F2B31;
+    opacity: 0.5;
+}

@@ -1,0 +1,64 @@
+/* CSS Reset - Детайлно нулиране на стилове */
+
+/* Универсален селектор - премахва всички маргини, падинги и граници */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Наследяване на шрифтове и корекция на базовия шрифт */
+html {
+  font-size: clamp(10px, 2vw, 20px);
+  line-height: 1.5;
+  font-family: Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+  background-color: #DBE6F3;
+  color: #0F2B31;
+}
+
+/* Нулиране на списъците */
+ul, ol {
+  list-style: none;
+}
+
+/* Линкове - премахване на стандартните цветове и подчертания */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Нулиране на бутоните и формулярните елементи */
+button, input, textarea, select {
+  font: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+/* Бутоните да са с pointer при ховър */
+button {
+  cursor: pointer;
+}
+
+/* Изчистване на таблиците */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Корекция за изображения, така че да не излизат извън контейнерите */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Корекция за елементи с focus */
+:focus {
+  outline: none;
+}
