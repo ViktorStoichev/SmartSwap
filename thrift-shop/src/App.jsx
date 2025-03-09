@@ -4,7 +4,7 @@ import Footer from './components/main/footer/Footer'
 import Header from './components/main/header/Header'
 import Profile from './components/auth/profile/Profile';
 import Register from './components/auth/Register';
-import Login from './components/auth/Login';
+import Login from './components/auth/login/Login';
 import Logout from './components/auth/Logout';
 
 function App() {
