@@ -1,0 +1,28 @@
+.profile {
+    border: 2px solid #0F2B31;
+    padding: 1rem;
+    border-radius: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    margin-bottom: 2rem;
+}
+
+article {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+div.user-image {
+    width: 10rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 2px solid #0F2B31;
+    overflow: hidden;
+}
