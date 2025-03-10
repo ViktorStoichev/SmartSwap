@@ -25,6 +25,8 @@ header>nav>ul {
 header>nav>ul>li>a {
     padding: 0.5rem 1rem;
     font-size: 1.2rem;
+    transition: all 0.3s ease;
+    border-radius: 1rem;
 }
 
 header>nav>ul>li>a:hover {

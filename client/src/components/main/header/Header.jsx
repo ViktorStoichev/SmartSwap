@@ -1,8 +1,19 @@
 import { Link } from 'react-router-dom';
 import './Header.css'
-import { logoutUser } from "../../../firebase";
+import { auth, logoutUser } from "../../../firebase";
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function Header() {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+            setUser(authUser)
+        });
+
+        return () => unsubscribe();
+    });
 
     const handleLogout = async () => {
         await logoutUser();
@@ -15,18 +26,26 @@ export default function Header() {
             <nav className='main-links'>
                 <ul>
                     <li><Link to="/"><i className="fa-solid fa-house"></i></Link></li>
-                    <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
-                    <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
                     <li><Link to="">Products</Link></li>
+                    <li><Link to="">Add a product</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li><Link to=""><i className="fa-solid fa-phone"></i></Link></li>
                 </ul>
             </nav>
             <nav className='user-links'>
                 <ul>
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/register">Register</Link></li>
-                    <li><Link onClick={handleLogout}>Logout</Link></li>
+                    {user
+                        ? 
+                        <>
+                            <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
+                            <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
+                            <li><Link onClick={handleLogout}>Logout</Link></li>
+                        </>
+                        :
+                        <>
+                            <li><Link to="/login">Login</Link></li>
+                            <li><Link to="/register">Register</Link></li>
+                        </>
+                    }
                 </ul>
             </nav>
         </header>
