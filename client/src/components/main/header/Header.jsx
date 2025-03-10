@@ -18,7 +18,7 @@ export default function Header() {
                     <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
                     <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
                     <li><Link to="">Products</Link></li>
-                    <li><Link to="">About</Link></li>
+                    <li><Link to="/about">About</Link></li>
                     <li><Link to=""><i className="fa-solid fa-phone"></i></Link></li>
                 </ul>
             </nav>
