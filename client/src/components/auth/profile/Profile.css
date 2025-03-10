@@ -1,5 +1,5 @@
 .profile {
-    border: 2px solid #0F2B31;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     padding: 1rem;
     border-radius: 2rem;
     display: flex;

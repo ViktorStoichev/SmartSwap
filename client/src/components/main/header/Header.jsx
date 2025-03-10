@@ -27,7 +27,7 @@ export default function Header() {
                 <ul>
                     <li><Link to="/"><i className="fa-solid fa-house"></i></Link></li>
                     <li><Link to="">Products</Link></li>
-                    <li><Link to="">Add a product</Link></li>
+                    <li><Link to="">Add a product <i class="fa-solid fa-plus"></i></Link></li>
                     <li><Link to="/about">About</Link></li>
                 </ul>
             </nav>
@@ -38,7 +38,7 @@ export default function Header() {
                         <>
                             <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
                             <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
-                            <li><Link onClick={handleLogout}>Logout</Link></li>
+                            <li><Link onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i></Link></li>
                         </>
                         :
                         <>
