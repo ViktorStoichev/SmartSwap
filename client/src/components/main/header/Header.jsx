@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Header.css'
-import { auth, logoutUser } from "../../../firebase";
+import { auth, logoutUser } from "../../../services/firebase";
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 
@@ -27,7 +27,7 @@ export default function Header() {
                 <ul>
                     <li><Link to="/"><i className="fa-solid fa-house"></i></Link></li>
                     <li><Link to="">Products</Link></li>
-                    <li><Link to="">Add a product <i class="fa-solid fa-plus"></i></Link></li>
+                    <li><Link to="/items/add">Add a product <i className="fa-solid fa-plus"></i></Link></li>
                     <li><Link to="/about">About</Link></li>
                 </ul>
             </nav>
@@ -38,7 +38,7 @@ export default function Header() {
                         <>
                             <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
                             <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
-                            <li><Link onClick={handleLogout}><i class="fa-solid fa-right-from-bracket"></i></Link></li>
+                            <li><Link onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i></Link></li>
                         </>
                         :
                         <>

@@ -7,6 +7,7 @@ import Register from './components/auth/register/Register';
 import Login from './components/auth/login/Login';
 import About from './components/main/about/About';
 import NotFoundPage from './components/main/404/404';
+import AddItem from './components/items/add-item/addItem';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/items/add" element={<AddItem />} />
                     <Route path="/about" element={<About />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>

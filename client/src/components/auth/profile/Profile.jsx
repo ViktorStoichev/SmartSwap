@@ -2,7 +2,7 @@ import './Profile.css';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
+import { auth, db } from '../../../services/firebase';
 
 const Profile = () => {
     const [userData, setUserData] = useState(null);
