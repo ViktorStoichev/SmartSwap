@@ -1,19 +1,10 @@
 import { Link } from 'react-router-dom';
 import './Header.css'
-import { auth, logoutUser } from "../../../services/firebase";
-import { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { logoutUser } from "../../../services/firebase";
+import { useAuth } from '../../../contexts/AuthContext';
 
 export default function Header() {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-            setUser(authUser)
-        });
-
-        return () => unsubscribe();
-    });
+    const { user } = useAuth();
 
     const handleLogout = async () => {
         await logoutUser();
@@ -26,7 +17,7 @@ export default function Header() {
             <nav className='main-links'>
                 <ul>
                     <li><Link to="/"><i className="fa-solid fa-house"></i></Link></li>
-                    <li><Link to="">Products</Link></li>
+                    <li><Link to="/items">Products</Link></li>
                     <li><Link to="/items/add">Add a product <i className="fa-solid fa-plus"></i></Link></li>
                     <li><Link to="/about">About</Link></li>
                 </ul>
@@ -34,7 +25,7 @@ export default function Header() {
             <nav className='user-links'>
                 <ul>
                     {user
-                        ? 
+                        ?
                         <>
                             <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
                             <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
