@@ -1,8 +1,10 @@
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase";
 import formatDate from "../../../utils/formatDate";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function AddItem() {
+    const { user } = useAuth();
 
     const formAction = async (formData) => {
         const itemData = Object.fromEntries(formData);
@@ -11,6 +13,7 @@ export default function AddItem() {
         itemData.dislikes = [];
         itemData.createdAt = formatDate(new Date());
         itemData.updatedAt = formatDate(new Date());
+        itemData.owner = user.uid;
         
         try {
             const newDocRef = doc(collection(db, "items"));
