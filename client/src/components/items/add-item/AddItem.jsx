@@ -1,5 +1,6 @@
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase";
+import formatDate from "../../../utils/formatDate";
 
 export default function AddItem() {
 
@@ -8,8 +9,8 @@ export default function AddItem() {
         itemData.comments = [];
         itemData.likes = [];
         itemData.dislikes = [];
-        itemData.createdAt = new Date();
-        itemData.updatedAt = new Date();
+        itemData.createdAt = formatDate(new Date());
+        itemData.updatedAt = formatDate(new Date());
         
         try {
             const newDocRef = doc(collection(db, "items"));
