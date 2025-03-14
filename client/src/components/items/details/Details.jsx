@@ -1,115 +1,110 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { db } from "../../../services/firebase";
-import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useAuth } from "../../../contexts/AuthContext";
-import "./Details.css";
+import './Details.css'
+import formatDate from "../../../utils/formatDate";
 
 export default function Details() {
-    const { id } = useParams(); // Взимаме ID-то на продукта от URL
-    const { user } = useAuth(); // Взимаме текущия потребител
+    const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [comment, setComment] = useState("");
-    const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const productRef = doc(db, "items", id);
-            const productSnap = await getDoc(productRef);
-
-            if (productSnap.exists()) {
-                setProduct({ id: productSnap.id, ...productSnap.data() });
+            const docRef = doc(db, "items", id);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                setProduct({ id: docSnap.id, ...docSnap.data() });
+                console.log(product);
             }
-            setLoading(false);
         };
-
         fetchProduct();
+
     }, [id]);
 
     const handleLike = async () => {
-        if (!user) return alert("You need to be logged in to like a product!");
-
+        if (!user) return;
         const productRef = doc(db, "items", id);
-        const updatedLikes = product.likes ? product.likes + 1 : 1;
+        const isLiked = product.likes.includes(user.uid);
 
-        await updateDoc(productRef, { likes: updatedLikes });
-        setProduct((prev) => ({ ...prev, likes: updatedLikes }));
+        await updateDoc(productRef, {
+            likes: isLiked ? arrayRemove(user.uid) : arrayUnion(user.uid),
+        });
+        setProduct((prev) => ({
+            ...prev,
+            likes: isLiked ? prev.likes.filter((uid) => uid !== user.uid) : [...prev.likes, user.uid],
+        }));
     };
 
     const handleCommentSubmit = async () => {
-        if (!user) return alert("You need to be logged in to comment!");
-
-        if (comment.trim() === "") return;
-
-        const productRef = doc(db, "items", id);
+        if (!user || !comment.trim()) return;
         const newComment = {
+            userId: user.uid,
             username: user.username,
+            avatarUrl: user.avatarUrl,
             text: comment,
-            timestamp: new Date().toISOString(),
+            date: formatDate(new Date()),
         };
 
+        const productRef = doc(db, "items", id);
         await updateDoc(productRef, {
             comments: arrayUnion(newComment),
         });
 
         setProduct((prev) => ({
             ...prev,
-            comments: [...(prev.comments || []), newComment],
+            comments: [...prev.comments, newComment],
         }));
-
         setComment("");
     };
 
-    if (loading) return <p>Loading product details...</p>;
-    if (!product) return <p>Product not found.</p>;
+    if (!product) return <p>Loading...</p>;
 
     return (
         <div className="product-details-container">
-            {/* Основен контейнер: Снимка + Информация за продукта */}
             <div className="product-main">
-                {/* Лява част - Снимка */}
                 <div className="product-image-container">
                     <img src={product.imageUrl} alt={product.title} className="product-image" />
                 </div>
-
-                {/* Дясна част - Информация */}
                 <div className="product-info">
-                    <h2 className="product-title">{product.title}</h2>
-                    <p className="product-price">{product.price} USD</p>
-                    <p className="product-description">{product.description}</p>
+                    <h2>{product.title}</h2>
+                    <p>{product.price} USD</p>
+                    <p>{product.description}</p>
                 </div>
             </div>
-
-            {/* Втора секция: Харесвания и Коментари */}
             <div className="product-interactions">
 
-                {/* Коментари */}
                 <div className="comments-section">
-                    {/* Харесвания */}
-                    <div className="likes-section">
-                        <button onClick={handleLike} className="like-button"><i class="fa-solid fa-heart"></i></button>
-                        <span className="likes-count">{product.likes > 0 ? product.likes : 0} Likes</span>
-                    </div>
+                    <button onClick={handleLike} className={`like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
+                        {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
+                    </button>
+                    <span>{product.likes.length} Likes</span>
                     <h3>Comments</h3>
                     {user && (
                         <div className="comment-form">
-                            <textarea
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                                placeholder="Write a comment..."
-                            />
-                            <button onClick={() => handleCommentSubmit(comment)}>Post</button>
+                            <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." />
+                            <button onClick={handleCommentSubmit}>Post</button>
                         </div>
                     )}
                     <div className="comments-list">
                         {product.comments?.length > 0 ? (
                             product.comments.map((c, index) => (
                                 <div key={index} className="comment">
-                                    <strong>{c.username}:</strong> {c.text}
+                                    <div className="comment-header">
+                                        <Link to={`/profile/${c.userId}`} className="comment-user">
+                                            <img src={c.avatarUrl} alt={c.username} className="comment-avatar" />
+                                            <span>{c.username}</span>
+                                        </Link>
+                                        <span className="comment-date">{new Date(c.date).toLocaleDateString()}</span>
+                                    </div>
+                                    <p>{c.text}</p>
                                 </div>
                             ))
                         ) : (
-                            <p className="no-comments">No comments yet.</p>
+                            <p>No comments yet.</p>
                         )}
                     </div>
                 </div>

@@ -28,7 +28,7 @@ export default function Header() {
                         ?
                         <>
                             <li><Link to=""><i className="fa-solid fa-heart"></i></Link></li>
-                            <li><Link to="/profile"><i className="fa-solid fa-user"></i></Link></li>
+                            <li><Link to={`/profile/${user.uid}`}><i className="fa-solid fa-user"></i></Link></li>
                             <li><Link onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i></Link></li>
                         </>
                         :

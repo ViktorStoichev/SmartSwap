@@ -1,4 +1,4 @@
-/* Контейнер за целия продукт */
+/* Основен контейнер */
 .product-details-container {
     width: 90%;
     max-width: 1000px;
@@ -14,11 +14,13 @@
     transform: scale(1.02);
   }
   
-  /* Основен контейнер (Снимка + Информация) */
+  /* Основен контейнер: Снимка + Информация */
   .product-main {
     display: flex;
     align-items: center;
     gap: 2rem;
+    border-bottom: 2px solid #56A4AC;
+    padding-bottom: 2rem;
   }
   
   /* Лява част - Снимка */
@@ -49,28 +51,18 @@
     font-size: 2rem;
     font-weight: bold;
     color: #0F2B31;
-    margin-bottom: 0.5rem;
   }
   
   .product-price {
     font-size: 1.5rem;
     font-weight: bold;
     color: #56A4AC;
-    margin-bottom: 1rem;
   }
   
   .product-description {
     font-size: 1.2rem;
     color: #333;
     line-height: 1.6;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Втора част - Харесвания и коментари */
-  .product-interactions {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 2px solid #56A4AC;
   }
   
   /* Харесвания */
@@ -87,6 +79,11 @@
     border: none;
     cursor: pointer;
     transition: transform 0.2s;
+    margin-right: 1rem;
+  }
+  
+  .like-button.liked {
+    color: #0F2B31;
   }
   
   .like-button:hover {
@@ -111,7 +108,6 @@
   
   .comments-section h3 {
     font-size: 1.5rem;
-    margin-bottom: 1rem;
     color: #0F2B31;
   }
   
@@ -121,6 +117,7 @@
     gap: 1rem;
   }
   
+  /* Коментари - Потребител */
   .comment {
     background: #C6D8E6;
     padding: 1rem;
@@ -129,8 +126,42 @@
     font-size: 1rem;
   }
   
-  .comment strong {
+  .comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .comment-user {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
     color: #56A4AC;
+  }
+  
+  .comment-user:hover {
+    color: #0F2B31;
+  }
+  
+  .comment-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #56A4AC;
+  }
+  
+  .comment-date {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  .comment-text {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #333;
   }
   
   /* Форма за коментари */
@@ -138,7 +169,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin: 1.5rem 0;
   }
   
   .comment-form textarea {
@@ -163,10 +194,5 @@
   .comment-form button:hover {
     background: #0F2B31;
     transform: scale(1.05);
-  }
-  
-  .no-comments {
-    font-size: 1.2rem;
-    color: #777;
   }
   
