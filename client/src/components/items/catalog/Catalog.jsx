@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebase";
 import "./Catalog.css";
+import { Link } from "react-router-dom";
 
 export default function Catalog() {
   const [products, setProducts] = useState([]);
@@ -29,13 +30,13 @@ export default function Catalog() {
       <div className="products-grid">
         {products.length > 0 ? (
           products.map((item) => (
-            <div key={item.id} className="product-card">
+            <Link key={item.id} className="product-card" to={`/items/${item.id}`}>
               <img src={item.imageUrl} alt={item.title} className="product-image" />
               <h3 className="product-name">{item.title}</h3>
               <p className="product-description">{item.description}</p>
               <p className="product-price">${item.price}</p>
               <button className="add-to-cart-button">Details</button>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="no-products">No products available.</p>

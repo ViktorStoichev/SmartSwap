@@ -10,7 +10,6 @@ export default function AddItem() {
         const itemData = Object.fromEntries(formData);
         itemData.comments = [];
         itemData.likes = [];
-        itemData.dislikes = [];
         itemData.createdAt = formatDate(new Date());
         itemData.updatedAt = formatDate(new Date());
         itemData.owner = user.uid;

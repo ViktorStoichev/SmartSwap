@@ -10,6 +10,7 @@ import NotFoundPage from './components/main/404/404';
 import AddItem from './components/items/add-item/addItem';
 import Catalog from './components/items/catalog/Catalog';
 import { AuthProvider } from './contexts/AuthContext';
+import Details from './components/items/details/Details';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/items/add" element={<AddItem />} />
                         <Route path="/items" element={<Catalog />} />
+                        <Route path="/items/:id" element={<Details />} />
                         <Route path="/about" element={<About />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
