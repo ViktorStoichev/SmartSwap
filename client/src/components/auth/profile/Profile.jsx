@@ -43,7 +43,7 @@ const Profile = () => {
                 <div className="user-data">
                     <p><strong>Email:</strong> {user.email}</p>
                     <p><strong>Username:</strong> {user.username}</p>
-                    <p><strong>Address:</strong> {user.address}</p>
+                    <p><strong>Location:</strong> {user.address}</p>
                 </div>
                 <div className="user-image">
                     <img src={user.avatarUrl} alt="Avatar" />
@@ -52,7 +52,7 @@ const Profile = () => {
 
             {/* 🔥 Секция за публикуваните постове */}
             <div className="user-posts">
-                <h3>User Posts</h3>
+                <h3>{user.username}'s Posts</h3>
                 {userPosts.length > 0 ? (
                     <ul className="post-list">
                         {userPosts.map(post => (
