@@ -10,7 +10,7 @@
 }
 
 .profile:hover {
-    transform: scale(1.2);
+    transform: scale(1.05);
 }
 
 h2 {
@@ -30,4 +30,77 @@ div.user-image {
     border-radius: 50%;
     border: 2px solid #0F2B31;
     overflow: hidden;
+}
+
+.user-posts {
+    width: 90%;
+    max-width: 800px;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.user-posts:hover {
+    transform: scale(1.05);
+}
+
+h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.post-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out, background 0.3s;
+}
+
+.post-item:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.post-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 0.8rem;
+    object-fit: cover;
+    border: 2px solid #0F2B31;
+}
+
+.post-content {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.post-content h4 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+.post-content p {
+    margin: 0.5rem 0 0;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.no-posts {
+    font-size: 1.2rem;
+    color: #ff4444;
 }

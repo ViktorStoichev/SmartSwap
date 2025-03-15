@@ -22,6 +22,8 @@ const Register = () => {
             // Записване на допълнителни данни в Firestore
             const userRef = doc(db, 'users', user.uid);
             const userData = {
+                uid: user.uid,
+                email: email,
                 username: username,
                 address: address,
                 avatarUrl: avatarUrl, // Просто линк към изображението
@@ -30,7 +32,7 @@ const Register = () => {
             await setDoc(userRef, userData);
 
             console.log('Потребителят е регистриран успешно с допълнителни данни');
-            navigate('/profile')
+            navigate('/')
         } catch (error) {
             console.error('Грешка при регистрация:', error.message);
         }

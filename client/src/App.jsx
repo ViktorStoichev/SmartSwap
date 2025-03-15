@@ -15,8 +15,8 @@ import Details from './components/items/details/Details';
 function App() {
 
     return (
-        <AuthProvider>
-            <Router>
+        <Router>
+            <AuthProvider>
                 <Header />
 
                 <main>
@@ -34,8 +34,8 @@ function App() {
                 </main>
 
                 <Footer />
-            </Router>
-        </AuthProvider>
+            </AuthProvider>
+        </Router>
     )
 }
 
