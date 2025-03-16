@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getUserData } from '../../../services/getUserProfile';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../../services/firebase';
+import Loader from '../../loader/Loader';
 
 const Profile = () => {
     const { id } = useParams();
@@ -34,7 +35,7 @@ const Profile = () => {
         }
     }, [id]);
 
-    if (!user) return <div>There is no user. Loading...</div>;
+    if (!user) return <Loader />;
 
     return (
         <section className='profile'>

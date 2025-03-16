@@ -12,6 +12,7 @@ import Catalog from './components/items/catalog/Catalog';
 import { AuthProvider } from './contexts/AuthContext';
 import Details from './components/items/details/Details';
 import EditItem from './components/items/edit-item/EditItem';
+import Loader from './components/loader/Loader';
 
 function App() {
 

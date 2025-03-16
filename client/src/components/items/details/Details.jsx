@@ -5,6 +5,7 @@ import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "fire
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
 import formatDate from "../../../utils/formatDate";
+import Loader from "../../loader/Loader";
 
 export default function Details() {
     const { id } = useParams();
@@ -70,7 +71,7 @@ export default function Details() {
         }
     };
 
-    if (!product) return <p>Loading...</p>;
+    if (!product) return <Loader />;
 
     const isOwner = user && product.owner === user.uid;
 

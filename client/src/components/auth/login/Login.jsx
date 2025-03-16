@@ -16,7 +16,7 @@ const Login = () => {
             await loginUser(email, password);
             console.log("Успешно влизане!");
             setError("");
-            navigate('/profile');
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }

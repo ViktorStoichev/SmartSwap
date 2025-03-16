@@ -3,6 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebase";
 import "./Catalog.css";
 import { Link } from "react-router-dom";
+import Loader from "../../loader/Loader";
 
 export default function Catalog() {
     const [products, setProducts] = useState([]);
@@ -24,11 +25,13 @@ export default function Catalog() {
         fetchProducts();
     }, []);
 
+    if (products.length < 1) return <Loader />;
+
     return (
         <div className="products-container">
             <h2 className="products-title">BROWSE FROM ALL OF THE PRODUCTS ON OUR SITE</h2>
             <div className="products-grid">
-                {products.length > 0 ? (
+                {
                     products.map((item) => (
                         <Link key={item.id} className="product-card" to={`/items/${item.id}`}>
                             <div className="image-wrapper">
@@ -37,10 +40,7 @@ export default function Catalog() {
                             <h2 className="product-name">{item.title}</h2>
                             <p className="product-price">${item.price}</p>
                         </Link>
-                    ))
-                ) : (
-                    <p className="no-products">No products available.</p>
-                )}
+                    ))}
             </div>
         </div>
     );
