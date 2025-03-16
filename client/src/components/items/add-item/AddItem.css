@@ -1,76 +1,89 @@
-/* Основен стил за контейнера */
+/* Основен контейнер */
 .register-container {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 1.5rem;
-    background-color: #dbd9d9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto;
     background-color: #DBE6F3;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease-in-out;
-  }
-  
-  /* Промяна на размера при преминаване с мишката */
-  .register-container:hover {
-    transform: scale(1.2); /* Увеличава размера на контейнера */
-  }
-  
-  /* Стил за заглавието */
-  .register-title {
+}
+
+.register-container:hover {
+    transform: scale(1.02);
+}
+
+/* Заглавие */
+.register-container h2 {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    font-weight: bold;
     color: #0F2B31;
-    margin-bottom: 20px;
-  }
-  
-  /* Стил за съобщението за грешка */
-  .error-message {
-    color: #f44336;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    text-align: center;
-  }
-  
-  /* Стил за формата */
-  .register-form {
+    margin-bottom: 1.5rem;
+}
+
+/* Формата */
+.register-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-  }
-  
-  /* Стил за полетата за въвеждане */
-  .input-field {
-    padding: 10px;
+    gap: 1rem;
+}
+
+/* Етикети */
+.register-form label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0F2B31;
+}
+
+/* Текстови полета */
+.register-form input,
+.register-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #56A4AC;
+    border-radius: 8px;
     font-size: 1rem;
-    border: 1px solid #0F2B31;
-    border-radius: 4px;
+    background: #C6D8E6;
+    color: #0F2B31;
+    transition: border 0.3s ease-in-out;
+}
+
+.register-form input:focus,
+.register-form textarea:focus {
+    border-color: #0F2B31;
     outline: none;
-    transition: all 0.3s ease;
-  }
-  
-  .input-field:focus {
-    border-color: #56A4AC;
-  }
-  
-  /* Стил за бутона */
-  .submit-button {
-    padding: 10px;
-    font-size: 1rem;
-    background-color: #56A4AC;
-    color: white;
-    border: none;
-    border-radius: 4px;
+}
+
+/* Текстовото поле за описание */
+.register-form textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* Контейнер за бутоните */
+.actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Бутони */
+.submit-button {
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
     cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .submit-button:hover {
-    background-color: #0F2B31;
-  }
-  
-  /* Стил за бутона при натиск */
-  .submit-button:active {
-    transform: scale(0.98);
-  }
-  
+    border: none;
+    background: #56A4AC;
+    color: white;
+}
+
+.submit-button:hover {
+    background: #0F2B31;
+    transform: scale(1.05);
+}

@@ -50,13 +50,6 @@ const Register = () => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
-                    type="password"
-                    className="input-field"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <input
                     type="text"
                     className="input-field"
                     placeholder="Username"
@@ -76,6 +69,13 @@ const Register = () => {
                     placeholder="Avatar URL"
                     value={avatarUrl}
                     onChange={(e) => setAvatarUrl(e.target.value)}
+                />
+                <input
+                    type="password"
+                    className="input-field"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit" className="submit-button">Submit</button>
             </form>

@@ -3,6 +3,7 @@ import { db } from "../../../services/firebase";
 import formatDate from "../../../utils/formatDate";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import './AddItem.css'
 
 export default function AddItem() {
     const { user } = useAuth();
@@ -15,7 +16,7 @@ export default function AddItem() {
         itemData.createdAt = formatDate(new Date());
         itemData.updatedAt = formatDate(new Date());
         itemData.owner = user.uid;
-        
+
         try {
             const newDocRef = doc(collection(db, "items"));
 
@@ -33,31 +34,28 @@ export default function AddItem() {
         <div className="register-container">
             <h2 className="register-title">Add an item</h2>
             <form className="register-form" action={formAction}>
+                <label>Title:</label>
                 <input
                     type="text"
                     name="title"
-                    className="input-field"
-                    placeholder="Title"
                 />
+                <label>Image URL:</label>
                 <input
                     type="text"
                     name="imageUrl"
-                    className="input-field"
-                    placeholder="Image URL"
                 />
+                <label>Price:</label>
                 <input
-                    type="text"
+                    type="number"
                     name="price"
-                    className="input-field"
-                    placeholder="Price"
                 />
-                <input
-                    type="text"
+                <label>Description:</label>
+                <textarea
                     name="description"
-                    className="input-field"
-                    placeholder="Description"
-                />
-                <button type="submit" className="submit-button">Submit</button>
+                ></textarea>
+                <div className="actions">
+                    <button type="submit" className="submit-button">Submit</button>
+                </div>
             </form>
         </div>
     );
