@@ -2,9 +2,11 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../../services/firebase";
 import formatDate from "../../../utils/formatDate";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AddItem() {
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const formAction = async (formData) => {
         const itemData = Object.fromEntries(formData);
@@ -20,6 +22,8 @@ export default function AddItem() {
             itemData._id = newDocRef.id;
 
             await setDoc(newDocRef, itemData);
+
+            navigate('/items');
         } catch (error) {
             console.log(error);
         }

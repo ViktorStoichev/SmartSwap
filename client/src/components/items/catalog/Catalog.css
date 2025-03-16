@@ -8,7 +8,7 @@
     text-align: center;
   }
   
-  .page-title {
+  .products-title {
     font-size: 2rem;
     font-weight: bold;
     color: #0F2B31;
@@ -24,7 +24,7 @@
   
   .product-card {
     width: 18rem; /* Фиксирана широчина */
-    height: 22rem; /* Фиксирана височина */
+    height: 30rem; /* Фиксирана височина */
     background-color: #DBE6F3;
     border-radius: 8px;
     display: flex;
@@ -40,15 +40,16 @@
     transform: scale(0.95); /* Намалява размера при ховър */
   }
   
+  .image-wrapper {
+    height: 20rem;
+  }
+
   .product-image {
     width: 100%;
-    height: 12rem; /* Фиксирана височина */
-    object-fit: cover;
     border-radius: 8px;
   }
   
-  .product-title {
-    font-size: 1.5rem;
+  .product-name {
     font-weight: bold;
     color: #0F2B31;
     margin-top: 0.5rem;
@@ -58,22 +59,4 @@
     font-size: 1.2rem;
     color: #56A4AC;
     font-weight: bold;
-  }
-  
-  .buy-button {
-    padding: 0.7rem;
-    font-size: 1rem;
-    font-weight: bold;
-    background-color: #56A4AC;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-top: auto; /* Запазва бутона в края на картата */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 80%;
-  }
-  
-  .buy-button:hover {
-    background-color: #0F2B31;
   }

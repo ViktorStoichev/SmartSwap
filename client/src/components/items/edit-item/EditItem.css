@@ -1,0 +1,102 @@
+/* Основен контейнер */
+.edit-product-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 2rem auto;
+    background-color: #DBE6F3;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+}
+
+.edit-product-container:hover {
+    transform: scale(1.02);
+}
+
+/* Заглавие */
+.edit-product-container h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #0F2B31;
+    margin-bottom: 1.5rem;
+}
+
+/* Формата */
+.edit-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Етикети */
+.edit-product-form label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0F2B31;
+}
+
+/* Текстови полета */
+.edit-product-form input,
+.edit-product-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #56A4AC;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #C6D8E6;
+    color: #0F2B31;
+    transition: border 0.3s ease-in-out;
+}
+
+.edit-product-form input:focus,
+.edit-product-form textarea:focus {
+    border-color: #0F2B31;
+    outline: none;
+}
+
+/* Текстовото поле за описание */
+.edit-product-form textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* Контейнер за бутоните */
+.edit-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Бутони */
+.save-btn, .cancel-btn {
+    padding: 0.7rem 1.2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: transform 0.2s ease-in-out, background 0.3s ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+
+.save-btn {
+    background: #56A4AC;
+    color: white;
+}
+
+.save-btn:hover {
+    background: #0F2B31;
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    background: #ff4444;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: #c82333;
+    transform: scale(1.05);
+}

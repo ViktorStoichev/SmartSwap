@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { db } from "../../../services/firebase";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
 import formatDate from "../../../utils/formatDate";
@@ -11,6 +11,7 @@ export default function Details() {
     const [product, setProduct] = useState(null);
     const [comment, setComment] = useState("");
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -61,7 +62,17 @@ export default function Details() {
         setComment("");
     };
 
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this item?");
+        if (confirmDelete) {
+            await deleteDoc(doc(db, "items", id));
+            navigate("/items");
+        }
+    };
+
     if (!product) return <p>Loading...</p>;
+
+    const isOwner = user && product.owner === user.uid;
 
     return (
         <div className="product-details-container">
@@ -75,6 +86,15 @@ export default function Details() {
                     <p>{product.description}</p>
                 </div>
             </div>
+
+            {isOwner && (
+                <div className="owner-actions">
+                    {/* <button onClick={handleEditToggle} className="edit-btn">{isEditing ? "Cancel" : "Edit"}</button> */}
+                    <Link to={`/items/${product.id}/edit`} className="edit-btn">Edit</Link>
+                    <button onClick={handleDelete} className="delete-btn">Delete</button>
+                </div>
+            )}
+
             <div className="product-interactions">
 
                 <div className="comments-section">

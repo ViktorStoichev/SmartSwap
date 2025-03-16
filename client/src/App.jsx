@@ -11,6 +11,7 @@ import AddItem from './components/items/add-item/addItem';
 import Catalog from './components/items/catalog/Catalog';
 import { AuthProvider } from './contexts/AuthContext';
 import Details from './components/items/details/Details';
+import EditItem from './components/items/edit-item/EditItem';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
                         <Route path="/items/add" element={<AddItem />} />
                         <Route path="/items" element={<Catalog />} />
                         <Route path="/items/:id" element={<Details />} />
+                        <Route path="/items/:id/edit" element={<EditItem />} />
                         <Route path="/about" element={<About />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
