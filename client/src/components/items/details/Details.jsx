@@ -99,16 +99,23 @@ export default function Details() {
             <div className="product-interactions">
 
                 <div className="comments-section">
-                    <button onClick={handleLike} className={`like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
-                        {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
-                    </button>
-                    <span>{product.likes.length} Likes</span>
-                    <h3>Comments</h3>
                     {user && (
-                        <div className="comment-form">
-                            <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." />
-                            <button onClick={handleCommentSubmit}>Post</button>
-                        </div>
+                        <>
+                            <button onClick={handleLike} className={`like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
+                                {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
+                            </button>
+                            <span>{product.likes.length} Likes</span>
+                            <div className="contact">
+                                <h3>Contact the seller:</h3>
+                                <button className="chat"><i className="fa-solid fa-message"></i></button>
+                                <button className="chat"><i className="fa-solid fa-phone"></i></button>
+                            </div>
+                            <h3>Ask a question about this product:</h3>
+                            <div className="comment-form">
+                                <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." />
+                                <button onClick={handleCommentSubmit}>Post</button>
+                            </div>
+                        </>
                     )}
                     <div className="comments-list">
                         {product.comments?.length > 0 ? (

@@ -180,7 +180,7 @@
     font-size: 1rem;
   }
   
-  .comment-form button {
+  .comment-form button, .contact button {
     padding: 0.7rem;
     background: #56A4AC;
     color: white;
@@ -191,9 +191,21 @@
     transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
   }
   
-  .comment-form button:hover {
+  .comment-form button:hover, .contact button:hover {
     background: #0F2B31;
     transform: scale(1.05);
+  }
+
+  .contact button {
+    width: 4rem;
+  }
+
+  .contact button:last-of-type {
+    margin-left: 2rem;
+  }
+
+  .contact h3, .contact {
+    margin-bottom: 1rem;
   }
   
   .owner-actions {

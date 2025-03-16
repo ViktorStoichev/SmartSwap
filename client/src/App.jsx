@@ -13,6 +13,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import Details from './components/items/details/Details';
 import EditItem from './components/items/edit-item/EditItem';
 import Loader from './components/loader/Loader';
+import LikedPhones from './components/items/liked-phones/LikedPhones';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
                         <Route path="/login" element={<Login />} />
                         <Route path="/items/add" element={<AddItem />} />
                         <Route path="/items" element={<Catalog />} />
+                        <Route path="/items/liked" element={<LikedPhones />} />
                         <Route path="/items/:id" element={<Details />} />
                         <Route path="/items/:id/edit" element={<EditItem />} />
                         <Route path="/about" element={<About />} />
