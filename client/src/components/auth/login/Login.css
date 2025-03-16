@@ -4,8 +4,6 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 1.5rem;
-    background-color: #dbd9d9;
-    /* border: 2px solid #0F2B31; */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     background-color: #DBE6F3;
@@ -44,7 +42,9 @@
   .input-field {
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #0F2B31;
+    border: 1px solid #56A4AC;
+    background: #C6D8E6;
+    color: #0F2B31;
     border-radius: 4px;
     outline: none;
     transition: all 0.3s ease;

@@ -1,0 +1,41 @@
+.welcome-section {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: inherit;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    margin: 2rem auto;
+}
+
+.brand-name {
+    color: #56A4AC;
+    font-weight: bold;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.features-list li {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.browse-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #56A4AC;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.browse-btn:hover {
+    background-color: #0F2B31;
+}

@@ -14,6 +14,7 @@ import Details from './components/items/details/Details';
 import EditItem from './components/items/edit-item/EditItem';
 import Loader from './components/loader/Loader';
 import LikedPhones from './components/items/liked-phones/LikedPhones';
+import Home from './components/main/home/Home';
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
 
                 <main>
                     <Routes>
-                        <Route path="/" element={<h1>Main content</h1>} />
+                        <Route path="/" element={<Home />} />
                         <Route path="/profile/:id" element={<Profile />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login />} />
