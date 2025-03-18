@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
-import { db, registerUser } from '../../../../server/firebase';
+import { db } from '../../../../server/firebase';
 import { useNavigate } from "react-router-dom";
 import './Register.css';
 import { useRegister } from '../../../hook-api/UseRegister';
@@ -8,6 +8,7 @@ import { useRegister } from '../../../hook-api/UseRegister';
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
     const [username, setUsername] = useState('');
     const [address, setAddress] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(''); // Просто URL на изображението
@@ -16,6 +17,11 @@ const Register = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
+
+        if (repeatPassword !== password) {
+            console.log("Password's missmatch!");
+            return
+        }
 
         try {
             // Създаване на потребител с имейл и парола
@@ -66,7 +72,7 @@ const Register = () => {
                     onChange={(e) => setAddress(e.target.value)}
                 />
                 <input
-                    type="text"
+                    type="url"
                     className="input-field"
                     placeholder="Avatar URL"
                     value={avatarUrl}
@@ -78,6 +84,13 @@ const Register = () => {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                    type="password"
+                    className="input-field"
+                    placeholder="Repeat Password"
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
                 />
                 <button type="submit" className="submit-button">Submit</button>
             </form>
