@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
 import './Header.css'
-import { logoutUser } from "../../../services/firebase";
 import { useAuth } from '../../../contexts/AuthContext';
+import { useLogout } from '../../../hook-api/UseLogout';
 
 export default function Header() {
     const { user } = useAuth();
+    const { logout } = useLogout();
 
     const handleLogout = async () => {
-        await logoutUser();
+        await logout();
         console.log("Излезе успешно!");
     }
 

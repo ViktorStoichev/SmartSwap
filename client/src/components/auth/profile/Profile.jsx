@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUserData } from '../../../services/getUserProfile';
 import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../../services/firebase';
+import { db } from '../../../../server/firebase';
 import Loader from '../../loader/Loader';
 
 const Profile = () => {

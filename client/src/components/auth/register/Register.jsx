@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { doc, setDoc } from 'firebase/firestore';
-import { db, registerUser } from '../../../services/firebase';
+import { db, registerUser } from '../../../../server/firebase';
 import { useNavigate } from "react-router-dom";
 import './Register.css';
+import { useRegister } from '../../../hook-api/UseRegister';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -11,13 +12,14 @@ const Register = () => {
     const [address, setAddress] = useState('');
     const [avatarUrl, setAvatarUrl] = useState(''); // Просто URL на изображението
     const navigate = useNavigate();
+    const { register } = useRegister();
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
         try {
             // Създаване на потребител с имейл и парола
-            const user = await registerUser(email, password);
+            const user = await register(email, password);
 
             // Записване на допълнителни данни в Firestore
             const userRef = doc(db, 'users', user.uid);

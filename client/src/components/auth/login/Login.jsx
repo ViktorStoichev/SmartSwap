@@ -1,19 +1,21 @@
 import { useState } from "react";
-import { loginUser } from "../../../services/firebase";
+import { loginUser } from "../../../../server/firebase";
 import { useNavigate } from "react-router-dom";
 import './Login.css'
+import { useLogin } from "../../../hook-api/UseLogin";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const { login } = useLogin();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
-            await loginUser(email, password);
+            await login(email, password);
             console.log("Успешно влизане!");
             setError("");
             navigate('/');

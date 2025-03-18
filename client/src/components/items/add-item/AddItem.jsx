@@ -1,5 +1,5 @@
 import { collection, doc, setDoc } from "firebase/firestore";
-import { db } from "../../../services/firebase";
+import { db } from "../../../../server/firebase";
 import formatDate from "../../../utils/formatDate";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";

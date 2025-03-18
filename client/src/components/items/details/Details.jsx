@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { db } from "../../../services/firebase";
+import { db } from "../../../../server/firebase";
 import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'

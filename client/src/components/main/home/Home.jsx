@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import './Home.css'
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../services/firebase';
+import { db } from '../../../../server/firebase';
 import Loader from '../../loader/Loader';
 
 export default function Home() {
@@ -18,7 +18,6 @@ export default function Home() {
                     ...doc.data(),
                 }));
                 const lastThreeProducts = [...itemsList].sort((a, b) => b.createdAt - a.createdAt).slice(0, 3);
-                console.log(lastThreeProducts);
                 setProducts(lastThreeProducts);
             } catch (error) {
                 console.error("Error fetching products:", error);
