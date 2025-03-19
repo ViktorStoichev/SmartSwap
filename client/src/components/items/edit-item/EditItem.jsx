@@ -1,68 +1,10 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { db } from "../../../../server/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { useAuth } from "../../../contexts/AuthContext";
+import { useParams } from "react-router-dom";
+import { useEdit } from "../../../hook-api/UseEdit";
 import "./EditItem.css";
 
 export default function EditItem() {
     const { id } = useParams();
-    const navigate = useNavigate();
-    const { user } = useAuth();
-
-    const [editedProduct, setEditedProduct] = useState({
-        title: "",
-        description: "",
-        price: "",
-        imageUrl: "",
-    });
-
-    useEffect(() => {
-
-        const fetchProduct = async () => {
-            if(!user) {
-                return<h1>Loading user...</h1>
-            }
-            const docRef = doc(db, "items", id);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.owner !== user.uid) {
-                    navigate(`/details/${id}`);
-                    return;
-                }
-                setEditedProduct({
-                    title: data.title,
-                    description: data.description,
-                    price: data.price,
-                    imageUrl: data.imageUrl,
-                });
-            } else {
-                navigate("/");
-            }
-        };
-        fetchProduct();
-    }, [id, navigate, user]);
-
-    const handleEditChange = (e) => {
-        const { name, value } = e.target;
-        setEditedProduct((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
-
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        const productRef = doc(db, "items", id);
-        await updateDoc(productRef, {
-            title: editedProduct.title,
-            description: editedProduct.description,
-            price: editedProduct.price,
-            imageUrl: editedProduct.imageUrl,
-        });
-        navigate(`/items/${id}`);
-    };
+    const { editedProduct, handleEditChange, handleEditSubmit } = useEdit();
 
     return (
         <div className="edit-product-container">

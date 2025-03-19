@@ -1,31 +1,13 @@
 import { Link } from 'react-router-dom';
 import './Home.css'
-import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../../../server/firebase';
 import Loader from '../../loader/Loader';
+import { usePhones } from '../../../hook-api/UsePhones';
 
 export default function Home() {
 
-    const [products, setProducts] = useState([]);
+    const { filteredProducts } = usePhones();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, "items"));
-                const itemsList = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-                const lastThreeProducts = [...itemsList].sort((a, b) => b.createdAt - a.createdAt).slice(0, 3);
-                setProducts(lastThreeProducts);
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            }
-        };
-
-        fetchProducts();
-    }, []);
+    const lastThreeProducts = [...filteredProducts].sort((a, b) => b.createdAt - a.createdAt).slice(0, 3);
 
     return (
         <section className="welcome-section">
@@ -40,8 +22,8 @@ export default function Home() {
             </ul>
 
             <div className="products-grid">
-                {products.length > 0 ?
-                    products.map((item) => (
+                {lastThreeProducts.length > 0 ?
+                    lastThreeProducts.map((item) => (
                         <Link key={item.id} className="product-card" to={`/items/${item.id}`}>
                             <div className="image-wrapper">
                                 <img src={item.imageUrl} alt={item.title} className="product-image" />

@@ -1,75 +1,12 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { db } from "../../../../server/firebase";
-import { doc, getDoc, updateDoc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
-import formatDate from "../../../utils/formatDate";
 import Loader from "../../loader/Loader";
+import { usePhone } from "../../../hook-api/UsePhone";
 
 export default function Details() {
-    const { id } = useParams();
-    const [product, setProduct] = useState(null);
-    const [comment, setComment] = useState("");
     const { user } = useAuth();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchProduct = async () => {
-            const docRef = doc(db, "items", id);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                setProduct({ id: docSnap.id, ...docSnap.data() });
-                console.log(product);
-            }
-        };
-        fetchProduct();
-
-    }, [id]);
-
-    const handleLike = async () => {
-        if (!user) return;
-        const productRef = doc(db, "items", id);
-        const isLiked = product.likes.includes(user.uid);
-
-        await updateDoc(productRef, {
-            likes: isLiked ? arrayRemove(user.uid) : arrayUnion(user.uid),
-        });
-        setProduct((prev) => ({
-            ...prev,
-            likes: isLiked ? prev.likes.filter((uid) => uid !== user.uid) : [...prev.likes, user.uid],
-        }));
-    };
-
-    const handleCommentSubmit = async () => {
-        if (!user || !comment.trim()) return;
-        const newComment = {
-            userId: user.uid,
-            username: user.username,
-            avatarUrl: user.avatarUrl,
-            text: comment,
-            date: formatDate(new Date()),
-        };
-
-        const productRef = doc(db, "items", id);
-        await updateDoc(productRef, {
-            comments: arrayUnion(newComment),
-        });
-
-        setProduct((prev) => ({
-            ...prev,
-            comments: [...prev.comments, newComment],
-        }));
-        setComment("");
-    };
-
-    const handleDelete = async () => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this item?");
-        if (confirmDelete) {
-            await deleteDoc(doc(db, "items", id));
-            navigate("/items");
-        }
-    };
+    const { product, comment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
 
     if (!product) return <Loader />;
 
