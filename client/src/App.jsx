@@ -15,6 +15,8 @@ import EditItem from './components/items/edit-item/EditItem';
 import Loader from './components/loader/Loader';
 import LikedPhones from './components/items/liked-phones/LikedPhones';
 import Home from './components/main/home/Home';
+import UserGuard from './guards/UserGuard';
+import GuestGuard from './guards/GuestGuard';
 
 function App() {
 
@@ -26,15 +28,20 @@ function App() {
                 <main>
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/profile/:id" element={<Profile />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/items/add" element={<AddItem />} />
+                        <Route element={<UserGuard />}>
+                            <Route path="/profile/:id" element={<Profile />} />
+                            <Route path="/items/add" element={<AddItem />} />
+                            <Route path="/items/liked" element={<LikedPhones />} />
+                            <Route path="/items/:id/edit" element={<EditItem />} />
+                        </Route>
+                        <Route element={<GuestGuard />}>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                        </Route>
                         <Route path="/items" element={<Catalog />} />
-                        <Route path="/items/liked" element={<LikedPhones />} />
                         <Route path="/items/:id" element={<Details />} />
-                        <Route path="/items/:id/edit" element={<EditItem />} />
                         <Route path="/about" element={<About />} />
+                        <Route path="/404" element={<NotFoundPage />} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </main>
