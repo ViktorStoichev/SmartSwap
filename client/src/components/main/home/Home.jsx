@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './Home.css'
-import Loader from '../../loader/Loader';
+import Loader from '../loader/Loader';
 import { usePhones } from '../../../hook-api/UsePhones';
 
 export default function Home() {

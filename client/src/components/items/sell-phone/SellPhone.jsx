@@ -1,5 +1,5 @@
 import { useCreate } from '../../../hook-api/UseCreate';
-import './AddItem.css'
+import './SellPhone.css'
 
 export default function AddItem() {
 
@@ -7,7 +7,7 @@ export default function AddItem() {
 
     return (
         <div className="register-container">
-            <h2 className="register-title">Add an item</h2>
+            <h2 className="register-title">Sell Phone</h2>
             <form className="register-form" action={createAction}>
                 <label>Title:</label>
                 <input

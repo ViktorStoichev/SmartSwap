@@ -1,6 +1,6 @@
 import "./LikedPhones.css";
 import { Link } from "react-router-dom";
-import Loader from "../../loader/Loader";
+import Loader from "../../main/loader/Loader";
 import { useAuth } from "../../../contexts/AuthContext";
 import { usePhones } from "../../../hook-api/UsePhones";
 
@@ -16,7 +16,7 @@ export default function LikedPhones() {
             <div className="products-grid">
                 {
                     likedPhones.map((item) => (
-                        <Link key={item.id} className="product-card" to={`/items/${item.id}`}>
+                        <Link key={item.id} className="product-card" to={`/phones/${item.id}`}>
                             <div className="image-wrapper">
                                 <img src={item.imageUrl} alt={item.title} className="product-image" />
                             </div>

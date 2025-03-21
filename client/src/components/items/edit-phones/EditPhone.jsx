@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEdit } from "../../../hook-api/UseEdit";
-import "./EditItem.css";
+import "./EditPhone.css";
 
-export default function EditItem() {
+export default function EditPhone() {
     const { id } = useParams();
     const { editedProduct, handleEditChange, handleEditSubmit } = useEdit();
 
     return (
         <div className="edit-product-container">
-            <h2>Edit Product</h2>
+            <h2>Edit Phone</h2>
             <form onSubmit={handleEditSubmit} className="edit-product-form">
                 <label>Title:</label>
                 <input type="text" name="title" value={editedProduct.title} onChange={handleEditChange} required />

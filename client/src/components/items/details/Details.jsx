@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
-import Loader from "../../loader/Loader";
+import Loader from "../../main/loader/Loader";
 import { usePhone } from "../../../hook-api/UsePhone";
 
 export default function Details() {
@@ -34,8 +34,11 @@ export default function Details() {
             )}
 
             <div className="product-interactions">
-
                 <div className="comments-section">
+                    <Link to={`/profile/${user.uid}`} className="comment-user">
+                        <img src={user.avatarUrl} alt={user.username} className="comment-avatar" />
+                        <span>{user.username}</span>
+                    </Link>
                     {user && (
                         <>
                             <button onClick={handleLike} className={`like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>

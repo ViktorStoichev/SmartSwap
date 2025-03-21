@@ -7,12 +7,11 @@ import Register from './components/auth/register/Register';
 import Login from './components/auth/login/Login';
 import About from './components/main/about/About';
 import NotFoundPage from './components/main/404/404';
-import AddItem from './components/items/add-item/addItem';
+import SellPhone from './components/items/sell-phone/SellPhone';
 import Catalog from './components/items/catalog/Catalog';
 import { AuthProvider } from './contexts/AuthContext';
 import Details from './components/items/details/Details';
-import EditItem from './components/items/edit-item/EditItem';
-import Loader from './components/loader/Loader';
+import EditPhone from './components/items/edit-phones/EditPhone';
 import LikedPhones from './components/items/liked-phones/LikedPhones';
 import Home from './components/main/home/Home';
 import UserGuard from './guards/UserGuard';
@@ -30,16 +29,16 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route element={<UserGuard />}>
                             <Route path="/profile/:id" element={<Profile />} />
-                            <Route path="/items/add" element={<AddItem />} />
-                            <Route path="/items/liked" element={<LikedPhones />} />
-                            <Route path="/items/:id/edit" element={<EditItem />} />
+                            <Route path="/phones/sell" element={<SellPhone />} />
+                            <Route path="/phones/liked" element={<LikedPhones />} />
+                            <Route path="/phones/:id/edit" element={<EditPhone />} />
                         </Route>
                         <Route element={<GuestGuard />}>
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
                         </Route>
-                        <Route path="/items" element={<Catalog />} />
-                        <Route path="/items/:id" element={<Details />} />
+                        <Route path="/phones" element={<Catalog />} />
+                        <Route path="/phones/:id" element={<Details />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/404" element={<NotFoundPage />} />
                         <Route path="*" element={<NotFoundPage />} />
