@@ -19,7 +19,7 @@ const Profile = () => {
 
         const fetchUserPosts = async () => {
             const postsRef = collection(db, "items");
-            const q = query(postsRef, where("owner", "==", id));
+            const q = query(postsRef, where("ownerId", "==", id));
             const querySnapshot = await getDocs(q);
             
             const posts = querySnapshot.docs.map(doc => ({

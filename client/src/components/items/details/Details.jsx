@@ -3,6 +3,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
 import Loader from "../../main/loader/Loader";
 import { usePhone } from "../../../hook-api/UsePhone";
+import { getUserData } from "../../../services/getUserProfile";
+import { useState } from "react";
 
 export default function Details() {
     const { user } = useAuth();
@@ -35,9 +37,9 @@ export default function Details() {
 
             <div className="product-interactions">
                 <div className="comments-section">
-                    <Link to={`/profile/${user.uid}`} className="comment-user">
-                        <img src={user.avatarUrl} alt={user.username} className="comment-avatar" />
-                        <span>{user.username}</span>
+                    <Link to={`/profile/${product.ownerId}`} className="profile-user">
+                        <img src={product.avatarUrl} alt={product.username} className="profile-avatar" />
+                        <span>{product.username}</span>
                     </Link>
                     {user && (
                         <>

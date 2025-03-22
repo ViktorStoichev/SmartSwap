@@ -14,7 +14,9 @@ export const useCreate = () => {
         itemData.likes = [];
         itemData.createdAt = formatDate(new Date());
         itemData.updatedAt = formatDate(new Date());
-        itemData.owner = user.uid;
+        itemData.ownerId = user.uid;
+        itemData.username = user.username;
+        itemData.avatarUrl = user.avatarUrl;
 
         try {
             const newDocRef = doc(collection(db, "items"));

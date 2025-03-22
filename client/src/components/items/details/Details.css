@@ -79,7 +79,7 @@
     border: none;
     cursor: pointer;
     transition: transform 0.2s;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
   }
   
   .like-button.liked {
@@ -132,7 +132,17 @@
     justify-content: space-between;
   }
   
-  .comment-user {
+  .profile-user {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .profile-avatar {
+    width: 4rem;
+    height: 4rem;
+  }
+
+  .comment-user, .profile-user {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -141,13 +151,16 @@
     color: #56A4AC;
   }
   
-  .comment-user:hover {
+  .comment-user:hover, .profile-user:hover {
     color: #0F2B31;
   }
   
   .comment-avatar {
-    width: 40px;
-    height: 40px;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .comment-avatar, .profile-avatar {
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #56A4AC;

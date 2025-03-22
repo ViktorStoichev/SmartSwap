@@ -24,7 +24,7 @@ export default function Home() {
             <div className="products-grid">
                 {lastThreeProducts.length > 0 ?
                     lastThreeProducts.map((item) => (
-                        <Link key={item.id} className="product-card" to={`/items/${item.id}`}>
+                        <Link key={item.id} className="product-card" to={`/phones/${item.id}`}>
                             <div className="image-wrapper">
                                 <img src={item.imageUrl} alt={item.title} className="product-image" />
                             </div>
