@@ -27,6 +27,7 @@ header>nav>ul>li>a {
     font-size: 1.2rem;
     transition: all 0.3s ease;
     border-radius: 1rem;
+    margin: 0 0.2rem;
 }
 
 header>nav>ul>li>a:hover {
@@ -39,4 +40,12 @@ header>nav>ul>li>a:active {
     background-color: #56A4AC;
     color: #0F2B31;
     opacity: 0.5;
+}
+
+.active-link {
+    background-color: #56A4AC;
+    color: #0F2B31;
+    font-weight: bold;
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
 }

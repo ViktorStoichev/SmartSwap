@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css'
 import { useAuth } from '../../../contexts/AuthContext';
 import { useLogout } from '../../../hook-api/UseLogout';
@@ -6,21 +6,23 @@ import { useLogout } from '../../../hook-api/UseLogout';
 export default function Header() {
     const { user } = useAuth();
     const { logout } = useLogout();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         await logout();
+        navigate('/');
         console.log("Излезе успешно!");
-    }
+    };
 
     return (
         <header>
             <h1>Thrift Shop</h1>
             <nav className='main-links'>
                 <ul>
-                    <li><Link to="/"><i className="fa-solid fa-house"></i></Link></li>
-                    <li><Link to="/phones">Phones</Link></li>
-                    <li><Link to="/phones/sell">Sell Phone <i className="fa-solid fa-plus"></i></Link></li>
-                    <li><Link to="/about">About</Link></li>
+                    <li><NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-house"></i></NavLink></li>
+                    <li><NavLink to="/phones" end className={({ isActive }) => isActive ? "active-link" : ""}>Phones</NavLink></li>
+                    <li><NavLink to="/phones/sell" className={({ isActive }) => isActive ? "active-link" : ""}>Sell Phone <i className="fa-solid fa-plus"></i></NavLink></li>
+                    <li><NavLink to="/about" className={({ isActive }) => isActive ? "active-link" : ""}>About</NavLink></li>
                 </ul>
             </nav>
             <nav className='user-links'>
@@ -28,14 +30,14 @@ export default function Header() {
                     {user
                         ?
                         <>
-                            <li><Link to="/phones/liked"><i className="fa-solid fa-heart"></i></Link></li>
-                            <li><Link to={`/profile/${user.uid}`}><i className="fa-solid fa-user"></i></Link></li>
-                            <li><Link onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i></Link></li>
+                            <li><NavLink to="/phones/liked" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-heart"></i></NavLink></li>
+                            <li><NavLink to={`/profile/${user.uid}`} className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-user"></i></NavLink></li>
+                            <li><NavLink to="#" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i></NavLink></li>
                         </>
                         :
                         <>
-                            <li><Link to="/login">Login</Link></li>
-                            <li><Link to="/register">Register</Link></li>
+                            <li><NavLink to="/login" className={({ isActive }) => isActive ? "active-link" : ""}>Login</NavLink></li>
+                            <li><NavLink to="/register" className={({ isActive }) => isActive ? "active-link" : ""}>Register</NavLink></li>
                         </>
                     }
                 </ul>
