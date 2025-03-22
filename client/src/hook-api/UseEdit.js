@@ -26,8 +26,8 @@ export const useEdit = () => {
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                if (data.owner !== user.uid) {
-                    navigate(`/details/${id}`);
+                if (data.ownerId !== user.uid) {
+                    navigate(`/phones/${id}`);
                     return;
                 }
                 setEditedProduct({
@@ -60,7 +60,7 @@ export const useEdit = () => {
             price: editedProduct.price,
             imageUrl: editedProduct.imageUrl,
         });
-        navigate(`/items/${id}`);
+        navigate(`/phones/${id}`);
     };
 
     return { editedProduct, handleEditChange, handleEditSubmit };

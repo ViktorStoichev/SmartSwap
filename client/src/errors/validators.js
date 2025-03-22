@@ -16,5 +16,19 @@ export const validators = {
             default:
                 return "";
         }
+    },
+    phone: (name, value) => {
+        switch (name) {
+            case "title":
+                return value.trim().length >= 6 ? "" : "Title must be at least 6 characters";
+            case "imageUrl":
+                return /^(https?:\/\/)/.test(value) ? "" : "Image URL must start with http:// or https://";
+            case "price":
+                return value > 0 ? "" : "Price must be a positive number";
+            case "description":
+                return value.trim().length >= 10 ? "" : "Description must be at least 10 characters";
+            default:
+                return "";
+        }
     }
 }

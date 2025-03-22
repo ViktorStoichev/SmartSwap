@@ -64,7 +64,7 @@ export const usePhone = () => {
         const confirmDelete = window.confirm("Are you sure you want to delete this item?");
         if (confirmDelete) {
             await deleteDoc(doc(db, "items", id));
-            navigate("/items");
+            navigate("/phones");
         }
     };
 

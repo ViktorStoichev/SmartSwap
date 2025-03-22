@@ -15,11 +15,10 @@ const Login = () => {
 
         try {
             await login(email, password);
-            console.log("Успешно влизане!");
             setError("");
             navigate('/');
         } catch (err) {
-            setError(err.message);
+            setError("Wrong email or password!");
         }
     };
 

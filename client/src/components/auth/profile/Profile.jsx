@@ -57,7 +57,7 @@ const Profile = () => {
                 {userPosts.length > 0 ? (
                     <ul className="post-list">
                         {userPosts.map(post => (
-                            <Link to={`/items/${post.id}`} key={post.id} className="post-item">
+                            <Link to={`/phones/${post.id}`} key={post.id} className="post-item">
                                 <img src={post.imageUrl} alt={post.title} className="post-image" />
                                 <div className="post-content">
                                     <h4>{post.title}</h4>

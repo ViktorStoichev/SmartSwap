@@ -1,5 +1,5 @@
 /* Основен контейнер */
-.register-container {
+.sell-phone-container {
     width: 90%;
     max-width: 600px;
     margin: 2rem auto;
@@ -10,12 +10,12 @@
     transition: transform 0.3s ease-in-out;
 }
 
-.register-container:hover {
+.sell-phone-container:hover {
     transform: scale(1.02);
 }
 
 /* Заглавие */
-.register-container h2 {
+.sell-phone-container h2 {
     text-align: center;
     font-size: 1.8rem;
     font-weight: bold;
@@ -24,22 +24,22 @@
 }
 
 /* Формата */
-.register-form {
+.sell-phone-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
 /* Етикети */
-.register-form label {
+.sell-phone-form label {
     font-size: 1.2rem;
     font-weight: bold;
     color: #0F2B31;
 }
 
 /* Текстови полета */
-.register-form input,
-.register-form textarea {
+.sell-phone-form input,
+.sell-phone-form textarea {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid #56A4AC;
@@ -50,14 +50,14 @@
     transition: border 0.3s ease-in-out;
 }
 
-.register-form input:focus,
-.register-form textarea:focus {
+.sell-phone-form input:focus,
+.sell-phone-form textarea:focus {
     border-color: #0F2B31;
     outline: none;
 }
 
 /* Текстовото поле за описание */
-.register-form textarea {
+.sell-phone-form textarea {
     resize: none;
     height: 120px;
 }

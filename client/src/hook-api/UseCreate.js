@@ -25,7 +25,7 @@ export const useCreate = () => {
 
             await setDoc(newDocRef, itemData);
 
-            navigate('/items');
+            navigate('/phones');
         } catch (error) {
             console.log(error);
         }

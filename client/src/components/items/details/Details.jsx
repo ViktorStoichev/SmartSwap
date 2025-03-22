@@ -3,8 +3,6 @@ import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
 import Loader from "../../main/loader/Loader";
 import { usePhone } from "../../../hook-api/UsePhone";
-import { getUserData } from "../../../services/getUserProfile";
-import { useState } from "react";
 
 export default function Details() {
     const { user } = useAuth();
@@ -12,7 +10,7 @@ export default function Details() {
 
     if (!product) return <Loader />;
 
-    const isOwner = user && product.owner === user.uid;
+    const isOwner = user && product.ownerId === user.uid;
 
     return (
         <div className="product-details-container">
@@ -30,7 +28,7 @@ export default function Details() {
             {isOwner && (
                 <div className="owner-actions">
                     {/* <button onClick={handleEditToggle} className="edit-btn">{isEditing ? "Cancel" : "Edit"}</button> */}
-                    <Link to={`/items/${product.id}/edit`} className="edit-btn">Edit</Link>
+                    <Link to={`/phones/${product._id}/edit`} className="edit-btn">Edit</Link>
                     <button onClick={handleDelete} className="delete-btn">Delete</button>
                 </div>
             )}

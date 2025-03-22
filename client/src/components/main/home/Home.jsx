@@ -34,7 +34,7 @@ export default function Home() {
                     )) : <Loader />}
             </div>
 
-            <Link to="/items" className="browse-btn">Start Browsing 🚀</Link>
+            <Link to="/phones" className="browse-btn">Start Browsing 🚀</Link>
         </section>
     );
 }

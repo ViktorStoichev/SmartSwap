@@ -20,8 +20,8 @@ import GuestGuard from './guards/GuestGuard';
 function App() {
 
     return (
-        <Router>
-            <AuthProvider>
+        <AuthProvider>
+            <Router>
                 <Header />
 
                 <main>
@@ -46,8 +46,8 @@ function App() {
                 </main>
 
                 <Footer />
-            </AuthProvider>
-        </Router>
+            </Router>
+        </AuthProvider>
     )
 }
 

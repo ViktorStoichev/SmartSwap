@@ -10,10 +10,6 @@ import { useErrorHandler } from "../../../errors/handleError";
 const registerAction = async (prevState, formData) => {
     const { email, password, repeatPassword, username, address, avatarUrl } = Object.fromEntries(formData);
 
-    if (password !== repeatPassword) {
-        return { error: "Passwords do not match!" };
-    }
-
     try {
         const { register } = useRegister();
         const user = await register(email, password);
@@ -30,9 +26,7 @@ const registerAction = async (prevState, formData) => {
 const Register = () => {
     const navigate = useNavigate();
     const [state, dispatch] = useActionState(registerAction, { error: null, success: false });
-    // const [errors, setErrors] = useState({});
-    // const [visibleErrors, setVisibleErrors] = useState({});
-    const { errors, visibleErrors, handleError } = useErrorHandler();
+    const { errors, visibleErrors, handleRegisterError } = useErrorHandler();
 
     useEffect(() => {
         if (state.success) {
@@ -40,58 +34,43 @@ const Register = () => {
         }
     }, [state.success, navigate]);
 
-    // const handleBlur = (e) => {
-    //     const { name, value, form } = e.target;
-    //     const passwordValue = form.password?.value;
-    //     const errorMessage = validateField(name, value, passwordValue);
-
-    //     setErrors((prev) => ({ ...prev, [name]: errorMessage }));
-
-    //     if (errorMessage) {
-    //         setTimeout(() => {
-    //             setVisibleErrors((prev) => ({ ...prev, [name]: true }));
-    //         }, 100); // Малко забавяне преди грешката да стане видима
-    //     } else {
-    //         setVisibleErrors((prev) => ({ ...prev, [name]: false }));
-    //     }
-    // };
-
     return (
         <div className="register-container">
             <h2 className="register-title">Registration</h2>
-            {state.error && <div className="error-message">{state.error}</div>}
             <form action={dispatch} className="register-form">
                 <div className="input-group">
-                    <input type="email" name="email" className="input-field" placeholder="Email" required onBlur={handleError} />
+                    <input type="email" name="email" className="input-field" placeholder="Email" required onBlur={handleRegisterError} />
                     {errors.email && <span className={`error-text ${visibleErrors.email ? "show" : ""}`}>{errors.email}</span>}
                 </div>
 
                 <div className="input-group">
-                    <input type="text" name="username" className="input-field" placeholder="Username" required onBlur={handleError} />
+                    <input type="text" name="username" className="input-field" placeholder="Username" required onBlur={handleRegisterError} />
                     {errors.username && <span className={`error-text ${visibleErrors.username ? "show" : ""}`}>{errors.username}</span>}
                 </div>
 
                 <div className="input-group">
-                    <input type="text" name="address" className="input-field" placeholder="Personal address" required onBlur={handleError} />
+                    <input type="text" name="address" className="input-field" placeholder="Personal address" required onBlur={handleRegisterError} />
                     {errors.address && <span className={`error-text ${visibleErrors.address ? "show" : ""}`}>{errors.address}</span>}
                 </div>
 
                 <div className="input-group">
-                    <input type="url" name="avatarUrl" className="input-field" placeholder="Avatar URL" required onBlur={handleError} />
+                    <input type="url" name="avatarUrl" className="input-field" placeholder="Avatar URL" required onBlur={handleRegisterError} />
                     {errors.avatarUrl && <span className={`error-text ${visibleErrors.avatarUrl ? "show" : ""}`}>{errors.avatarUrl}</span>}
                 </div>
 
                 <div className="input-group">
-                    <input type="password" name="password" className="input-field" placeholder="Password" required onBlur={handleError} />
+                    <input type="password" name="password" className="input-field" placeholder="Password" required onBlur={handleRegisterError} />
                     {errors.password && <span className={`error-text ${visibleErrors.password ? "show" : ""}`}>{errors.password}</span>}
                 </div>
 
                 <div className="input-group">
-                    <input type="password" name="repeatPassword" className="input-field" placeholder="Repeat Password" required onBlur={handleError} />
+                    <input type="password" name="repeatPassword" className="input-field" placeholder="Repeat Password" required onBlur={handleRegisterError} />
                     {errors.repeatPassword && <span className={`error-text ${visibleErrors.repeatPassword ? "show" : ""}`}>{errors.repeatPassword}</span>}
                 </div>
 
-                <button type="submit" className="submit-button">Register</button>
+                <button type="submit" className="submit-button" style={{ backgroundColor: Object.values(errors).some(Boolean) ? "grey" : "" }}
+                    disabled={Object.values(errors).some(Boolean)}>Register</button>
+
             </form>
         </div>
     );
