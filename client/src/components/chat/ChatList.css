@@ -1,0 +1,57 @@
+/* Основен контейнер на списъка с чатовете */
+.chat-list {
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    background-color: #DBE6F3;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+}
+
+.chat-list:hover {
+    transform: scale(1.02);
+}
+
+/* Заглавие на списъка с чатовете */
+.chat-list h2 {
+    font-size: 1.8rem;
+    color: #0F2B31;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Всеки елемент от чата */
+.chat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #C6D8E6;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+/* Промяна на стила при ховърване */
+.chat-item:hover {
+    background-color: #56A4AC;
+    transform: scale(1.02);
+    color: white;
+}
+
+/* Иконка на участника */
+.chat-item span {
+    color: #0F2B31;
+}
+
+/* Линк за навигация в чата */
+.chat-item a {
+    text-decoration: none;
+    color: inherit;
+}

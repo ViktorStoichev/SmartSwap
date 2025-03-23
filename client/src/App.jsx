@@ -16,6 +16,8 @@ import LikedPhones from './components/items/liked-phones/LikedPhones';
 import Home from './components/main/home/Home';
 import UserGuard from './guards/UserGuard';
 import GuestGuard from './guards/GuestGuard';
+import ChatList from './components/chat/ChatList';
+import Chat from './components/chat/Chat';
 
 function App() {
 
@@ -32,6 +34,8 @@ function App() {
                             <Route path="/phones/sell" element={<SellPhone />} />
                             <Route path="/phones/liked" element={<LikedPhones />} />
                             <Route path="/phones/:id/edit" element={<EditPhone />} />
+                            <Route path="/chat-list" element={<ChatList />} />
+                            <Route path="/chat/:partnerId" element={<Chat />} />
                         </Route>
                         <Route element={<GuestGuard />}>
                             <Route path="/login" element={<Login />} />

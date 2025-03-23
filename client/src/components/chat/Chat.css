@@ -1,0 +1,105 @@
+/* Основен контейнер на чата */
+.chat-container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    background-color: #DBE6F3;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .chat-container:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Заглавие на чата */
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .chat-header h2 {
+    font-size: 1.8rem;
+    color: #0F2B31;
+  }
+  
+  .chat-header .avatar {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #56A4AC;
+  }
+  
+  /* Съобщения в чата */
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  .message {
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #C6D8E6;
+    max-width: 70%;
+    font-size: 1.1rem;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  }
+  
+  .message.sent {
+    align-self: flex-end;
+    background-color: #56A4AC;
+    color: white;
+  }
+  
+  .message.received {
+    align-self: flex-start;
+    background-color: #0F2B31;
+    color: #56A4AC;
+  }
+
+  .send-message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    border-top: 2px solid #56A4AC;
+    padding-top: 2rem;
+  }
+
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #56A4AC;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: none;
+  }
+  
+  button {
+    padding: 1.3rem 1.5rem;
+    height: 100%;
+    background-color: #56A4AC;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #0F2B31;
+    transform: scale(1.05);
+  }
+  

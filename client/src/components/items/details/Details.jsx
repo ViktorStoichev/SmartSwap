@@ -8,7 +8,7 @@ import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
 
 export default function Details() {
     const { user } = useAuth();
-    const { product, comment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
+    const { product, comment, setComment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     if (!product) return <Loader />;
@@ -59,12 +59,13 @@ export default function Details() {
                                 <button onClick={handleLike} className={`like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
                                     {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
                                 </button>
-                                <span>{product.likes.length} Likes</span>
+                                <span className="likes-count">{product.likes.length} Likes</span>
+                                {!isOwner &&
                                 <div className="contact">
                                     <h3>Contact the seller:</h3>
-                                    <button className="chat"><i className="fa-solid fa-message"></i></button>
+                                    <button><Link className="chat" to={`/chat/${product.ownerId}`}><i className="fa-solid fa-message"></i></Link></button>
                                     <button className="chat"><i className="fa-solid fa-phone"></i></button>
-                                </div>
+                                </div>}
                                 <h3>Ask a question about this product:</h3>
                                 <div className="comment-form">
                                     <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." />

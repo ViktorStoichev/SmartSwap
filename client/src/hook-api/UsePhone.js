@@ -77,6 +77,7 @@ export const usePhone = () => {
     return {
         product,
         comment,
+        setComment,
         handleCommentSubmit,
         handleDelete,
         handleLike

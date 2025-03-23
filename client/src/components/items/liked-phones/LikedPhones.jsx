@@ -8,11 +8,10 @@ export default function LikedPhones() {
     const { user } = useAuth();
     const { likedPhones } = usePhones(user);
 
-    if (likedPhones.length < 1) return <Loader />;
-
     return (
         <div className="products-container">
             <h2 className="products-title">LIKED PHONES</h2>
+            {likedPhones.length < 1 && <p>There are no liked phones!</p>}
             <div className="products-grid">
                 {
                     likedPhones.map((item) => (
