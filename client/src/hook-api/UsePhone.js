@@ -61,11 +61,9 @@ export const usePhone = () => {
     };
 
     const handleDelete = async () => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this item?");
-        if (confirmDelete) {
-            await deleteDoc(doc(db, "items", id));
-            navigate("/phones");
-        }
+        await deleteDoc(doc(db, "items", id));
+        navigate("/phones");
+
     };
 
     return {

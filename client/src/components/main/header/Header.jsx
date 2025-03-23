@@ -16,7 +16,7 @@ export default function Header() {
 
     return (
         <header>
-            <h1>Thrift Shop</h1>
+            <h1>SmartSwap</h1>
             <nav className='main-links'>
                 <ul>
                     <li><NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-house"></i></NavLink></li>

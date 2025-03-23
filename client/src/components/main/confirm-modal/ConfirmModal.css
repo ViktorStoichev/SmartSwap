@@ -1,0 +1,74 @@
+/* Фонът, който затъмнява останалата част на екрана */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Полупрозрачен фон */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Основният контейнер на модала */
+.modal-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+}
+
+/* Заглавие на модала */
+.modal-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: #0F2B31;
+}
+
+/* Текст на модала */
+.modal-message {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+/* Контейнер за бутоните */
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* Бутон за потвърждение */
+.confirm-button {
+    background-color: #56A4AC;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.confirm-button:hover {
+    background-color: #40828A;
+}
+
+/* Бутон за отказ */
+.cancel-button {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.cancel-button:hover {
+    background-color: #aaa;
+}
