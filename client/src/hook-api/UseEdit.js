@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { db } from "../../server/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
+import formatDate from "../utils/formatDate";
 
 export const useEdit = () => {
     const { id } = useParams();
@@ -17,6 +18,7 @@ export const useEdit = () => {
     });
 
     useEffect(() => {
+        let isMounted = true;
 
         const fetchProduct = async () => {
             if(!user) {
@@ -30,17 +32,23 @@ export const useEdit = () => {
                     navigate(`/phones/${id}`);
                     return;
                 }
-                setEditedProduct({
-                    title: data.title,
-                    description: data.description,
-                    price: data.price,
-                    imageUrl: data.imageUrl,
-                });
+                if (isMounted) {
+                    setEditedProduct({
+                        title: data.title,
+                        description: data.description,
+                        price: data.price,
+                        imageUrl: data.imageUrl,
+                    });
+                }
             } else {
                 navigate("/");
             }
         };
         fetchProduct();
+
+        return () => {
+            isMounted = false;
+        }
     }, [id, navigate, user]);
 
     const handleEditChange = (e) => {
@@ -58,6 +66,7 @@ export const useEdit = () => {
             description: editedProduct.description,
             price: editedProduct.price,
             imageUrl: editedProduct.imageUrl,
+            updatedAt: formatDate(new Date()),
         });
         navigate(`/phones/${id}`);
     };

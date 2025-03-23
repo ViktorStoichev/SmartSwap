@@ -7,6 +7,11 @@
     margin: 2rem auto;
 }
 
+.welcome-section > h2 {
+    color: #56A4AC;
+    margin-top: 2rem;
+}
+
 .brand-name {
     color: #56A4AC;
     font-weight: bold;

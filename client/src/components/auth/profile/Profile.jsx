@@ -12,9 +12,11 @@ const Profile = () => {
     const [userPosts, setUserPosts] = useState([]);
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchProfile = async () => {
             const data = await getUserData(id);
-            setUser(data);
+            if (isMounted) setUser(data);
         };
 
         const fetchUserPosts = async () => {
@@ -26,12 +28,16 @@ const Profile = () => {
                 id: doc.id,
                 ...doc.data()
             }));
-            setUserPosts(posts);
+            if (isMounted) setUserPosts(posts);
         };
 
         if (id) {
             fetchProfile();
             fetchUserPosts();
+        }
+
+        return () => {
+            isMounted = false;
         }
     }, [id]);
 

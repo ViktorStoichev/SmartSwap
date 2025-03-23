@@ -7,7 +7,12 @@ export default function Home() {
 
     const { filteredProducts } = usePhones();
 
-    const lastThreeProducts = [...filteredProducts].sort((a, b) => b.createdAt - a.createdAt).slice(0, 3);
+    const getRandomProducts = (array, num) => {
+        const shuffled = [...array].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, num);
+    };
+
+    const lastThreeProducts = getRandomProducts(filteredProducts, 3);
 
     return (
         <section className="welcome-section">
@@ -20,6 +25,8 @@ export default function Home() {
                 <li>✔️ <strong>Great Deals on Top Brands</strong></li>
                 <li>✔️ <strong>Eco-Friendly & Budget-Friendly</strong></li>
             </ul>
+
+            <h2>Some of the selling phones:</h2>
 
             <div className="products-grid">
                 {lastThreeProducts.length > 0 ?

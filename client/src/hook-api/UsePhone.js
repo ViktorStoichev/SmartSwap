@@ -13,14 +13,22 @@ export const usePhone = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        let isMounted = true;
+
         const fetchProduct = async () => {
             const docRef = doc(db, "items", id);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                setProduct({ id: docSnap.id, ...docSnap.data() });
+            if (isMounted) {
+                if (docSnap.exists()) {
+                    setProduct({ id: docSnap.id, ...docSnap.data() });
+                }
             }
         };
         fetchProduct();
+
+        return () => {
+            isMounted = false;
+        }
 
     }, [id]);
 

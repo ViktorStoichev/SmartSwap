@@ -31,8 +31,12 @@ export default function Details() {
                     </div>
                     <div className="product-info">
                         <h2>{product.title}</h2>
-                        <p>{product.price} USD</p>
+                        <strong>{product.price} USD</strong>
                         <p>{product.description}</p>
+                        <div>
+                            <p>Posted at: {product.createdAt}</p>
+                            <p>Updated at: {product.updatedAt}</p>
+                        </div>
                     </div>
                 </div>
 
