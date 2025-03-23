@@ -9,7 +9,7 @@ import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
 export default function Details() {
     const { user } = useAuth();
     const { product, comment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
-    const [isModalOpen, setIsModalOpen] = useState();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     if (!product) return <Loader />;
 

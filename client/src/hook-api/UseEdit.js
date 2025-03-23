@@ -51,8 +51,7 @@ export const useEdit = () => {
         }));
     };
 
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
+    const handleEditSubmit = async () => {
         const productRef = doc(db, "items", id);
         await updateDoc(productRef, {
             title: editedProduct.title,
