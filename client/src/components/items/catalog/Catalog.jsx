@@ -3,6 +3,7 @@ import Loader from "../../main/loader/Loader.jsx";
 import Search from "./Search.jsx";  // Импортиране на компонента за търсене
 import './Catalog.css'
 import { usePhones } from "../../../hook-api/UsePhones.js";
+import PhoneTemplate from "../phone-template/PhoneTemplate.jsx";
 
 export default function Catalog() {
     const { filteredProducts, handleSearch, handlePriceFilter } = usePhones();
@@ -14,15 +15,7 @@ export default function Catalog() {
 
             <div className="products-grid">
                 {filteredProducts.length > 0 ?
-                    filteredProducts.map((item) => (
-                        <Link key={item.id} className="product-card" to={`/phones/${item.id}`}>
-                            <div className="image-wrapper">
-                                <img src={item.imageUrl} alt={item.title} className="product-image" />
-                            </div>
-                            <h2 className="product-name">{item.title}</h2>
-                            <p className="product-price">${item.price}</p>
-                        </Link>
-                    )) : <Loader />}
+                    filteredProducts.map((item) => <PhoneTemplate phone={item} key={item._id} />) : <Loader />}
             </div>
         </div>
     );

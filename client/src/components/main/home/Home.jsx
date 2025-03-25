@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import './Home.css'
 import Loader from '../loader/Loader';
 import { usePhones } from '../../../hook-api/UsePhones';
+import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
 
 export default function Home() {
 
@@ -30,15 +31,7 @@ export default function Home() {
 
             <div className="products-grid">
                 {lastThreeProducts.length > 0 ?
-                    lastThreeProducts.map((item) => (
-                        <Link key={item.id} className="product-card" to={`/phones/${item.id}`}>
-                            <div className="image-wrapper">
-                                <img src={item.imageUrl} alt={item.title} className="product-image" />
-                            </div>
-                            <h2 className="product-name">{item.title}</h2>
-                            <p className="product-price">${item.price}</p>
-                        </Link>
-                    )) : <Loader />}
+                    lastThreeProducts.map((item) => <PhoneTemplate phone={item} key={item._id} />) : <Loader />}
             </div>
 
             <Link to="/phones" className="browse-btn">Start Browsing 🚀</Link>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Loader from "../../main/loader/Loader";
 import { useAuth } from "../../../contexts/AuthContext";
 import { usePhones } from "../../../hook-api/UsePhones";
+import PhoneTemplate from "../phone-template/PhoneTemplate";
 
 export default function LikedPhones() {
     const { user } = useAuth();
@@ -14,15 +15,7 @@ export default function LikedPhones() {
             {likedPhones.length < 1 && <p>There are no liked phones!</p>}
             <div className="products-grid">
                 {
-                    likedPhones.map((item) => (
-                        <Link key={item.id} className="product-card" to={`/phones/${item.id}`}>
-                            <div className="image-wrapper">
-                                <img src={item.imageUrl} alt={item.title} className="product-image" />
-                            </div>
-                            <h2 className="product-name">{item.title}</h2>
-                            <p className="product-price">${item.price}</p>
-                        </Link>
-                    ))}
+                    likedPhones.map((item) => <PhoneTemplate phone={item} key={item._id} />)}
             </div>
         </div>
     );
