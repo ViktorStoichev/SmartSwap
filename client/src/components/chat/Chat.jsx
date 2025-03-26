@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect } from 'react';
 import { db } from '../../../server/firebase';
 import { doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
@@ -11,30 +11,38 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
     const [partner, setPartner] = useState(null); // Състояние за партньора
+    const messagesEndRef = useRef(null);
+
+    const fetchMessages = useCallback(async () => {
+        const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
+        const chatRef = doc(db, 'chats', chatId); // Получаваме чат документ по уникален chatId
+
+        const chatDoc = await getDoc(chatRef);
+        if (chatDoc.exists()) {
+            setMessages(chatDoc.data().messages);
+        }
+    }, [user.uid, partnerId]);
+
+    const fetchPartnerData = useCallback(async () => {
+        const partnerDocRef = doc(db, 'users', partnerId);
+        const partnerDoc = await getDoc(partnerDocRef);
+
+        if (partnerDoc.exists()) {
+            setPartner(partnerDoc.data());
+        }
+    }, [partnerId]);
 
     useEffect(() => {
-        const fetchMessages = async () => {
-            const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
-            const chatRef = doc(db, 'chats', chatId); // Получаваме чат документ по уникален chatId
-
-            const chatDoc = await getDoc(chatRef);
-            if (chatDoc.exists()) {
-                setMessages(chatDoc.data().messages);
-            }
-        };
-
-        const fetchPartnerData = async () => {
-            const partnerDocRef = doc(db, 'users', partnerId);
-            const partnerDoc = await getDoc(partnerDocRef);
-
-            if (partnerDoc.exists()) {
-                setPartner(partnerDoc.data());
-            }
-        };
 
         fetchMessages();
         fetchPartnerData();
-    }, [user.uid, partnerId]);
+    }, [fetchMessages, fetchPartnerData]);
+
+    useLayoutEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [messages]);
 
     const handleSendMessage = async () => {
         if (!newMessage.trim()) return;
@@ -71,6 +79,13 @@ const Chat = () => {
         setNewMessage('');
     };
 
+    const renderedMessages = useMemo(() =>
+        messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'}`}>
+                <span>{msg.message}</span>
+            </div>
+        )), [messages, user.uid]);
+
     return (
         <div className="chat-container">
             {partner && (
@@ -80,11 +95,8 @@ const Chat = () => {
                 </div>
             )}
             <div className="messages">
-                {messages.map((msg, index) => (
-                    <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'}`}>
-                        <span>{msg.message}</span>
-                    </div>
-                ))}
+                {renderedMessages}
+                <div ref={messagesEndRef}></div>
             </div>
             <div className="send-message">
                 <textarea
@@ -98,4 +110,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default memo(Chat);

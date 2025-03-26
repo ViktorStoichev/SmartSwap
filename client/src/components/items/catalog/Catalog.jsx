@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Loader from "../../main/loader/Loader.jsx";
 import Search from "./Search.jsx";  // Импортиране на компонента за търсене
 import './Catalog.css'

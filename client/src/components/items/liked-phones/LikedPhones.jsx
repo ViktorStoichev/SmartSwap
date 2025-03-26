@@ -1,6 +1,4 @@
 import "./LikedPhones.css";
-import { Link } from "react-router-dom";
-import Loader from "../../main/loader/Loader";
 import { useAuth } from "../../../contexts/AuthContext";
 import { usePhones } from "../../../hook-api/UsePhones";
 import PhoneTemplate from "../phone-template/PhoneTemplate";
