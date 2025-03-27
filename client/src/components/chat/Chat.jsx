@@ -1,25 +1,24 @@
-import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect, useReducer } from 'react';
 import { db } from '../../../server/firebase';
 import { doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Chat.css';
+import { chatReducer, initialChatState } from './MessageReducer';
 
 const Chat = () => {
     const { user } = useAuth();
-    const { partnerId } = useParams(); // Извличаме partnerId от URL
-    const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
-    const [partner, setPartner] = useState(null); // Състояние за партньора
+    const { partnerId } = useParams();
+    const [state, dispatch] = useReducer(chatReducer, initialChatState);
     const messagesEndRef = useRef(null);
 
     const fetchMessages = useCallback(async () => {
         const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
-        const chatRef = doc(db, 'chats', chatId); // Получаваме чат документ по уникален chatId
-
+        const chatRef = doc(db, 'chats', chatId);
         const chatDoc = await getDoc(chatRef);
+
         if (chatDoc.exists()) {
-            setMessages(chatDoc.data().messages);
+            dispatch({ type: 'SET_MESSAGES', payload: chatDoc.data().messages });
         }
     }, [user.uid, partnerId]);
 
@@ -28,7 +27,7 @@ const Chat = () => {
         const partnerDoc = await getDoc(partnerDocRef);
 
         if (partnerDoc.exists()) {
-            setPartner(partnerDoc.data());
+            dispatch({ type: 'SET_PARTNER', payload: partnerDoc.data() });
         }
     }, [partnerId]);
 
@@ -42,56 +41,54 @@ const Chat = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [messages]);
+    }, [state.messages]);
 
     const handleSendMessage = async () => {
-        if (!newMessage.trim()) return;
+        if (!state.newMessage.trim()) return;
 
         const newMsg = {
             senderId: user.uid,
             receiverId: partnerId,
-            message: newMessage,
+            message: state.newMessage,
             timestamp: new Date(),
         };
 
         const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
-        const chatRef = doc(db, 'chats', chatId); // Получаваме чат документ по уникален chatId
+        const chatRef = doc(db, 'chats', chatId);
 
         const chatDoc = await getDoc(chatRef);
         if (chatDoc.exists()) {
-            // Ако чатът съществува, добавяме съобщението в масива
             await updateDoc(chatRef, {
                 messages: [...chatDoc.data().messages, newMsg],
             });
         } else {
-            // Ако чатът не съществува, създаваме нов чат с участниците
             await setDoc(chatRef, {
-                participants: [user.uid, partnerId], // Списък само с ID-та за по-лесно търсене
+                participants: [user.uid, partnerId],
                 participantsInfo: {
                     [user.uid]: { id: user.uid, username: user.username },
-                    [partnerId]: { id: partnerId, username: partner.username }
+                    [partnerId]: { id: partnerId, username: state.partner?.username }
                 },
                 messages: [newMsg]
             });
         }
 
-        setMessages((prevMessages) => [...prevMessages, newMsg]);
-        setNewMessage('');
+        dispatch({ type: 'ADD_MESSAGE', payload: newMsg });
+        dispatch({ type: 'SET_NEW_MESSAGE', payload: '' });
     };
 
     const renderedMessages = useMemo(() =>
-        messages.map((msg, index) => (
+        state.messages.map((msg, index) => (
             <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'}`}>
                 <span>{msg.message}</span>
             </div>
-        )), [messages, user.uid]);
+        )), [state.messages, user.uid]);
 
     return (
         <div className="chat-container">
-            {partner && (
+            {state.partner && (
                 <div className="chat-header">
-                    <img src={partner.avatarUrl || 'default-avatar.png'} alt="Avatar" className="avatar" />
-                    <h2>Chat with {partner.username}</h2>
+                    <img src={state.partner.avatarUrl || 'default-avatar.png'} alt="Avatar" className="avatar" />
+                    <h2>Chat with {state.partner.username}</h2>
                 </div>
             )}
             <div className="messages">
@@ -100,8 +97,8 @@ const Chat = () => {
             </div>
             <div className="send-message">
                 <textarea
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
+                    value={state.newMessage}
+                    onChange={(e) => dispatch({ type: 'SET_NEW_MESSAGE', payload: e.target.value })}
                     placeholder="Type a message"
                 />
                 <button onClick={handleSendMessage}>Send</button>
