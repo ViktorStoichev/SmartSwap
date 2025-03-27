@@ -7,12 +7,12 @@ export default function Search({ onSearch, onPriceFilter }) {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    onSearch(event.target.value);  // Извикваме метода за търсене
+    onSearch(event.target.value);
   };
 
   const handlePriceFilter = (event) => {
     setMaxPrice(event.target.value);
-    onPriceFilter(event.target.value);  // Извикваме метода за филтриране по цена
+    onPriceFilter(event.target.value);
   };
 
   return (

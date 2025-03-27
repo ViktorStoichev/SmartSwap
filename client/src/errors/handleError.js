@@ -15,7 +15,7 @@ export const useErrorHandler = () => {
         if (errorMessage) {
             setTimeout(() => {
                 setVisibleErrors((prev) => ({ ...prev, [name]: true }));
-            }, 100); // Малко забавяне преди грешката да стане видима
+            }, 100);
         } else {
             setVisibleErrors((prev) => ({ ...prev, [name]: false }));
         }
@@ -30,7 +30,7 @@ export const useErrorHandler = () => {
         if (errorMessage) {
             setTimeout(() => {
                 setVisibleErrors((prev) => ({ ...prev, [name]: true }));
-            }, 100); // Малко забавяне преди грешката да стане видима
+            }, 100);
         } else {
             setVisibleErrors((prev) => ({ ...prev, [name]: false }));
         }

@@ -3,10 +3,8 @@ import { auth, db } from "../../server/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
-// 1️⃣ Създаваме контекст
 const AuthContext = createContext();
 
-// 2️⃣ Функция за извличане на user данни от Firestore
 const fetchUserData = async (userId) => {
   if (!userId) return null;
   const userRef = doc(db, "users", userId);
@@ -14,7 +12,6 @@ const fetchUserData = async (userId) => {
   return userSnap.exists() ? userSnap.data() : null;
 };
 
-// 3️⃣ Компонент за предоставяне на контекста
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +38,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// 4️⃣ Hook за достъп до AuthContext
 export const useAuth = () => {
   return useContext(AuthContext);
 };

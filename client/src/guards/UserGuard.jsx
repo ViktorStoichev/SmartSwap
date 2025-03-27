@@ -7,7 +7,7 @@ export default function UserGuard() {
 
     if (isLoading) { 
         <Loader />
-        return null; // Изчаква стойността на user
+        return null;
     }
 
     if (!user) {

@@ -12,7 +12,7 @@ const ChatList = () => {
     const fetchChats = useCallback(async () => {
         const chatsQuery = query(
             collection(db, 'chats'),
-            where('participants', 'array-contains', user.uid) // Търсим само по ID
+            where('participants', 'array-contains', user.uid)
         );
 
         const querySnapshot = await getDocs(chatsQuery);
@@ -34,7 +34,7 @@ const ChatList = () => {
     const chatElements = useMemo(() => 
         chats.map((chat) => {
             const otherUserId = chat.participants.find((id) => id !== user.uid);
-            const otherUser = chat.participantsInfo[otherUserId]; // Взимаме username от participantsInfo
+            const otherUser = chat.participantsInfo[otherUserId];
 
             return (
                 <Link to={`/chat/${otherUser.id}`} key={otherUser.id}>

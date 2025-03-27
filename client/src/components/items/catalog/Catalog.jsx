@@ -1,5 +1,5 @@
 import Loader from "../../main/loader/Loader.jsx";
-import Search from "./Search.jsx";  // Импортиране на компонента за търсене
+import Search from "./Search.jsx";
 import './Catalog.css'
 import { usePhones } from "../../../hook-api/UsePhones.js";
 import PhoneTemplate from "../phone-template/PhoneTemplate.jsx";
@@ -10,7 +10,7 @@ export default function Catalog() {
     return (
         <div className="products-container">
             <h2 className="products-title">BROWSE FROM ALL OF THE PHONES ON OUR SITE</h2>
-            <Search onSearch={handleSearch} onPriceFilter={handlePriceFilter} />  {/* Добавяме Search компонента */}
+            <Search onSearch={handleSearch} onPriceFilter={handlePriceFilter} />
 
             <div className="products-grid">
                 {filteredProducts.length > 0 ?
