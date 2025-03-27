@@ -18,14 +18,14 @@
   
   .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Винаги 3 колони на ред */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 1.5rem;
     justify-content: center;
   }
   
   .product-card {
-    width: 18rem; /* Фиксирана широчина */
-    height: 30rem; /* Фиксирана височина */
+    width: 18rem;
+    height: 30rem;
     background-color: #DBE6F3;
     border-radius: 8px;
     display: flex;
@@ -38,7 +38,7 @@
   }
   
   .product-card:hover {
-    transform: scale(0.95); /* Намалява размера при ховър */
+    transform: scale(0.95);
   }
   
   .image-wrapper {

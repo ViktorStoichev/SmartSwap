@@ -1,4 +1,3 @@
-/* Основен контейнер на списъка с чатовете */
 .chat-list {
     width: 90%;
     max-width: 1000px;
@@ -14,7 +13,6 @@
     transform: scale(1.02);
 }
 
-/* Заглавие на списъка с чатовете */
 .chat-list h2 {
     font-size: 1.8rem;
     color: #0F2B31;
@@ -22,7 +20,6 @@
     text-align: center;
 }
 
-/* Всеки елемент от чата */
 .chat-item {
     display: flex;
     justify-content: space-between;
@@ -38,19 +35,16 @@
     transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-/* Промяна на стила при ховърване */
 .chat-item:hover {
     background-color: #56A4AC;
     transform: scale(1.02);
     color: white;
 }
 
-/* Иконка на участника */
 .chat-item span {
     color: #0F2B31;
 }
 
-/* Линк за навигация в чата */
 .chat-item a {
     text-decoration: none;
     color: inherit;

@@ -1,4 +1,3 @@
-/* Основен стил за контейнера */
 .register-container {
     width: 100%;
     max-width: 400px;
@@ -11,13 +10,10 @@
     transition: transform 0.3s ease-in-out;
 }
 
-/* Промяна на размера при преминаване с мишката */
 .register-container:hover {
     transform: scale(1.2);
-    /* Увеличава размера на контейнера */
 }
 
-/* Стил за заглавието */
 .register-title {
     text-align: center;
     font-size: 2rem;
@@ -25,7 +21,6 @@
     margin-bottom: 20px;
 }
 
-/* Стил за съобщението за грешка */
 .error-message {
     color: #f44336;
     font-size: 0.9rem;
@@ -33,14 +28,12 @@
     text-align: center;
 }
 
-/* Стил за формата */
 .register-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-/* Стил за полетата за въвеждане */
 .input-field {
     padding: 10px;
     font-size: 1rem;
@@ -54,7 +47,6 @@
     border-color: #56A4AC;
 }
 
-/* Стил за бутона */
 .submit-button {
     padding: 10px;
     font-size: 1rem;
@@ -70,7 +62,6 @@
     background-color: #0F2B31;
 }
 
-/* Стил за бутона при натиск */
 .submit-button:active {
     transform: scale(0.98);
 }

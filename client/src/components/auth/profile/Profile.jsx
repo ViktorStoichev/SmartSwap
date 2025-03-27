@@ -57,7 +57,6 @@ const Profile = () => {
                 </div>
             </article>
 
-            {/* 🔥 Секция за публикуваните постове */}
             <div className="user-posts">
                 <h3>{user.username}'s Posts</h3>
                 {userPosts.length > 0 ? (

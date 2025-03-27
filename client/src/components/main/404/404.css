@@ -1,4 +1,3 @@
-/* About Page Styles */
 .about-container {
     width: 100%;
     max-width: 600px;
@@ -26,8 +25,7 @@
     font-size: 1rem;
     margin-bottom: 15px;
   }
-  
-  /* Not Found Page Styles */
+
   .notfound-container {
     width: 100%;
     max-width: 500px;
@@ -55,8 +53,7 @@
     font-size: 1rem;
     margin-bottom: 15px;
   }
-  
-  /* Shared Button Style */
+
   .back-button {
     padding: 10px 15px;
     font-size: 1rem;

@@ -42,7 +42,6 @@ export default function Details() {
 
                 {isOwner && (
                     <div className="owner-actions">
-                        {/* <button onClick={handleEditToggle} className="edit-btn">{isEditing ? "Cancel" : "Edit"}</button> */}
                         <Link to={`/phones/${product._id}/edit`} className="edit-btn">Edit</Link>
                         <button onClick={() => setIsModalOpen(true)} className="delete-btn">Delete</button>
                     </div>

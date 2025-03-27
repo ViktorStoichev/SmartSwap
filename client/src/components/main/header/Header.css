@@ -9,6 +9,7 @@ header {
 header>h1 {
     color: #56A4AC;
     margin-left: 2rem;
+    font-style: italic;
 }
 
 header>nav {
