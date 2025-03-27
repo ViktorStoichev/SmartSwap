@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect, useReducer } from 'react';
+import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect, useReducer, useOptimistic } from 'react';
 import { db } from '../../../server/firebase';
 import { doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 import { useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ const Chat = () => {
     const { partnerId } = useParams();
     const [state, dispatch] = useReducer(chatReducer, initialChatState);
     const messagesEndRef = useRef(null);
+    const [optimisticMessages, setOptimisticMessages] = useState([]);
 
     const fetchMessages = useCallback(async () => {
         const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
@@ -32,7 +33,6 @@ const Chat = () => {
     }, [partnerId]);
 
     useEffect(() => {
-
         fetchMessages();
         fetchPartnerData();
     }, [fetchMessages, fetchPartnerData]);
@@ -41,7 +41,7 @@ const Chat = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [state.messages]);
+    }, [state.messages, optimisticMessages]);
 
     const handleSendMessage = async () => {
         if (!state.newMessage.trim()) return;
@@ -51,37 +51,45 @@ const Chat = () => {
             receiverId: partnerId,
             message: state.newMessage,
             timestamp: new Date(),
+            optimistic: true
         };
+
+        setOptimisticMessages((prev) => [...prev, newMsg]);
+        dispatch({ type: 'SET_NEW_MESSAGE', payload: '' });
 
         const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
         const chatRef = doc(db, 'chats', chatId);
 
-        const chatDoc = await getDoc(chatRef);
-        if (chatDoc.exists()) {
-            await updateDoc(chatRef, {
-                messages: [...chatDoc.data().messages, newMsg],
-            });
-        } else {
-            await setDoc(chatRef, {
-                participants: [user.uid, partnerId],
-                participantsInfo: {
-                    [user.uid]: { id: user.uid, username: user.username },
-                    [partnerId]: { id: partnerId, username: state.partner?.username }
-                },
-                messages: [newMsg]
-            });
+        try {
+            const chatDoc = await getDoc(chatRef);
+            if (chatDoc.exists()) {
+                await updateDoc(chatRef, {
+                    messages: [...chatDoc.data().messages, { ...newMsg, optimistic: false }],
+                });
+            } else {
+                await setDoc(chatRef, {
+                    participants: [user.uid, partnerId],
+                    participantsInfo: {
+                        [user.uid]: { id: user.uid, username: user.username },
+                        [partnerId]: { id: partnerId, username: state.partner?.username }
+                    },
+                    messages: [{ ...newMsg, optimistic: false }]
+                });
+            }
+            setOptimisticMessages((prev) => prev.filter((msg) => msg !== newMsg));
+            dispatch({ type: 'ADD_MESSAGE', payload: { ...newMsg, optimistic: false } });
+        } catch (error) {
+            console.error('Error sending message:', error);
+            setOptimisticMessages((prev) => prev.filter((msg) => msg !== newMsg));
         }
-
-        dispatch({ type: 'ADD_MESSAGE', payload: newMsg });
-        dispatch({ type: 'SET_NEW_MESSAGE', payload: '' });
     };
 
     const renderedMessages = useMemo(() =>
-        state.messages.map((msg, index) => (
-            <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'}`}>
+        [...state.messages, ...optimisticMessages].map((msg, index) => (
+            <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'} ${msg.optimistic ? 'pending' : ''}`}>
                 <span>{msg.message}</span>
             </div>
-        )), [state.messages, user.uid]);
+        )), [state.messages, optimisticMessages, user.uid]);
 
     return (
         <div className="chat-container">

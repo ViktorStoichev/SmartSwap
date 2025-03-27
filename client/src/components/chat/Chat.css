@@ -69,6 +69,11 @@
     color: #56A4AC;
   }
 
+  .message.pending {
+    background-color: #f0f0f0;
+    color: #a0a0a0;
+  }
+
   .send-message {
     display: flex;
     justify-content: space-between;
