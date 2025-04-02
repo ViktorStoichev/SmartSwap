@@ -1,8 +1,7 @@
-import { collection, doc, setDoc } from "firebase/firestore";
-import { db } from "../../server/firebase";
 import formatDate from "../utils/formatDate";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { createPhonePost } from "../services/createPhonePost";
 
 export const useCreate = () => {
     const { user } = useAuth();
@@ -19,11 +18,7 @@ export const useCreate = () => {
         itemData.avatarUrl = user.avatarUrl;
 
         try {
-            const newDocRef = doc(collection(db, "items"));
-
-            itemData._id = newDocRef.id;
-
-            await setDoc(newDocRef, itemData);
+            await createPhonePost(itemData);
 
             navigate('/phones');
         } catch (error) {

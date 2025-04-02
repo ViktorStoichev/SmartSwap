@@ -1,7 +1,5 @@
-import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../../server/firebase";
-
+import { getAllPhones } from "../services/getAllPhones";
 
 export const usePhones = (user = {}) => {
     const [products, setProducts] = useState([]);
@@ -13,15 +11,12 @@ export const usePhones = (user = {}) => {
 
         const fetchProducts = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "items"));
-                const itemsList = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+                const phones = await getAllPhones();
+
                 if (isMounted) {
-                    setProducts(itemsList);
-                    setFilteredProducts(itemsList);
-                    const filter = itemsList.filter((item) => item.likes.includes(user.uid));
+                    setProducts(phones);
+                    setFilteredProducts(phones);
+                    const filter = phones.filter((item) => item.likes.includes(user.uid));
                     setLikedPhones(filter);
                 }
             } catch (error) {

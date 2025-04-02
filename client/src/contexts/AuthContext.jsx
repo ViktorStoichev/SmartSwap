@@ -1,16 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, db } from "../../server/firebase";
+import { auth } from "../../server/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { getUserData } from "../services/getUserProfile";
 
 const AuthContext = createContext();
-
-const fetchUserData = async (userId) => {
-  if (!userId) return null;
-  const userRef = doc(db, "users", userId);
-  const userSnap = await getDoc(userRef);
-  return userSnap.exists() ? userSnap.data() : null;
-};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -19,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        const data = await fetchUserData(currentUser.uid);
+        const data = await getUserData(currentUser.uid);
         setUser({ ...currentUser, ...data });
       } else {
         setUser(null);
