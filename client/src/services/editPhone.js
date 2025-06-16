@@ -7,10 +7,14 @@ export const editPhone = async (phoneId, editedProduct) => {
     const productRef = doc(db, "items", phoneId);
     
     return await updateDoc(productRef, {
-        title: editedProduct.title,
+        model: editedProduct.model,
+        brand: editedProduct.brand,
+        quality: editedProduct.quality,
         description: editedProduct.description,
         price: editedProduct.price,
         imageUrl: editedProduct.imageUrl,
+        color: editedProduct.color,
+        memory: editedProduct.memory,
         updatedAt: formatDate(new Date()),
     });
 };

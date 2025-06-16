@@ -64,8 +64,13 @@ export const useEdit = () => {
     };
 
     const handleEditSubmit = async () => {
-        await editPhone(id, editedProduct);
-        navigate(`/phones/${id}`);
+        try {
+            await editPhone(id, editedProduct);
+            navigate(`/phones/${id}`);
+        } catch (error) {
+            console.error('Error editing phone:', error);
+            // You might want to add some error state handling here
+        }
     };
 
     return { editedProduct, handleEditChange, handleEditSubmit };
