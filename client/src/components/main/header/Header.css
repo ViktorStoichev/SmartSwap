@@ -1,15 +1,12 @@
 header {
-    background-color: #0F2B31;
+    background-color: #1e3c42;
     color: white;
     display: flex;
     justify-content: space-between;
-    padding: 0.5rem;
-}
-
-header>h1 {
-    color: #56A4AC;
-    margin-left: 2rem;
-    font-style: italic;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 0.1rem;
+    padding-top: 1rem;
 }
 
 header>nav {
@@ -28,7 +25,7 @@ header>nav>ul>li>a {
     font-size: 1.2rem;
     transition: all 0.3s ease;
     border-radius: 1rem;
-    margin: 0 0.2rem;
+    margin: 0 0.5rem;
 }
 
 header>nav>ul>li>a:hover {
@@ -43,10 +40,100 @@ header>nav>ul>li>a:active {
     opacity: 0.5;
 }
 
+.main-links a:hover{
+    background-color: #d3e0f0;
+}
+
+.main-links a:active {
+    background-color: #d3e0f0;
+}
+
+.user-links {
+    gap: 2rem;
+}
+
+.main-links {
+    background-color: #e4ebf1;
+    color: #0F2B31;
+    padding: 1.1rem 0;
+}
+
+.main-links > ul > li:last-child {
+    margin-left: 20rem;
+}
+
 .active-link {
-    background-color: #56A4AC;
     color: #0F2B31;
     font-weight: bold;
     border-radius: 1rem;
     padding: 0.5rem 1rem;
 }
+
+.user-links .active-link {
+    background-color: #56A4AC;
+}
+
+.main-links .active-link {
+    background-color: #d3e0f0;
+}
+
+.main-links li:last-child a {
+    padding: 0.5rem 2rem;
+    background-color: green;
+    color: white;
+}
+
+.main-links li:last-child a:hover {
+    background-color: rgb(0, 122, 0);
+}
+
+.main-links li:last-child a:active {
+    background-color: rgb(0, 165, 0);
+}
+
+.logo-search {
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.logo-search > h1 {
+    color: #56A4AC;
+    margin-left: 2rem;
+    font-style: italic;
+    font-size: 2rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    background-color: #e4ebf1;
+    border-radius: 2rem;
+    padding: 0.3rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-form input {
+    border: none;
+    outline: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    width: 30rem;
+    border-radius: 2rem;
+}
+
+.search-form button {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: #0F2B31;
+    transition: color 0.3s ease;
+    border-radius: 50%;
+}
+
+.search-form button:hover {
+    color: #56A4AC;
+}
+
+

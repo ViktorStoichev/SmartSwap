@@ -2,29 +2,44 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import './Header.css'
 import { useAuth } from '../../../contexts/AuthContext';
 import { useLogout } from '../../../hook-api/UseLogout';
+import { useState } from 'react';
 
 export default function Header() {
     const { user } = useAuth();
     const { logout } = useLogout();
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
 
     const handleLogout = async () => {
         await logout();
         navigate('/');
     };
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/phones?search=${encodeURIComponent(searchQuery.trim())}`);
+            setSearchQuery('');
+        }
+    };
+
     return (
         <header>
-            <h1>SmartSwap</h1>
-            <nav className='main-links'>
-                <ul>
-                    <li><NavLink to="/" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-house"></i></NavLink></li>
-                    <li><NavLink to="/phones" end className={({ isActive }) => isActive ? "active-link" : ""}>Phones</NavLink></li>
-                    <li><NavLink to="/phones/sell" className={({ isActive }) => isActive ? "active-link" : ""}>Sell Phone <i className="fa-solid fa-plus"></i></NavLink></li>
-                    <li><NavLink to="/about" className={({ isActive }) => isActive ? "active-link" : ""}>About</NavLink></li>
-                </ul>
-            </nav>
             <nav className='user-links'>
+                <div className="logo-search">
+                    <h1><NavLink to="/">SmartSwap</NavLink></h1>
+                    <form onSubmit={handleSearch} className="search-form">
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                        <button type="submit">
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </div>
                 <ul>
                     {user
                         ?
@@ -40,6 +55,14 @@ export default function Header() {
                             <li><NavLink to="/register" className={({ isActive }) => isActive ? "active-link" : ""}>Register</NavLink></li>
                         </>
                     }
+                </ul>
+            </nav>
+            <nav className='main-links'>
+                <ul>
+                    <li><NavLink to="/phones" end className={({ isActive }) => isActive ? "active-link" : ""}>Phones</NavLink></li>
+                    <li><NavLink to="/about" className={({ isActive }) => isActive ? "active-link" : ""}>About</NavLink></li>
+                    <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active-link" : ""}>Contact</NavLink></li>
+                    <li><NavLink to="/phones/sell" className={({ isActive }) => isActive ? "active-link" : ""}>Sell</NavLink></li>
                 </ul>
             </nav>
         </header>
