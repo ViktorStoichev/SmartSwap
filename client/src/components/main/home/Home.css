@@ -1,46 +1,188 @@
 .welcome-section {
-    text-align: center;
-    padding: 3rem 2rem;
-    background-color: #e4ebf1;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-    margin: 2rem auto;
+    width: 90%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 3rem;
+    background: linear-gradient(145deg, #e3ebf5, #ffffff);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
 }
 
-.welcome-section > h2 {
-    color: #56A4AC;
-    margin-top: 2rem;
+.welcome-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-section h1 {
+    color: #0F2B31;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    line-height: 1.3;
+    text-align: center;
 }
 
 .brand-name {
     color: #56A4AC;
-    font-weight: bold;
+    font-weight: 700;
+}
+
+.welcome-section p {
+    color: #0F2B31;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .features-list {
     list-style: none;
     padding: 0;
-    margin: 1rem 0;
+    margin: 2rem 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
 }
 
 .features-list li {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    font-size: 1.1rem;
+    color: #0F2B31;
+}
+
+.features-list li:hover {
+    transform: translateY(-5px);
+}
+
+.features-list li strong {
+    color: #56A4AC;
+    display: block;
+    margin-bottom: 0.5rem;
     font-size: 1.2rem;
-    margin: 0.5rem 0;
+}
+
+.welcome-section h2 {
+    color: #0F2B31;
+    font-size: 2rem;
+    margin: 3rem 0 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.welcome-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #56A4AC;
+    border-radius: 2px;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
 }
 
 .browse-btn {
     display: inline-block;
-    margin-top: 2rem;
-    padding: 0.8rem 1.5rem;
-    background-color: #56A4AC;
+    margin: 2rem auto;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #56A4AC, #0F2B31);
     color: white;
     text-decoration: none;
     font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background 0.3s ease-in-out;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(86, 164, 172, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
 .browse-btn:hover {
-    background-color: #0F2B31;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(86, 164, 172, 0.3);
+}
+
+.browse-btn:active {
+    transform: translateY(0);
+}
+
+.browse-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.browse-btn:hover::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 1024px) {
+    .welcome-section {
+        width: 95%;
+        padding: 2rem;
+    }
+
+    .features-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .welcome-section {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .welcome-section h1 {
+        font-size: 2rem;
+    }
+
+    .features-list {
+        grid-template-columns: 1fr;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .browse-btn {
+        width: 100%;
+        text-align: center;
+    }
 }
