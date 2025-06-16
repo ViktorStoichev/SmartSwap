@@ -24,70 +24,134 @@ export default function Details() {
                 title={"Confirm Deletion"}
                 message={"Are you sure you want to delete this phone?"}
             />
-            <div className="product-details-container">
-                <div className="product-main">
-                    <div className="product-image-container">
-                        <img src={product.imageUrl} alt={product.title} className="product-image" />
+            <div className="details-product-container">
+                <div className="details-product-main">
+                    <div className="details-product-image-container">
+                        <img src={product.imageUrl} alt={`${product.brand} ${product.model}`} className="details-product-image" />
                     </div>
-                    <div className="product-info">
-                        <h2>{product.title}</h2>
-                        <strong>{product.price} USD</strong>
-                        <p>{product.description}</p>
-                        <div>
-                            <p>Posted at: {product.createdAt}</p>
-                            <p>Updated at: {product.updatedAt}</p>
+                    <div className="details-product-info">
+                        <div className="details-product-header">
+                            <h2 className="details-product-title">{product.brand} {product.model}</h2>
+                            <div className="details-product-price">${Number(product.price).toFixed(2)}</div>
                         </div>
+                        
+                        <div className="details-product-specs">
+                            <div className="details-product-spec-item">
+                                <i className="fa-solid fa-palette"></i>
+                                <span>{product.color}</span>
+                            </div>
+                            <div className="details-product-spec-item">
+                                <i className="fa-solid fa-memory"></i>
+                                <span>{product.memory}</span>
+                            </div>
+                            <div className="details-product-spec-item">
+                                <i className="fa-solid fa-star"></i>
+                                <span>{product.quality}</span>
+                            </div>
+                        </div>
+
+                        <div className="details-product-description">
+                            <h3>Description</h3>
+                            <p>{product.description}</p>
+                        </div>
+
+                        <div className="details-product-meta">
+                            <div className="details-product-meta-item">
+                                <i className="fa-solid fa-calendar"></i>
+                                <span>Posted: {new Date(product.createdAt).toLocaleDateString()}</span>
+                            </div>
+                            <div className="details-product-meta-item">
+                                <i className="fa-solid fa-clock"></i>
+                                <span>Updated: {new Date(product.updatedAt).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+
+                        {isOwner && (
+                            <div className="details-product-owner-actions">
+                                <Link to={`/phones/${product._id}/edit`} className="details-product-edit-btn">
+                                    <i className="fa-solid fa-pen-to-square"></i>
+                                    Edit
+                                </Link>
+                                <button onClick={() => setIsModalOpen(true)} className="details-product-delete-btn">
+                                    <i className="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
-                {isOwner && (
-                    <div className="owner-actions">
-                        <Link to={`/phones/${product._id}/edit`} className="edit-btn">Edit</Link>
-                        <button onClick={() => setIsModalOpen(true)} className="delete-btn">Delete</button>
-                    </div>
-                )}
-
-                <div className="product-interactions">
-                    <div className="comments-section">
-                        <Link to={`/profile/${product.ownerId}`} className="profile-user">
-                            <img src={product.avatarUrl} alt={product.username} className="profile-avatar" />
-                            <span>{product.username}</span>
-                        </Link>
-                        {user && (
-                            <>
-                                <button onClick={handleLike} className={`like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
-                                    {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
-                                </button>
-                                <span className="likes-count">{product.likes.length} Likes</span>
-                                {!isOwner &&
-                                <div className="contact">
-                                    <h3>Contact the seller:</h3>
-                                    <button><Link className="chat" to={`/chat/${product.ownerId}`}><i className="fa-solid fa-message"></i></Link></button>
-                                    <button className="chat"><i className="fa-solid fa-phone"></i></button>
-                                </div>}
-                                <h3>Ask a question about this product:</h3>
-                                <div className="comment-form">
-                                    <textarea value={comment} onChange={(e) => setComment(e.target.value)} placeholder="Write a comment..." />
-                                    <button onClick={handleCommentSubmit}>Post</button>
+                <div className="details-product-interactions">
+                    <div className="details-product-comments-section">
+                        <div className="details-product-seller-info">
+                            <Link to={`/profile/${product.ownerId}`} className="details-product-profile-user">
+                                <img src={product.avatarUrl} alt={product.username} className="details-product-profile-avatar" />
+                                <div className="details-product-seller-details">
+                                    <span className="details-product-seller-name">{product.username}</span>
+                                    <span className="details-product-seller-label">Seller</span>
                                 </div>
-                            </>
+                            </Link>
+                        </div>
+
+                        {user && (
+                            <div className="details-product-interaction-buttons">
+                                <button onClick={handleLike} className={`details-product-like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
+                                    {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
+                                    <span>{product.likes.length} Likes</span>
+                                </button>
+
+                                {!isOwner && (
+                                    <div className="details-product-contact-buttons">
+                                        <Link to={`/chat/${product.ownerId}`} className="details-product-contact-btn">
+                                            <i className="fa-solid fa-message"></i>
+                                            Message
+                                        </Link>
+                                        <button className="details-product-contact-btn">
+                                            <i className="fa-solid fa-phone"></i>
+                                            Call
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         )}
-                        <div className="comments-list">
+
+                        {user && (
+                            <div className="details-product-comment-form">
+                                <h3>Ask a question about this product</h3>
+                                <textarea 
+                                    value={comment} 
+                                    onChange={(e) => setComment(e.target.value)} 
+                                    placeholder="Write your question here..." 
+                                />
+                                <button onClick={handleCommentSubmit}>
+                                    <i className="fa-solid fa-paper-plane"></i>
+                                    Post Question
+                                </button>
+                            </div>
+                        )}
+
+                        <div className="details-product-comments-list">
+                            <h3>Questions & Answers</h3>
                             {product.comments?.length > 0 ? (
                                 product.comments.map((c, index) => (
-                                    <div key={index} className="comment">
-                                        <div className="comment-header">
-                                            <Link to={`/profile/${c.userId}`} className="comment-user">
-                                                <img src={c.avatarUrl} alt={c.username} className="comment-avatar" />
-                                                <span>{c.username}</span>
+                                    <div key={index} className="details-product-comment">
+                                        <div className="details-product-comment-header">
+                                            <Link to={`/profile/${c.userId}`} className="details-product-comment-user">
+                                                <img src={c.avatarUrl} alt={c.username} className="details-product-comment-avatar" />
+                                                <div className="details-product-comment-user-info">
+                                                    <span className="details-product-comment-username">{c.username}</span>
+                                                    <span className="details-product-comment-date">{new Date(c.date).toLocaleDateString()}</span>
+                                                </div>
                                             </Link>
-                                            <span className="comment-date">{new Date(c.date).toLocaleDateString()}</span>
                                         </div>
-                                        <p>{c.text}</p>
+                                        <p className="details-product-comment-text">{c.text}</p>
                                     </div>
                                 ))
                             ) : (
-                                <p>No comments yet.</p>
+                                <div className="details-product-no-comments">
+                                    <i className="fa-solid fa-comments"></i>
+                                    <p>No questions yet. Be the first to ask!</p>
+                                </div>
                             )}
                         </div>
                     </div>
