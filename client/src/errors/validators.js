@@ -27,6 +27,16 @@ export const validators = {
                 return value > 0 ? "" : "Price must be a positive number";
             case "description":
                 return value.trim().length >= 10 ? "" : "Description must be at least 10 characters";
+            case "brand":
+                return value ? "" : "Please select a brand";
+            case "model":
+                return value.trim().length >= 2 ? "" : "Model must be at least 2 characters";
+            case "color":
+                return value ? "" : "Please select a color";
+            case "memory":
+                return value ? "" : "Please select memory capacity";
+            case "quality":
+                return value ? "" : "Please select phone quality";
             default:
                 return "";
         }
