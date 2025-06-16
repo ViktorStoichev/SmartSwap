@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { getUserData } from '../../../services/getUserProfile';
 import Loader from '../../main/loader/Loader';
 import { getUserPhones } from '../../../services/getUserPhones';
+import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
 
 const Profile = () => {
     const { id } = useParams();
@@ -20,7 +21,6 @@ const Profile = () => {
 
         const fetchUserPosts = async () => {     
             const posts = await getUserPhones(id);
-
             if (isMounted) setUserPosts(posts);
         };
 
@@ -37,38 +37,56 @@ const Profile = () => {
     if (!user) return <Loader />;
 
     return (
-        <section className='profile'>
-            <h2>Profile</h2>
-            <article>
-                <div className="user-data">
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Username:</strong> {user.username}</p>
-                    <p><strong>Location:</strong> {user.address}</p>
+        <div className="profile-container">
+            <div className="profile-header">
+                <h2 className="profile-title">User Profile</h2>
+            </div>
+
+            <div className="profile-content">
+                <div className="profile-info">
+                    <div className="info-item">
+                        <i className="fa-solid fa-user"></i>
+                        <p><strong>Username:</strong> {user.username}</p>
+                    </div>
+                    <div className="info-item">
+                        <i className="fa-solid fa-envelope"></i>
+                        <p><strong>Email:</strong> {user.email}</p>
+                    </div>
+                    <div className="info-item">
+                        <i className="fa-solid fa-location-dot"></i>
+                        <p><strong>Location:</strong> {user.address}</p>
+                    </div>
                 </div>
-                <div className="user-image">
-                    <img src={user.avatarUrl} alt="Avatar" />
+                <div className="profile-avatar">
+                    <img src={user.avatarUrl} alt={`${user.username}'s avatar`} />
                 </div>
-            </article>
+            </div>
 
             <div className="user-posts">
-                <h3>{user.username}'s Posts</h3>
+                <div className="posts-header">
+                    <h3 className="posts-title">{user.username}'s Listings</h3>
+                    <p className="posts-subtitle">
+                        {userPosts.length > 0 
+                            ? `Currently has ${userPosts.length} phone${userPosts.length === 1 ? '' : 's'} listed`
+                            : "No phones listed yet"}
+                    </p>
+                </div>
+
                 {userPosts.length > 0 ? (
-                    <ul className="post-list">
+                    <div className="posts-grid">
                         {userPosts.map(post => (
-                            <Link to={`/phones/${post.id}`} key={post.id} className="post-item">
-                                <img src={post.imageUrl} alt={post.title} className="post-image" />
-                                <div className="post-content">
-                                    <h4>{post.title}</h4>
-                                    <p>{post.price} USD</p>
-                                </div>
-                            </Link>
+                            <PhoneTemplate key={post.id} phone={post} />
                         ))}
-                    </ul>
+                    </div>
                 ) : (
-                    <p className="no-posts">No posts found.</p>
+                    <div className="no-posts">
+                        <i className="fa-solid fa-mobile-screen"></i>
+                        <h3>No Listings Yet</h3>
+                        <p>This user hasn't listed any phones for sale yet.</p>
+                    </div>
                 )}
             </div>
-        </section>
+        </div>
     );
 };
 
