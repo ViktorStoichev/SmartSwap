@@ -1,47 +1,182 @@
-.about-container, .notfound-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 2rem;
-    background-color: #DBE6F3;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+/* About Page Styles */
+div.about-page {
+    width: 90%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 3rem;
+    background-color: #e7edf1;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease-in-out;
-  }
-  
-  .about-container:hover, .notfound-container:hover {
-    transform: scale(1.1);
-  }
-  
-  .about-title, .notfound-title {
+}
+
+div.about-page:hover {
+  transform: scale(1.02);
+}
+
+div.about-page .about-title {
     color: #0F2B31;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+div.about-page .about-section {
+    margin-bottom: 3rem;
+}
+
+div.about-page .about-section h3 {
+    color: #56A4AC;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+div.about-page .about-text {
+    color: #0F2B31;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+div.about-page .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+div.about-page .step {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+div.about-page .step:hover {
+    transform: translateY(-5px);
+}
+
+div.about-page .step i {
     font-size: 2rem;
-    margin-bottom: 10px;
-  }
-  
-  .about-text, .notfound-text {
+    color: #56A4AC;
+    margin-bottom: 1rem;
+}
+
+div.about-page .step h4 {
     color: #0F2B31;
-    font-size: 1rem;
-    margin-bottom: 15px;
-  }
-  
-  .back-button {
-    padding: 10px 15px;
-    font-size: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+}
+
+div.about-page .step p {
+    color: #0F2B31;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+div.about-page .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+div.about-page .feature {
+    text-align: center;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+div.about-page .feature:hover {
+    transform: translateY(-5px);
+}
+
+div.about-page .feature i {
+    font-size: 2rem;
+    color: #56A4AC;
+    margin-bottom: 1rem;
+}
+
+div.about-page .feature h4 {
+    color: #0F2B31;
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+}
+
+div.about-page .feature p {
+    color: #0F2B31;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.about-button-container {
+    margin-top: 2rem;
+}
+
+.about-button-container .about-back-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
     background-color: #56A4AC;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
-  }
-  
-  .back-button:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-button-container .about-back-button:hover {
     background-color: #0F2B31;
-  }
-  
-  .back-button:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.about-button-container .about-back-button:active {
     transform: scale(0.98);
-  }
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1024px) {
+    div.about-page .process-steps,
+    div.about-page .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    div.about-page {
+        padding: 2rem 1rem;
+        margin: 2rem auto;
+    }
+
+    div.about-page .about-title {
+        font-size: 2rem;
+    }
+
+    div.about-page .about-section h3 {
+        font-size: 1.5rem;
+    }
+
+    div.about-page .process-steps,
+    div.about-page .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    div.about-page .step,
+    div.about-page .feature {
+        padding: 1rem;
+    }
+}
   
