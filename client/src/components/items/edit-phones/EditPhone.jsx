@@ -28,22 +28,89 @@ export default function EditPhone() {
             />
             <div className="edit-product-container">
                 <h2>Edit Phone</h2>
+                <p className="edit-product-subtitle">Update your phone listing details</p>
                 <form onSubmit={onFormSubmit} className="edit-product-form">
-                    <label>Title:</label>
-                    <input type="text" name="title" value={editedProduct.title} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
-                    {errors.title && <span className={`error-text ${visibleErrors.title ? "show" : ""}`}>{errors.title}</span>}
+                    <div className="input-group">
+                        <label>Brand:</label>
+                        <select name="brand" value={editedProduct.brand} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                            <option value="">Select Brand</option>
+                            <option value="Apple">Apple</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Google">Google</option>
+                            <option value="Xiaomi">Xiaomi</option>
+                            <option value="OnePlus">OnePlus</option>
+                            <option value="Huawei">Huawei</option>
+                            <option value="Sony">Sony</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        {errors.brand && <span className={`error-text ${visibleErrors.brand ? "show" : ""}`}>{errors.brand}</span>}
+                    </div>
 
-                    <label>Image URL:</label>
-                    <input type="text" name="imageUrl" value={editedProduct.imageUrl} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
-                    {errors.imageUrl && <span className={`error-text ${visibleErrors.imageUrl ? "show" : ""}`}>{errors.imageUrl}</span>}
+                    <div className="input-group">
+                        <label>Model:</label>
+                        <input type="text" name="model" value={editedProduct.model} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
+                        {errors.model && <span className={`error-text ${visibleErrors.model ? "show" : ""}`}>{errors.model}</span>}
+                    </div>
 
-                    <label>Price:</label>
-                    <input type="number" name="price" value={editedProduct.price} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
-                    {errors.price && <span className={`error-text ${visibleErrors.price ? "show" : ""}`}>{errors.price}</span>}
+                    <div className="input-group">
+                        <label>Color:</label>
+                        <select name="color" value={editedProduct.color} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                            <option value="">Select Color</option>
+                            <option value="Black">Black</option>
+                            <option value="White">White</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Pink">Pink</option>
+                            <option value="Blue">Blue</option>
+                            <option value="Red">Red</option>
+                            <option value="Green">Green</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        {errors.color && <span className={`error-text ${visibleErrors.color ? "show" : ""}`}>{errors.color}</span>}
+                    </div>
 
-                    <label>Description:</label>
-                    <textarea name="description" value={editedProduct.description} onChange={handleEditChange} required onBlur={handlePhoneDataError} ></textarea>
-                    {errors.description && <span className={`error-text ${visibleErrors.description ? "show" : ""}`}>{errors.description}</span>}
+                    <div className="input-group">
+                        <label>Memory:</label>
+                        <select name="memory" value={editedProduct.memory} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                            <option value="">Select Memory</option>
+                            <option value="64GB">64GB</option>
+                            <option value="128GB">128GB</option>
+                            <option value="256GB">256GB</option>
+                            <option value="512GB">512GB</option>
+                            <option value="1TB">1TB</option>
+                        </select>
+                        {errors.memory && <span className={`error-text ${visibleErrors.memory ? "show" : ""}`}>{errors.memory}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>Quality:</label>
+                        <select name="quality" value={editedProduct.quality} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                            <option value="">Select Quality</option>
+                            <option value="Used - Like New">Used - Like New</option>
+                            <option value="Used - Good">Used - Good</option>
+                            <option value="Used - Fair">Used - Fair</option>
+                            <option value="Used - Poor">Used - Poor</option>
+                        </select>
+                        {errors.quality && <span className={`error-text ${visibleErrors.quality ? "show" : ""}`}>{errors.quality}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>Image URL:</label>
+                        <input type="text" name="imageUrl" value={editedProduct.imageUrl} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
+                        {errors.imageUrl && <span className={`error-text ${visibleErrors.imageUrl ? "show" : ""}`}>{errors.imageUrl}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>Price:</label>
+                        <input type="number" name="price" value={editedProduct.price} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
+                        {errors.price && <span className={`error-text ${visibleErrors.price ? "show" : ""}`}>{errors.price}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>Description:</label>
+                        <textarea name="description" value={editedProduct.description} onChange={handleEditChange} required onBlur={handlePhoneDataError}></textarea>
+                        {errors.description && <span className={`error-text ${visibleErrors.description ? "show" : ""}`}>{errors.description}</span>}
+                    </div>
 
                     <div className="edit-actions">
                         <button type="submit" className="save-btn" style={{ backgroundColor: Object.values(errors).some(Boolean) ? "grey" : "" }}
