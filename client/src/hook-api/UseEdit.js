@@ -10,10 +10,14 @@ export const useEdit = () => {
     const { user } = useAuth();
 
     const [editedProduct, setEditedProduct] = useState({
-        title: "",
+        model: "",
+        brand: "",
+        quality: "",
         description: "",
         price: "",
         imageUrl: "",
+        color: "",
+        memory: "",
     });
 
     useEffect(() => {
@@ -33,10 +37,14 @@ export const useEdit = () => {
 
             if (isMounted) {
                 setEditedProduct({
-                    title: data.title,
+                    model: data.model,
+                    brand: data.brand,
+                    quality: data.quality,
                     description: data.description,
                     price: data.price,
                     imageUrl: data.imageUrl,
+                    color: data.color,
+                    memory: data.memory,
                 });
             }
         };
