@@ -127,6 +127,7 @@
 
 .chat-container .message {
     max-width: 70%;
+    margin: 0.5rem 0;
     display: flex;
     flex-direction: column;
 }
@@ -141,35 +142,33 @@
 
 .chat-container .message-content {
     padding: 0.8rem 1rem;
-    border-radius: 15px;
+    border-radius: 1rem;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
 }
 
 .chat-container .message.sent .message-content {
-    background-color: #56A4AC;
+    background: #56A4AC;
     color: white;
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 0.2rem;
 }
 
 .chat-container .message.received .message-content {
-    background-color: white;
+    background: #f0f0f0;
     color: #333;
-    border-bottom-left-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-bottom-left-radius: 0.2rem;
 }
 
 .chat-container .message-text {
-    font-size: 0.95rem;
-    line-height: 1.4;
+    display: block;
+    margin-bottom: 0.3rem;
+    word-wrap: break-word;
 }
 
 .chat-container .message-time {
     font-size: 0.7rem;
-    opacity: 0.7;
-    align-self: flex-end;
+    opacity: 0.8;
+    display: block;
+    text-align: right;
 }
 
 .chat-container .message.pending .message-content {
@@ -319,5 +318,31 @@
     .chat-container .message {
         max-width: 85%;
     }
+}
+
+.message-group {
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.date-header {
+    text-align: center;
+    margin: 1rem 0;
+    position: relative;
+}
+
+.date-header span {
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+    display: inline-block;
+}
+
+.messages-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
   

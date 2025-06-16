@@ -112,15 +112,77 @@ const Chat = () => {
         return '';
     };
 
-    const renderedMessages = useMemo(() =>
-        [...state.messages, ...optimisticMessages].map((msg, index) => (
-            <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'} ${msg.optimistic ? 'pending' : ''}`}>
-                <div className="message-content">
-                    <span className="message-text">{msg.message}</span>
-                    <span className="message-time">{formatMessageTime(msg.timestamp)}</span>
+    const formatMessageDate = (timestamp) => {
+        if (!timestamp) return '';
+        
+        let date;
+        if (timestamp.toDate) {
+            date = timestamp.toDate();
+        } else if (timestamp instanceof Date) {
+            date = timestamp;
+        } else {
+            try {
+                date = new Date(timestamp);
+                if (isNaN(date.getTime())) return '';
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return '';
+            }
+        }
+
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (date.toDateString() === today.toDateString()) {
+            return 'Today';
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            return 'Yesterday';
+        } else {
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+    };
+
+    const groupMessagesByDate = (messages) => {
+        const groups = {};
+        
+        messages.forEach(msg => {
+            const date = formatMessageDate(msg.timestamp);
+            if (!groups[date]) {
+                groups[date] = [];
+            }
+            groups[date].push(msg);
+        });
+
+        return groups;
+    };
+
+    const renderedMessages = useMemo(() => {
+        const allMessages = [...state.messages, ...optimisticMessages];
+        const groupedMessages = groupMessagesByDate(allMessages);
+
+        return Object.entries(groupedMessages).map(([date, messages]) => (
+            <div key={date} className="message-group">
+                <div className="date-header">
+                    <span>{date}</span>
+                </div>
+                <div className="messages-container">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'} ${msg.optimistic ? 'pending' : ''}`}>
+                            <div className="message-content">
+                                <span className="message-text">{msg.message}</span>
+                                <span className="message-time">{formatMessageTime(msg.timestamp)}</span>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
-        )), [state.messages, optimisticMessages, user.uid]);
+        ));
+    }, [state.messages, optimisticMessages, user.uid]);
 
     return (
         <div className="chat-container">
