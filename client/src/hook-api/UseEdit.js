@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { db } from "../../server/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
-import formatDate from "../utils/formatDate";
+import { getOnePhone } from "../services/getOnePhone";
+import { editPhone } from "../services/editPhone";
 
 export const useEdit = () => {
     const { id } = useParams();
@@ -21,27 +20,24 @@ export const useEdit = () => {
         let isMounted = true;
 
         const fetchProduct = async () => {
-            if(!user) {
+            if (!user) {
                 return;
             }
-            const docRef = doc(db, "items", id);
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                if (data.ownerId !== user.uid) {
-                    navigate(`/phones/${id}`);
-                    return;
-                }
-                if (isMounted) {
-                    setEditedProduct({
-                        title: data.title,
-                        description: data.description,
-                        price: data.price,
-                        imageUrl: data.imageUrl,
-                    });
-                }
-            } else {
-                navigate("/");
+
+            const data = await getOnePhone(id);
+
+            if (data.ownerId !== user.uid) {
+                navigate(`/phones/${id}`);
+                return;
+            }
+
+            if (isMounted) {
+                setEditedProduct({
+                    title: data.title,
+                    description: data.description,
+                    price: data.price,
+                    imageUrl: data.imageUrl,
+                });
             }
         };
         fetchProduct();
@@ -60,14 +56,7 @@ export const useEdit = () => {
     };
 
     const handleEditSubmit = async () => {
-        const productRef = doc(db, "items", id);
-        await updateDoc(productRef, {
-            title: editedProduct.title,
-            description: editedProduct.description,
-            price: editedProduct.price,
-            imageUrl: editedProduct.imageUrl,
-            updatedAt: formatDate(new Date()),
-        });
+        await editPhone(id, editedProduct);
         navigate(`/phones/${id}`);
     };
 

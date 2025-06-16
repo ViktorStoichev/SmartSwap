@@ -1,6 +1,7 @@
 .profile {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     padding: 2rem;
+    padding-bottom: 4rem;
     border-radius: 2rem;
     display: flex;
     flex-direction: column;
@@ -22,6 +23,8 @@ article {
     justify-content: center;
     align-items: center;
     gap: 2rem;
+    border-bottom: 2px solid #56A4AC;
+    padding-bottom: 2rem;
 }
 
 div.user-image {

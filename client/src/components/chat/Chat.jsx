@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect, useReducer, useOptimistic } from 'react';
-import { db } from '../../../server/firebase';
-import { doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
+import { useState, useEffect, useCallback, useMemo, memo, useRef, useLayoutEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Chat.css';
 import { chatReducer, initialChatState } from './MessageReducer';
+import { getUserData } from '../../services/getUserProfile';
+import { getChatMessages } from '../../services/getChatMessages';
+import { sendChatMessage } from '../../services/sendChatMessage';
 
 const Chat = () => {
     const { user } = useAuth();
@@ -14,22 +15,15 @@ const Chat = () => {
     const [optimisticMessages, setOptimisticMessages] = useState([]);
 
     const fetchMessages = useCallback(async () => {
-        const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
-        const chatRef = doc(db, 'chats', chatId);
-        const chatDoc = await getDoc(chatRef);
+        const messages = await getChatMessages(user.uid, partnerId);
 
-        if (chatDoc.exists()) {
-            dispatch({ type: 'SET_MESSAGES', payload: chatDoc.data().messages });
-        }
+        dispatch({ type: 'SET_MESSAGES', payload: messages });
     }, [user.uid, partnerId]);
 
     const fetchPartnerData = useCallback(async () => {
-        const partnerDocRef = doc(db, 'users', partnerId);
-        const partnerDoc = await getDoc(partnerDocRef);
+        const partnerData = await getUserData(partnerId);
 
-        if (partnerDoc.exists()) {
-            dispatch({ type: 'SET_PARTNER', payload: partnerDoc.data() });
-        }
+        dispatch({ type: 'SET_PARTNER', payload: partnerData });
     }, [partnerId]);
 
     useEffect(() => {
@@ -57,25 +51,9 @@ const Chat = () => {
         setOptimisticMessages((prev) => [...prev, newMsg]);
         dispatch({ type: 'SET_NEW_MESSAGE', payload: '' });
 
-        const chatId = user.uid < partnerId ? user.uid + '_' + partnerId : partnerId + '_' + user.uid;
-        const chatRef = doc(db, 'chats', chatId);
-
         try {
-            const chatDoc = await getDoc(chatRef);
-            if (chatDoc.exists()) {
-                await updateDoc(chatRef, {
-                    messages: [...chatDoc.data().messages, { ...newMsg, optimistic: false }],
-                });
-            } else {
-                await setDoc(chatRef, {
-                    participants: [user.uid, partnerId],
-                    participantsInfo: {
-                        [user.uid]: { id: user.uid, username: user.username },
-                        [partnerId]: { id: partnerId, username: state.partner?.username }
-                    },
-                    messages: [{ ...newMsg, optimistic: false }]
-                });
-            }
+            await sendChatMessage(user, state.partner, partnerId, newMsg);
+
             setOptimisticMessages((prev) => prev.filter((msg) => msg !== newMsg));
             dispatch({ type: 'ADD_MESSAGE', payload: { ...newMsg, optimistic: false } });
         } catch (error) {

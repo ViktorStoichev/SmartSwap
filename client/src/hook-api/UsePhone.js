@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { db } from "../../server/firebase";
-import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import formatDate from "../utils/formatDate";
+import { getOnePhone } from "../services/getOnePhone";
+import { likePhone } from "../services/likePhone";
+import { commentPhone } from "../services/commentPhone";
+import { deletePhone } from "../services/deletePhone";
 
 export const usePhone = () => {
-    const { id } = useParams();
+    const { id: phoneId } = useParams();
     const [product, setProduct] = useState(null);
     const [comment, setComment] = useState("");
     const { user } = useAuth();
@@ -16,12 +18,9 @@ export const usePhone = () => {
         let isMounted = true;
 
         const fetchProduct = async () => {
-            const docRef = doc(db, "items", id);
-            const docSnap = await getDoc(docRef);
+            const phoneData = await getOnePhone(phoneId);
             if (isMounted) {
-                if (docSnap.exists()) {
-                    setProduct({ id: docSnap.id, ...docSnap.data() });
-                }
+                setProduct(phoneData);
             }
         };
         fetchProduct();
@@ -30,16 +29,15 @@ export const usePhone = () => {
             isMounted = false;
         }
 
-    }, [id]);
+    }, [phoneId]);
 
     const handleLike = async () => {
         if (!user) return;
-        const productRef = doc(db, "items", id);
+
         const isLiked = product.likes.includes(user.uid);
 
-        await updateDoc(productRef, {
-            likes: isLiked ? arrayRemove(user.uid) : arrayUnion(user.uid),
-        });
+        await likePhone(phoneId, isLiked, user.uid);
+
         setProduct((prev) => ({
             ...prev,
             likes: isLiked ? prev.likes.filter((uid) => uid !== user.uid) : [...prev.likes, user.uid],
@@ -48,6 +46,7 @@ export const usePhone = () => {
 
     const handleCommentSubmit = async () => {
         if (!user || !comment.trim()) return;
+
         const newComment = {
             userId: user.uid,
             username: user.username,
@@ -56,10 +55,7 @@ export const usePhone = () => {
             date: formatDate(new Date()),
         };
 
-        const productRef = doc(db, "items", id);
-        await updateDoc(productRef, {
-            comments: arrayUnion(newComment),
-        });
+        await commentPhone(phoneId, newComment);
 
         setProduct((prev) => ({
             ...prev,
@@ -69,9 +65,8 @@ export const usePhone = () => {
     };
 
     const handleDelete = async () => {
-        await deleteDoc(doc(db, "items", id));
+        await deletePhone(phoneId)
         navigate("/phones");
-
     };
 
     return {

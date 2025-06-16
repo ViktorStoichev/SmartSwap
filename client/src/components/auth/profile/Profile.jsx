@@ -2,9 +2,8 @@ import './Profile.css';
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUserData } from '../../../services/getUserProfile';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../../../../server/firebase';
 import Loader from '../../main/loader/Loader';
+import { getUserPhones } from '../../../services/getUserPhones';
 
 const Profile = () => {
     const { id } = useParams();
@@ -19,15 +18,9 @@ const Profile = () => {
             if (isMounted) setUser(data);
         };
 
-        const fetchUserPosts = async () => {
-            const postsRef = collection(db, "items");
-            const q = query(postsRef, where("ownerId", "==", id));
-            const querySnapshot = await getDocs(q);
-            
-            const posts = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+        const fetchUserPosts = async () => {     
+            const posts = await getUserPhones(id);
+
             if (isMounted) setUserPosts(posts);
         };
 
@@ -66,7 +59,7 @@ const Profile = () => {
                                 <img src={post.imageUrl} alt={post.title} className="post-image" />
                                 <div className="post-content">
                                     <h4>{post.title}</h4>
-                                    <p>{post.description}</p>
+                                    <p>{post.price} USD</p>
                                 </div>
                             </Link>
                         ))}
