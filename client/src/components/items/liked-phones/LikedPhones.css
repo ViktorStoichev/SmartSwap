@@ -1,0 +1,100 @@
+.liked-phones-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #e7edf1;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.liked-phones-container:hover {
+    transform: scale(1.02);
+}
+
+.liked-phones-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.liked-phones-title {
+    color: #0F2B31;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.liked-phones-subtitle {
+    color: #56A4AC;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.liked-phones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    color: #56A4AC;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    color: #0F2B31;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    color: #0F2B31;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state .browse-button {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background-color: #56A4AC;
+    color: white;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.empty-state .browse-button:hover {
+    background-color: #0F2B31;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .liked-phones-container {
+        padding: 1.5rem;
+        margin: 2rem auto;
+    }
+
+    .liked-phones-title {
+        font-size: 2rem;
+    }
+
+    .liked-phones-subtitle {
+        font-size: 1rem;
+    }
+
+    .liked-phones-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
