@@ -1,75 +1,133 @@
-.about-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #DBE6F3;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .about-container:hover {
-    transform: scale(1.1);
-  }
-  
-  .about-title {
-    color: #0F2B31;
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
-  
-  .about-text {
-    color: #0F2B31;
-    font-size: 1rem;
-    margin-bottom: 15px;
-  }
+
 
   .notfound-container {
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     margin: 100px auto;
-    padding: 30px;
-    background-color: #DBE6F3;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    background-color: #e3ebf5;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease-in-out;
   }
   
   .notfound-container:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
+  }
+  
+  .notfound-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
   }
   
   .notfound-title {
-    color: #0F2B31;
+    font-size: 6rem;
+    font-weight: 700;
+    color: #56A4AC;
+    margin: 0;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notfound-subtitle {
     font-size: 2rem;
-    margin-bottom: 10px;
+    color: #0F2B31;
+    margin: 0;
+    font-weight: 600;
   }
   
   .notfound-text {
+    font-size: 1.2rem;
     color: #0F2B31;
-    font-size: 1rem;
-    margin-bottom: 15px;
+    margin: 0;
+    line-height: 1.5;
   }
-
-  .back-button {
-    padding: 10px 15px;
+  
+  .notfound-suggestion {
+    font-size: 1.1rem;
+    color: #0F2B31;
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .notfound-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .notfound-options li {
     font-size: 1rem;
-    background-color: #56A4AC;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    color: #0F2B31;
+    padding: 0.5rem 1rem;
+    background-color: rgba(86, 164, 172, 0.1);
+    border-radius: 8px;
     transition: all 0.3s ease;
   }
   
-  .back-button:hover {
-    background-color: #0F2B31;
+  .notfound-options li:hover {
+    background-color: rgba(86, 164, 172, 0.2);
+    transform: translateX(5px);
   }
   
-  .back-button:active {
+  .notfound-button-container {
+    margin-top: 1rem;
+  }
+  
+  .notfound-button-container .notfound-back-button {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    background-color: #56A4AC;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notfound-button-container .notfound-back-button:hover {
+    background-color: #0F2B31;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .notfound-button-container .notfound-back-button:active {
     transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    .notfound-container {
+        margin: 50px auto;
+        padding: 30px 20px;
+    }
+
+    .notfound-title {
+        font-size: 4rem;
+    }
+
+    .notfound-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .notfound-text {
+        font-size: 1rem;
+    }
+
+    .notfound-suggestion {
+        font-size: 1rem;
+    }
+
+    .notfound-options li {
+        font-size: 0.9rem;
+    }
   }
   
