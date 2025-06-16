@@ -3,7 +3,7 @@
     max-width: 1200px;
     margin: 3rem auto;
     padding: 2rem;
-    background-color: #e7edf1;
+    background: linear-gradient(145deg, #e3ebf5, #ffffff);
     border-radius: 1rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
