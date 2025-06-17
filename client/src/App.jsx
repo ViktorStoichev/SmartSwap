@@ -18,12 +18,14 @@ import UserGuard from './guards/UserGuard';
 import GuestGuard from './guards/GuestGuard';
 import ChatList from './components/chat/ChatList';
 import Chat from './components/chat/Chat';
+import ScrollToTop from './utils/ScrollToTop';
 
 function App() {
 
     return (
         <AuthProvider>
             <Router>
+                <ScrollToTop />
                 <Header />
 
                 <main>
