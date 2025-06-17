@@ -5,7 +5,7 @@ import { usePhones } from '../../../hook-api/UsePhones';
 import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
 
 export default function Home() {
-    const { filteredProducts } = usePhones();
+    const { filteredProducts, isLoading } = usePhones();
 
     const getRandomProducts = (array, num) => {
         const shuffled = [...array].sort(() => 0.5 - Math.random());
@@ -40,8 +40,13 @@ export default function Home() {
             <h2>Latest Listings</h2>
 
             <div className="products-grid">
-                {lastThreeProducts.length > 0 ?
-                    lastThreeProducts.map((item) => <PhoneTemplate phone={item} key={item._id} />) : <Loader />}
+                {isLoading ? (
+                    <Loader />
+                ) : lastThreeProducts.length > 0 ? (
+                    lastThreeProducts.map((item) => <PhoneTemplate phone={item} key={item._id} />)
+                ) : (
+                    <p>No products available</p>
+                )}
             </div>
 
             <div style={{ textAlign: 'center' }}>

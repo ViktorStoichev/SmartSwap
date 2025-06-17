@@ -6,6 +6,7 @@ import { chatReducer, initialChatState } from './MessageReducer';
 import { getUserData } from '../../services/getUserProfile';
 import { getChatMessages } from '../../services/getChatMessages';
 import { sendChatMessage } from '../../services/sendChatMessage';
+import Loader from '../main/loader/Loader';
 
 const Chat = () => {
     const { user } = useAuth();
@@ -186,72 +187,78 @@ const Chat = () => {
 
     return (
         <div className="chat-container">
-            {state.partner && (
-                <div className="chat-header">
-                    <div className="chat-header-left">
-                        <button className="chat-back-button" onClick={() => navigate('/chat-list')}>
-                            ←
-                        </button>
-                        <img 
-                            src={state.partner.avatarUrl || '/default-avatar.png'} 
-                            alt="Avatar" 
-                            className="avatar" 
-                        />
-                        <div className="partner-info">
-                            <h2>{state.partner.username}</h2>
-                            <span className={`status ${isOnline ? 'online' : 'offline'}`}>
-                                {isOnline ? 'Online' : 'Offline'}
-                            </span>
+            {isLoading ? (
+                <Loader />
+            ) : (
+                <>
+                    {state.partner && (
+                        <div className="chat-header">
+                            <div className="chat-header-left">
+                                <button className="chat-back-button" onClick={() => navigate('/chat-list')}>
+                                    ←
+                                </button>
+                                <img 
+                                    src={state.partner.avatarUrl || '/default-avatar.png'} 
+                                    alt="Avatar" 
+                                    className="avatar" 
+                                />
+                                <div className="partner-info">
+                                    <h2>{state.partner.username}</h2>
+                                    <span className={`status ${isOnline ? 'online' : 'offline'}`}>
+                                        {isOnline ? 'Online' : 'Offline'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="chat-header-right">
+                                <button className="action-button">
+                                    <i className="fas fa-phone"></i>
+                                </button>
+                                <button className="action-button">
+                                    <i className="fas fa-video"></i>
+                                </button>
+                                <button className="action-button">
+                                    <i className="fas fa-ellipsis-v"></i>
+                                </button>
+                            </div>
                         </div>
+                    )}
+                    <div className="messages">
+                        {isLoading ? (
+                            <div className="loading-messages">
+                                <div className="loading-spinner"></div>
+                                <p>Loading messages...</p>
+                            </div>
+                        ) : renderedMessages.length === 0 ? (
+                            <div className="empty-messages">
+                                <i className="fas fa-comments"></i>
+                                <p>No messages yet</p>
+                                <p className="empty-messages-subtitle">
+                                    Start the conversation by sending a message
+                                </p>
+                            </div>
+                        ) : (
+                            renderedMessages
+                        )}
+                        <div ref={messagesEndRef}></div>
                     </div>
-                    <div className="chat-header-right">
-                        <button className="action-button">
-                            <i className="fas fa-phone"></i>
-                        </button>
-                        <button className="action-button">
-                            <i className="fas fa-video"></i>
-                        </button>
-                        <button className="action-button">
-                            <i className="fas fa-ellipsis-v"></i>
+                    <div className="send-message">
+                        <textarea
+                            value={state.newMessage}
+                            onChange={(e) => dispatch({ type: 'SET_NEW_MESSAGE', payload: e.target.value })}
+                            onKeyPress={handleKeyPress}
+                            placeholder="Type a message..."
+                            rows={1}
+                        />
+                        <button 
+                            onClick={handleSendMessage}
+                            disabled={!state.newMessage.trim()}
+                            className={!state.newMessage.trim() ? 'disabled' : ''}
+                        >
+                            <i className="fas fa-paper-plane"></i>
                         </button>
                     </div>
-                </div>
+                </>
             )}
-            <div className="messages">
-                {isLoading ? (
-                    <div className="loading-messages">
-                        <div className="loading-spinner"></div>
-                        <p>Loading messages...</p>
-                    </div>
-                ) : renderedMessages.length === 0 ? (
-                    <div className="empty-messages">
-                        <i className="fas fa-comments"></i>
-                        <p>No messages yet</p>
-                        <p className="empty-messages-subtitle">
-                            Start the conversation by sending a message
-                        </p>
-                    </div>
-                ) : (
-                    renderedMessages
-                )}
-                <div ref={messagesEndRef}></div>
-            </div>
-            <div className="send-message">
-                <textarea
-                    value={state.newMessage}
-                    onChange={(e) => dispatch({ type: 'SET_NEW_MESSAGE', payload: e.target.value })}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Type a message..."
-                    rows={1}
-                />
-                <button 
-                    onClick={handleSendMessage}
-                    disabled={!state.newMessage.trim()}
-                    className={!state.newMessage.trim() ? 'disabled' : ''}
-                >
-                    <i className="fas fa-paper-plane"></i>
-                </button>
-            </div>
         </div>
     );
 };

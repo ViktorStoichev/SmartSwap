@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import { getUserData } from '../../services/getUserProfile';
+import Loader from '../main/loader/Loader';
 import './ChatList.css';
 
 const ChatList = () => {
@@ -174,10 +175,7 @@ const ChatList = () => {
             </div>
             <div className="chat-list-content">
                 {loading ? (
-                    <div className="chat-list-loading">
-                        <div className="loading-spinner"></div>
-                        <p>Loading chats...</p>
-                    </div>
+                    <Loader />
                 ) : filteredChats.length === 0 ? (
                     <div className="chat-list-empty">
                         {searchTerm ? (

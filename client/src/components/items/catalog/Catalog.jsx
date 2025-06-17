@@ -10,7 +10,8 @@ export default function Catalog() {
         brands, 
         colors,
         memories,
-        handleFilter 
+        handleFilter,
+        isLoading
     } = usePhones();
     
     const [selectedBrand, setSelectedBrand] = useState("");
@@ -198,10 +199,21 @@ export default function Catalog() {
 
                 <div className="products-section">
                     <div className="products-grid">
-                        {currentPhones.length > 0 ?
-                            currentPhones.map((item) => <PhoneTemplate phone={item} key={item._id} />) : <Loader />}
+                        {isLoading ? (
+                            <Loader />
+                        ) : currentPhones.length > 0 ? (
+                            currentPhones.map((phone) => (
+                                <PhoneTemplate key={phone._id} phone={phone} />
+                            ))
+                        ) : (
+                            <div className="no-products">
+                                <i className="fa-solid fa-mobile-screen"></i>
+                                <h3>No Products Found</h3>
+                                <p>Try adjusting your filters to see more results</p>
+                            </div>
+                        )}
                     </div>
-                    {filteredProducts.length > phonesPerPage && renderPagination()}
+                    {!isLoading && totalPages > 1 && renderPagination()}
                 </div>
             </div>
         </div>

@@ -6,8 +6,11 @@ export default function UserGuard() {
     const { user, isLoading } = useAuth();
 
     if (isLoading) { 
-        <Loader />
-        return null;
+        return (
+            <div style={{ position: 'relative', minHeight: '100vh', width: '100%' }}>
+                <Loader />
+            </div>
+        );
     }
 
     if (!user) {

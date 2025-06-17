@@ -3,11 +3,16 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { usePhones } from "../../../hook-api/UsePhones";
 import PhoneTemplate from "../phone-template/PhoneTemplate";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../main/loader/Loader";
 
 export default function LikedPhones() {
     const { user } = useAuth();
-    const { likedPhones } = usePhones(user);
+    const { likedPhones, isLoading } = usePhones(user);
     const navigate = useNavigate();
+
+    if (isLoading) {
+        return <Loader />;
+    }
 
     return (
         <div className="liked-phones-container">

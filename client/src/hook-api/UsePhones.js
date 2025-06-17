@@ -10,6 +10,7 @@ export const usePhones = (user = {}) => {
     const [brands, setBrands] = useState([]);
     const [colors, setColors] = useState([]);
     const [memories, setMemories] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [activeFilters, setActiveFilters] = useState({
         brand: "",
         color: "",
@@ -23,6 +24,7 @@ export const usePhones = (user = {}) => {
 
         const fetchProducts = async () => {
             try {
+                setIsLoading(true);
                 const phones = await getAllPhones();
 
                 if (isMounted) {
@@ -45,6 +47,10 @@ export const usePhones = (user = {}) => {
                 }
             } catch (error) {
                 console.error("Error fetching products:", error);
+            } finally {
+                if (isMounted) {
+                    setIsLoading(false);
+                }
             }
         };
 
@@ -116,6 +122,7 @@ export const usePhones = (user = {}) => {
         brands,
         colors,
         memories,
-        handleFilter
+        handleFilter,
+        isLoading
     };
 }
