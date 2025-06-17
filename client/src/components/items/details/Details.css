@@ -377,6 +377,58 @@
     font-size: 1.1rem;
 }
 
+.pending-banner {
+    background: #fff3cd;
+    color: #856404;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.pending-banner i {
+    font-size: 1.2rem;
+}
+
+.details-product-admin-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.details-product-approve-btn,
+.details-product-reject-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.details-product-approve-btn {
+    background: #28a745;
+    color: white;
+}
+
+.details-product-reject-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.details-product-approve-btn:hover,
+.details-product-reject-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 @media (max-width: 768px) {
     .details-product-main {
         flex-direction: column;

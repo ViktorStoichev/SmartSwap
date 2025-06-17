@@ -1,19 +1,47 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
 import Loader from "../../main/loader/Loader";
 import { usePhone } from "../../../hook-api/UsePhone";
 import { useState } from "react";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
+import { approvePhone, rejectPhone } from "../../../services/phoneService";
 
 export default function Details() {
     const { user } = useAuth();
     const { product, comment, setComment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
     if (!product) return <Loader />;
 
     const isOwner = user && product.ownerId === user.uid;
+    const isAdmin = user && user.admin;
+    const canView = isOwner || isAdmin || !product.pending;
+
+    // If not owner or admin and phone is pending, redirect to catalog
+    if (!canView) {
+        navigate('/phones');
+        return null;
+    }
+
+    const handleApprove = async () => {
+        try {
+            await approvePhone(product._id);
+            navigate('/phones');
+        } catch (error) {
+            console.error('Error approving phone:', error);
+        }
+    };
+
+    const handleReject = async () => {
+        try {
+            await rejectPhone(product._id);
+            navigate('/phones');
+        } catch (error) {
+            console.error('Error rejecting phone:', error);
+        }
+    };
 
     return (
         <>
@@ -25,6 +53,12 @@ export default function Details() {
                 message={"Are you sure you want to delete this phone?"}
             />
             <div className="details-product-container">
+                {product.pending && (
+                    <div className="pending-banner">
+                        <i className="fa-solid fa-clock"></i>
+                        <span>This listing is pending approval</span>
+                    </div>
+                )}
                 <div className="details-product-main">
                     <div className="details-product-image-container">
                         <img src={product.imageUrl} alt={`${product.brand} ${product.model}`} className="details-product-image" />
@@ -78,6 +112,19 @@ export default function Details() {
                                 </button>
                             </div>
                         )}
+
+                        {isAdmin && product.pending && (
+                            <div className="details-product-admin-actions">
+                                <button onClick={handleApprove} className="details-product-approve-btn">
+                                    <i className="fa-solid fa-check"></i>
+                                    Approve
+                                </button>
+                                <button onClick={handleReject} className="details-product-reject-btn">
+                                    <i className="fa-solid fa-xmark"></i>
+                                    Reject
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -93,7 +140,7 @@ export default function Details() {
                             </Link>
                         </div>
 
-                        {user && (
+                        {user && !product.pending && (
                             <div className="details-product-interaction-buttons">
                                 <button onClick={handleLike} className={`details-product-like-button ${product.likes.includes(user?.uid) ? "liked" : ""}`}>
                                     {product.likes.includes(user?.uid) ? <i className="fa-solid fa-heart-crack"></i> : <i className="fa-solid fa-heart"></i>}
@@ -115,7 +162,7 @@ export default function Details() {
                             </div>
                         )}
 
-                        {user && (
+                        {user && !product.pending && (
                             <div className="details-product-comment-form">
                                 <h3>Ask a question about this product</h3>
                                 <textarea 
@@ -130,30 +177,32 @@ export default function Details() {
                             </div>
                         )}
 
-                        <div className="details-product-comments-list">
-                            <h3>Questions & Answers</h3>
-                            {product.comments?.length > 0 ? (
-                                product.comments.map((c, index) => (
-                                    <div key={index} className="details-product-comment">
-                                        <div className="details-product-comment-header">
-                                            <Link to={`/profile/${c.userId}`} className="details-product-comment-user">
-                                                <img src={c.avatarUrl} alt={c.username} className="details-product-comment-avatar" />
-                                                <div className="details-product-comment-user-info">
-                                                    <span className="details-product-comment-username">{c.username}</span>
-                                                    <span className="details-product-comment-date">{new Date(c.date).toLocaleDateString()}</span>
-                                                </div>
-                                            </Link>
+                        {!product.pending && (
+                            <div className="details-product-comments-list">
+                                <h3>Questions & Answers</h3>
+                                {product.comments?.length > 0 ? (
+                                    product.comments.map((c, index) => (
+                                        <div key={index} className="details-product-comment">
+                                            <div className="details-product-comment-header">
+                                                <Link to={`/profile/${c.userId}`} className="details-product-comment-user">
+                                                    <img src={c.avatarUrl} alt={c.username} className="details-product-comment-avatar" />
+                                                    <div className="details-product-comment-user-info">
+                                                        <span className="details-product-comment-username">{c.username}</span>
+                                                        <span className="details-product-comment-date">{new Date(c.date).toLocaleDateString()}</span>
+                                                    </div>
+                                                </Link>
+                                            </div>
+                                            <p className="details-product-comment-text">{c.text}</p>
                                         </div>
-                                        <p className="details-product-comment-text">{c.text}</p>
+                                    ))
+                                ) : (
+                                    <div className="details-product-no-comments">
+                                        <i className="fa-solid fa-comments"></i>
+                                        <p>No questions yet. Be the first to ask!</p>
                                     </div>
-                                ))
-                            ) : (
-                                <div className="details-product-no-comments">
-                                    <i className="fa-solid fa-comments"></i>
-                                    <p>No questions yet. Be the first to ask!</p>
-                                </div>
-                            )}
-                        </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

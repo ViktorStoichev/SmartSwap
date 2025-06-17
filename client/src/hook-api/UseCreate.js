@@ -16,6 +16,7 @@ export const useCreate = () => {
         itemData.ownerId = user.uid;
         itemData.username = user.username;
         itemData.avatarUrl = user.avatarUrl;
+        itemData.pending = true;
         // Ensure model and brand are present
         if (!itemData.model || !itemData.brand || !itemData.quality) {
             throw new Error("Model, brand, and quality are required fields");

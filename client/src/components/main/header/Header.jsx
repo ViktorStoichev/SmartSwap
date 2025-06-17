@@ -47,6 +47,9 @@ export default function Header() {
                             <li><NavLink to="/chat-list" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-comments"></i></NavLink></li>
                             <li><NavLink to="/phones/liked" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-heart"></i></NavLink></li>
                             <li><NavLink to={`/profile/${user.uid}`} className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-user"></i></NavLink></li>
+                            {user.admin && (
+                                <li><NavLink to="/admin" className={({ isActive }) => isActive ? "active-link" : ""}><i className="fa-solid fa-shield-halved"></i></NavLink></li>
+                            )}
                             <li><NavLink to="#" onClick={handleLogout}><i className="fa-solid fa-right-from-bracket"></i></NavLink></li>
                         </>
                         :

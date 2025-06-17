@@ -26,23 +26,25 @@ export const usePhones = (user = {}) => {
             try {
                 setIsLoading(true);
                 const phones = await getAllPhones();
+                // Filter out pending phones
+                const approvedPhones = phones.filter(phone => !phone.pending);
 
                 if (isMounted) {
-                    setProducts(phones);
-                    setFilteredProducts(phones);
-                    const filter = phones.filter((item) => item.likes.includes(user.uid));
+                    setProducts(approvedPhones);
+                    setFilteredProducts(approvedPhones);
+                    const filter = approvedPhones.filter((item) => item.likes.includes(user.uid));
                     setLikedPhones(filter);
                     
                     // Extract unique brands from phones
-                    const uniqueBrands = [...new Set(phones.map(phone => phone.brand))].filter(Boolean);
+                    const uniqueBrands = [...new Set(approvedPhones.map(phone => phone.brand))].filter(Boolean);
                     setBrands(uniqueBrands);
 
                     // Extract unique colors
-                    const uniqueColors = [...new Set(phones.map(phone => phone.color))].filter(Boolean);
+                    const uniqueColors = [...new Set(approvedPhones.map(phone => phone.color))].filter(Boolean);
                     setColors(uniqueColors);
 
                     // Extract unique memory options
-                    const uniqueMemories = [...new Set(phones.map(phone => phone.memory))].filter(Boolean);
+                    const uniqueMemories = [...new Set(approvedPhones.map(phone => phone.memory))].filter(Boolean);
                     setMemories(uniqueMemories);
                 }
             } catch (error) {

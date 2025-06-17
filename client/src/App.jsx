@@ -19,6 +19,8 @@ import GuestGuard from './guards/GuestGuard';
 import ChatList from './components/chat/ChatList';
 import Chat from './components/chat/Chat';
 import ScrollToTop from './utils/ScrollToTop';
+import AdminGuard from './guards/AdminGuard';
+import Admin from './components/auth/admin/Admin';
 
 function App() {
 
@@ -38,6 +40,9 @@ function App() {
                             <Route path="/phones/:id/edit" element={<EditPhone />} />
                             <Route path="/chat-list" element={<ChatList />} />
                             <Route path="/chat/:partnerId" element={<Chat />} />
+                            <Route element={<AdminGuard />}>
+                                <Route path="/admin" element={<Admin />} />
+                            </Route>
                         </Route>
                         <Route element={<GuestGuard />}>
                             <Route path="/login" element={<Login />} />

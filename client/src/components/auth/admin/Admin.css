@@ -1,0 +1,77 @@
+.admin-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    background-color: #e7edf1;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    background: #fff3cd;
+    padding: 2rem;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.admin-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #856404;
+    margin-bottom: 0.5rem;
+}
+
+.admin-subtitle {
+    color: #856404;
+    font-size: 1.1rem;
+}
+
+.admin-phones-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.no-pending {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 0.8rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.no-pending i {
+    font-size: 3rem;
+    color: #56A4AC;
+    margin-bottom: 1rem;
+}
+
+.no-pending h3 {
+    color: #0F2B31;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.no-pending p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .admin-container {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .admin-title {
+        font-size: 2rem;
+    }
+
+    .admin-phones-grid {
+        grid-template-columns: 1fr;
+    }
+} 

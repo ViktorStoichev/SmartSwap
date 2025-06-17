@@ -10,6 +10,8 @@ const Profile = () => {
     const { id } = useParams();
     const [user, setUser] = useState(null);
     const [userPosts, setUserPosts] = useState([]);
+    const [pendingPosts, setPendingPosts] = useState([]);
+    const [approvedPosts, setApprovedPosts] = useState([]);
 
     useEffect(() => {
         let isMounted = true;
@@ -21,7 +23,11 @@ const Profile = () => {
 
         const fetchUserPosts = async () => {     
             const posts = await getUserPhones(id);
-            if (isMounted) setUserPosts(posts);
+            if (isMounted) {
+                setUserPosts(posts);
+                setPendingPosts(posts.filter(post => post.pending));
+                setApprovedPosts(posts.filter(post => !post.pending));
+            }
         };
 
         if (id) {
@@ -62,27 +68,46 @@ const Profile = () => {
                 </div>
             </div>
 
+            {pendingPosts.length > 0 && (
+                <div className="user-posts pending-posts">
+                    <div className="posts-header">
+                        <h3 className="posts-title">Pending Listings</h3>
+                        <p className="posts-subtitle">
+                            {pendingPosts.length} phone{pendingPosts.length === 1 ? '' : 's'} waiting for approval
+                        </p>
+                    </div>
+                    <div className="posts-grid">
+                        {pendingPosts.map(post => (
+                            <div key={post.id} className="phone-card pending">
+                                <PhoneTemplate phone={post} />
+                                <div className="pending-badge">Pending Approval</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <div className="user-posts">
                 <div className="posts-header">
-                    <h3 className="posts-title">{user.username}'s Listings</h3>
+                    <h3 className="posts-title">Approved Listings</h3>
                     <p className="posts-subtitle">
-                        {userPosts.length > 0 
-                            ? `Currently has ${userPosts.length} phone${userPosts.length === 1 ? '' : 's'} listed`
-                            : "No phones listed yet"}
+                        {approvedPosts.length > 0 
+                            ? `${approvedPosts.length} approved phone${approvedPosts.length === 1 ? '' : 's'}`
+                            : "No approved phones yet"}
                     </p>
                 </div>
 
-                {userPosts.length > 0 ? (
+                {approvedPosts.length > 0 ? (
                     <div className="posts-grid">
-                        {userPosts.map(post => (
+                        {approvedPosts.map(post => (
                             <PhoneTemplate key={post.id} phone={post} />
                         ))}
                     </div>
                 ) : (
                     <div className="no-posts">
                         <i className="fa-solid fa-mobile-screen"></i>
-                        <h3>No Listings Yet</h3>
-                        <p>This user hasn't listed any phones for sale yet.</p>
+                        <h3>No Approved Listings</h3>
+                        <p>This user hasn't had any phone listings approved yet.</p>
                     </div>
                 )}
             </div>

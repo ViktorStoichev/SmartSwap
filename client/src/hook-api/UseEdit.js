@@ -65,7 +65,11 @@ export const useEdit = () => {
 
     const handleEditSubmit = async () => {
         try {
-            await editPhone(id, editedProduct);
+            const updatedProduct = {
+                ...editedProduct,
+                pending: true
+            };
+            await editPhone(id, updatedProduct);
             navigate(`/phones/${id}`);
         } catch (error) {
             console.error('Error editing phone:', error);

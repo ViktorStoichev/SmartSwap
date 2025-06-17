@@ -6,15 +6,21 @@ import formatDate from "../utils/formatDate";
 export const editPhone = async (phoneId, editedProduct) => {
     const productRef = doc(db, "items", phoneId);
     
-    return await updateDoc(productRef, {
-        model: editedProduct.model,
-        brand: editedProduct.brand,
-        quality: editedProduct.quality,
-        description: editedProduct.description,
-        price: editedProduct.price,
-        imageUrl: editedProduct.imageUrl,
-        color: editedProduct.color,
-        memory: editedProduct.memory,
+    const updateData = {
+        ...editedProduct,
         updatedAt: formatDate(new Date()),
-    });
+    };
+
+    // Only include these fields if they exist in editedProduct
+    if (editedProduct.model) updateData.model = editedProduct.model;
+    if (editedProduct.brand) updateData.brand = editedProduct.brand;
+    if (editedProduct.quality) updateData.quality = editedProduct.quality;
+    if (editedProduct.description) updateData.description = editedProduct.description;
+    if (editedProduct.price) updateData.price = editedProduct.price;
+    if (editedProduct.imageUrl) updateData.imageUrl = editedProduct.imageUrl;
+    if (editedProduct.color) updateData.color = editedProduct.color;
+    if (editedProduct.memory) updateData.memory = editedProduct.memory;
+    if (editedProduct.pending !== undefined) updateData.pending = editedProduct.pending;
+    
+    return await updateDoc(productRef, updateData);
 };
