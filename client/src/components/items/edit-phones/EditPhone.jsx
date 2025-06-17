@@ -4,6 +4,7 @@ import "./EditPhone.css";
 import { useErrorHandler } from "../../../errors/handleError";
 import { useState } from "react";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
+import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
 
 export default function EditPhone() {
     const { id } = useParams();
@@ -11,6 +12,16 @@ export default function EditPhone() {
     const { errors, visibleErrors, handlePhoneDataError } = useErrorHandler();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+
+    const handleInputChange = (e) => {
+        const { value, name } = e.target;
+        if (checkProfanity(value)) {
+            showProfanityAlert();
+            e.target.value = '';
+            return;
+        }
+        handleEditChange(e);
+    };
 
     const onFormSubmit = (e) => {
         e.preventDefault();
@@ -32,7 +43,7 @@ export default function EditPhone() {
                 <form onSubmit={onFormSubmit} className="edit-product-form">
                     <div className="input-group">
                         <label>Brand:</label>
-                        <select name="brand" value={editedProduct.brand} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                        <select name="brand" value={editedProduct.brand} onChange={handleInputChange} required onBlur={handlePhoneDataError}>
                             <option value="">Select Brand</option>
                             <option value="Apple">Apple</option>
                             <option value="Samsung">Samsung</option>
@@ -48,13 +59,13 @@ export default function EditPhone() {
 
                     <div className="input-group">
                         <label>Model:</label>
-                        <input type="text" name="model" value={editedProduct.model} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
+                        <input type="text" name="model" value={editedProduct.model} onChange={handleInputChange} required onBlur={handlePhoneDataError} />
                         {errors.model && <span className={`error-text ${visibleErrors.model ? "show" : ""}`}>{errors.model}</span>}
                     </div>
 
                     <div className="input-group">
                         <label>Color:</label>
-                        <select name="color" value={editedProduct.color} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                        <select name="color" value={editedProduct.color} onChange={handleInputChange} required onBlur={handlePhoneDataError}>
                             <option value="">Select Color</option>
                             <option value="Black">Black</option>
                             <option value="White">White</option>
@@ -71,7 +82,7 @@ export default function EditPhone() {
 
                     <div className="input-group">
                         <label>Memory:</label>
-                        <select name="memory" value={editedProduct.memory} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                        <select name="memory" value={editedProduct.memory} onChange={handleInputChange} required onBlur={handlePhoneDataError}>
                             <option value="">Select Memory</option>
                             <option value="64GB">64GB</option>
                             <option value="128GB">128GB</option>
@@ -84,7 +95,7 @@ export default function EditPhone() {
 
                     <div className="input-group">
                         <label>Quality:</label>
-                        <select name="quality" value={editedProduct.quality} onChange={handleEditChange} required onBlur={handlePhoneDataError}>
+                        <select name="quality" value={editedProduct.quality} onChange={handleInputChange} required onBlur={handlePhoneDataError}>
                             <option value="">Select Quality</option>
                             <option value="Used - Like New">Used - Like New</option>
                             <option value="Used - Good">Used - Good</option>
@@ -96,19 +107,19 @@ export default function EditPhone() {
 
                     <div className="input-group">
                         <label>Image URL:</label>
-                        <input type="text" name="imageUrl" value={editedProduct.imageUrl} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
+                        <input type="text" name="imageUrl" value={editedProduct.imageUrl} onChange={handleInputChange} required onBlur={handlePhoneDataError} />
                         {errors.imageUrl && <span className={`error-text ${visibleErrors.imageUrl ? "show" : ""}`}>{errors.imageUrl}</span>}
                     </div>
 
                     <div className="input-group">
                         <label>Price:</label>
-                        <input type="number" name="price" value={editedProduct.price} onChange={handleEditChange} required onBlur={handlePhoneDataError} />
+                        <input type="number" name="price" value={editedProduct.price} onChange={handleInputChange} required onBlur={handlePhoneDataError} />
                         {errors.price && <span className={`error-text ${visibleErrors.price ? "show" : ""}`}>{errors.price}</span>}
                     </div>
 
                     <div className="input-group">
                         <label>Description:</label>
-                        <textarea name="description" value={editedProduct.description} onChange={handleEditChange} required onBlur={handlePhoneDataError}></textarea>
+                        <textarea name="description" value={editedProduct.description} onChange={handleInputChange} required onBlur={handlePhoneDataError}></textarea>
                         {errors.description && <span className={`error-text ${visibleErrors.description ? "show" : ""}`}>{errors.description}</span>}
                     </div>
 

@@ -6,6 +6,7 @@ import { db } from "../../../../server/firebase";
 import "./Register.css";
 import { useRegister } from "../../../hook-api/UseRegister";
 import { useErrorHandler } from "../../../errors/handleError";
+import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
 
 const registerAction = async (prevState, formData) => {
     const { email, password, repeatPassword, username, address, avatarUrl } = Object.fromEntries(formData);
@@ -28,6 +29,14 @@ const Register = () => {
     const [state, dispatch] = useActionState(registerAction, { error: null, success: false });
     const { errors, visibleErrors, handleRegisterError } = useErrorHandler();
     const [termsAgreed, setTermsAgreed] = useState(false);
+
+    const handleInputChange = (e) => {
+        const { value, name } = e.target;
+        if (checkProfanity(value)) {
+            showProfanityAlert();
+            e.target.value = '';
+        }
+    };
 
     useEffect(() => {
         if (state.success) {
@@ -52,7 +61,8 @@ const Register = () => {
                         className="input-field" 
                         placeholder="Enter your email" 
                         required 
-                        onBlur={handleRegisterError} 
+                        onBlur={handleRegisterError}
+                        onChange={handleInputChange}
                     />
                     {errors.email && <span className={`error-text ${visibleErrors.email ? "show" : ""}`}>{errors.email}</span>}
                 </div>
@@ -66,7 +76,8 @@ const Register = () => {
                         className="input-field" 
                         placeholder="Choose a username" 
                         required 
-                        onBlur={handleRegisterError} 
+                        onBlur={handleRegisterError}
+                        onChange={handleInputChange}
                     />
                     {errors.username && <span className={`error-text ${visibleErrors.username ? "show" : ""}`}>{errors.username}</span>}
                 </div>
@@ -80,7 +91,8 @@ const Register = () => {
                         className="input-field" 
                         placeholder="Enter your address" 
                         required 
-                        onBlur={handleRegisterError} 
+                        onBlur={handleRegisterError}
+                        onChange={handleInputChange}
                     />
                     {errors.address && <span className={`error-text ${visibleErrors.address ? "show" : ""}`}>{errors.address}</span>}
                 </div>
@@ -94,7 +106,8 @@ const Register = () => {
                         className="input-field" 
                         placeholder="Enter image URL for your profile" 
                         required 
-                        onBlur={handleRegisterError} 
+                        onBlur={handleRegisterError}
+                        onChange={handleInputChange}
                     />
                     {errors.avatarUrl && <span className={`error-text ${visibleErrors.avatarUrl ? "show" : ""}`}>{errors.avatarUrl}</span>}
                 </div>
@@ -108,7 +121,8 @@ const Register = () => {
                         className="input-field" 
                         placeholder="Create a strong password" 
                         required 
-                        onBlur={handleRegisterError} 
+                        onBlur={handleRegisterError}
+                        onChange={handleInputChange}
                     />
                     {errors.password && <span className={`error-text ${visibleErrors.password ? "show" : ""}`}>{errors.password}</span>}
                 </div>
@@ -122,7 +136,8 @@ const Register = () => {
                         className="input-field" 
                         placeholder="Repeat your password" 
                         required 
-                        onBlur={handleRegisterError} 
+                        onBlur={handleRegisterError}
+                        onChange={handleInputChange}
                     />
                     {errors.repeatPassword && <span className={`error-text ${visibleErrors.repeatPassword ? "show" : ""}`}>{errors.repeatPassword}</span>}
                 </div>
