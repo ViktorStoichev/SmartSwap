@@ -65,7 +65,7 @@ export const usePhone = () => {
     };
 
     const handleDelete = async () => {
-        await deletePhone(phoneId)
+        await deletePhone(phoneId, product.images === "string" ? JSON.parse(product.images) : product.images);
         navigate("/phones");
     };
 

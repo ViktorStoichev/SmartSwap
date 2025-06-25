@@ -2,9 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEdit } from "../../../hook-api/UseEdit";
 import "./EditPhone.css";
 import { useErrorHandler } from "../../../errors/handleError";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
 import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
+import { uploadImage, deleteImage } from "../../../services/photoService";
 
 export default function EditPhone() {
     const { id } = useParams();
@@ -12,6 +13,19 @@ export default function EditPhone() {
     const { errors, visibleErrors, handlePhoneDataError } = useErrorHandler();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const [images, setImages] = useState([]); // Start empty, will be set in useEffect
+    const [pendingImages, setPendingImages] = useState([]); // NEW: holds File objects
+    const [uploading, setUploading] = useState(false);
+    const [uploadError, setUploadError] = useState("");
+    const [originalImages, setOriginalImages] = useState([]);
+    const [formData, setFormData] = useState(null);
+
+    useEffect(() => {
+        if (editedProduct.images && Array.isArray(editedProduct.images)) {
+            setOriginalImages(editedProduct.images);
+            setImages(editedProduct.images); // Set current images for display
+        }
+    }, [editedProduct.images]);
 
     const handleInputChange = (e) => {
         const { value, name } = e.target;
@@ -23,17 +37,74 @@ export default function EditPhone() {
         handleEditChange(e);
     };
 
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length + images.length + pendingImages.length > 7) {
+            setUploadError("You can upload up to 7 images.");
+            return;
+        }
+        setUploadError("");
+        setPendingImages((prev) => [...prev, ...files].slice(0, 7 - images.length));
+    };
+
+    const handleRemoveImage = async (idx, isPending = false) => {
+        if (isPending) {
+            setPendingImages((prev) => prev.filter((_, i) => i !== idx));
+        } else {
+            setImages((prev) => prev.filter((_, i) => i !== idx));
+        }
+    };
+
     const onFormSubmit = (e) => {
         e.preventDefault();
+        const form = new FormData(e.target);
+        form.append("images", JSON.stringify(images));
+        setFormData(form);
         setIsModalOpen(true);
-    }
+    };
+
+    const handleConfirm = async () => {
+        if (!formData) return;
+        setUploading(true);
+        setUploadError("");
+        try {
+            // Upload all pending images
+            const uploaded = [];
+            for (const file of pendingImages) {
+                const data = await uploadImage(file);
+                uploaded.push(data);
+            }
+            const allImages = [...images, ...uploaded];
+            formData.set("images", JSON.stringify(allImages));
+            await handleEditSubmit(allImages);
+            // Delete removed images from Cloudinary
+            const removedImages = originalImages.filter(
+                orig => !allImages.some(img => img.public_id === orig.public_id)
+            );
+            for (const img of removedImages) {
+                if (img.public_id) {
+                    try {
+                        await deleteImage(img.public_id);
+                    } catch {}
+                }
+            }
+            setImages(allImages); // update images state
+            setPendingImages([]); // clear pending
+            setOriginalImages(allImages); // update for next edit
+            setIsModalOpen(false);
+        } catch (err) {
+            setUploadError("Failed to upload image(s).");
+        } finally {
+            setUploading(false);
+        }
+    };
 
     return (
         <>
             <ConfirmModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                onConfirm={handleEditSubmit}
+                onConfirm={handleConfirm}
                 title={"Confirm Edit"}
                 message={"Are you sure you want to edit this phone?"}
             />
@@ -47,6 +118,7 @@ export default function EditPhone() {
                             <option value="">Select Brand</option>
                             <option value="Apple">Apple</option>
                             <option value="Samsung">Samsung</option>
+                            <option value="Motorola">Motorola</option>
                             <option value="Google">Google</option>
                             <option value="Xiaomi">Xiaomi</option>
                             <option value="OnePlus">OnePlus</option>
@@ -72,6 +144,7 @@ export default function EditPhone() {
                             <option value="Silver">Silver</option>
                             <option value="Gold">Gold</option>
                             <option value="Pink">Pink</option>
+                            <option value="Purple">Purple</option>
                             <option value="Blue">Blue</option>
                             <option value="Red">Red</option>
                             <option value="Green">Green</option>
@@ -106,9 +179,29 @@ export default function EditPhone() {
                     </div>
 
                     <div className="input-group">
-                        <label>Image URL:</label>
-                        <input type="text" name="imageUrl" value={editedProduct.imageUrl} onChange={handleInputChange} required onBlur={handlePhoneDataError} />
-                        {errors.imageUrl && <span className={`error-text ${visibleErrors.imageUrl ? "show" : ""}`}>{errors.imageUrl}</span>}
+                        <label>Images (up to 7):</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleImageChange}
+                            disabled={images.length >= 7 || uploading}
+                        />
+                        {uploadError && <span className="error-text show">{uploadError}</span>}
+                        <div className="image-preview-list">
+                            {images.map((img, idx) => (
+                                <div key={img.url} className="image-preview-item">
+                                    <img src={img.url} alt={`Preview ${idx + 1}`} style={{ width: 80, height: 80, objectFit: 'cover' }} />
+                                    <button type="button" onClick={() => handleRemoveImage(idx, false)} disabled={uploading}>Remove</button>
+                                </div>
+                            ))}
+                            {pendingImages.map((file, idx) => (
+                                <div key={file.name + idx} className="image-preview-item">
+                                    <img src={URL.createObjectURL(file)} alt={`Preview pending ${idx + 1}`} style={{ width: 80, height: 80, objectFit: 'cover' }} />
+                                    <button type="button" onClick={() => handleRemoveImage(idx, true)} disabled={uploading}>Remove</button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="input-group">

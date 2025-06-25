@@ -17,10 +17,10 @@ export const editPhone = async (phoneId, editedProduct) => {
     if (editedProduct.quality) updateData.quality = editedProduct.quality;
     if (editedProduct.description) updateData.description = editedProduct.description;
     if (editedProduct.price) updateData.price = editedProduct.price;
-    if (editedProduct.imageUrl) updateData.imageUrl = editedProduct.imageUrl;
     if (editedProduct.color) updateData.color = editedProduct.color;
     if (editedProduct.memory) updateData.memory = editedProduct.memory;
     if (editedProduct.pending !== undefined) updateData.pending = editedProduct.pending;
+    if (editedProduct.images) updateData.images = editedProduct.images;
     
     return await updateDoc(productRef, updateData);
 };

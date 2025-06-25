@@ -18,6 +18,6 @@ export const approvePhone = async (phoneId) => {
     return await editPhone(phoneId, { pending: false });
 };
 
-export const rejectPhone = async (phoneId) => {
-    return await deletePhone(phoneId);
+export const rejectPhone = async (phoneId, images) => {
+    return await deletePhone(phoneId, images);
 }; 

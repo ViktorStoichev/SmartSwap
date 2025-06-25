@@ -15,9 +15,9 @@ export const useEdit = () => {
         quality: "",
         description: "",
         price: "",
-        imageUrl: "",
         color: "",
         memory: "",
+        images: [],
     });
 
     useEffect(() => {
@@ -42,9 +42,9 @@ export const useEdit = () => {
                     quality: data.quality,
                     description: data.description,
                     price: data.price,
-                    imageUrl: data.imageUrl,
                     color: data.color,
                     memory: data.memory,
+                    images: data.images ? (Array.isArray(data.images) ? data.images : JSON.parse(data.images)) : [],
                 });
             }
         };
@@ -63,11 +63,12 @@ export const useEdit = () => {
         }));
     };
 
-    const handleEditSubmit = async () => {
+    const handleEditSubmit = async (imagesArg) => {
         try {
             const updatedProduct = {
                 ...editedProduct,
-                pending: true
+                pending: true,
+                images: imagesArg || editedProduct.images
             };
             await editPhone(id, updatedProduct);
             navigate(`/phones/${id}`);

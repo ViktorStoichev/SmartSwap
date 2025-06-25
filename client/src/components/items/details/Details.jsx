@@ -12,6 +12,7 @@ export default function Details() {
     const { product, comment, setComment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const [currentImage, setCurrentImage] = useState(0);
 
     if (!product) return <Loader />;
 
@@ -25,6 +26,22 @@ export default function Details() {
         return null;
     }
 
+    // Carousel logic
+    let parsedImages = [];
+    if (typeof product.images === "string") {
+        try {
+            parsedImages = JSON.parse(product.images);
+        } catch {
+            parsedImages = [];
+        }
+    } else if (Array.isArray(product.images)) {
+        parsedImages = product.images;
+    }
+    const images = parsedImages && Array.isArray(parsedImages) && parsedImages.length > 0 ? parsedImages : [{ url: null}];
+    const maxImages = Math.min(images.length, 7);
+    const handlePrev = () => setCurrentImage((prev) => (prev - 1 + maxImages) % maxImages);
+    const handleNext = () => setCurrentImage((prev) => (prev + 1) % maxImages);
+
     const handleApprove = async () => {
         try {
             await approvePhone(product._id);
@@ -36,7 +53,7 @@ export default function Details() {
 
     const handleReject = async () => {
         try {
-            await rejectPhone(product._id);
+            await rejectPhone(product._id, images);
             navigate('/phones');
         } catch (error) {
             console.error('Error rejecting phone:', error);
@@ -61,14 +78,21 @@ export default function Details() {
                 )}
                 <div className="details-product-main">
                     <div className="details-product-image-container">
-                        <img src={product.imageUrl} alt={`${product.brand} ${product.model}`} className="details-product-image" />
+                        <div className="carousel-wrapper">
+                            <button onClick={handlePrev} disabled={maxImages <= 1} className="carousel-arrow left">&#8592;</button>
+                            <img src={images[currentImage].url} alt={`${product.brand} ${product.model}`} className="details-product-image details-product-image-zoom" />
+                            <button onClick={handleNext} disabled={maxImages <= 1} className="carousel-arrow right">&#8594;</button>
+                        </div>
+                        <div className="carousel-indicator">
+                            {currentImage + 1} / {maxImages}
+                        </div>
                     </div>
                     <div className="details-product-info">
                         <div className="details-product-header">
                             <h2 className="details-product-title">{product.brand} {product.model}</h2>
                             <div className="details-product-price">${Number(product.price).toFixed(2)}</div>
                         </div>
-                        
+
                         <div className="details-product-specs">
                             <div className="details-product-spec-item">
                                 <i className="fa-solid fa-palette"></i>
@@ -165,10 +189,10 @@ export default function Details() {
                         {user && !product.pending && (
                             <div className="details-product-comment-form">
                                 <h3>Ask a question about this product</h3>
-                                <textarea 
-                                    value={comment} 
-                                    onChange={(e) => setComment(e.target.value)} 
-                                    placeholder="Write your question here..." 
+                                <textarea
+                                    value={comment}
+                                    onChange={(e) => setComment(e.target.value)}
+                                    placeholder="Write your question here..."
                                 />
                                 <button onClick={handleCommentSubmit}>
                                     <i className="fa-solid fa-paper-plane"></i>
