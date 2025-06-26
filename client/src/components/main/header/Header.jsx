@@ -11,8 +11,8 @@ export default function Header() {
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleLogout = async () => {
+        localStorage.setItem('redirectAfterLogout', 'true');
         await logout();
-        navigate('/');
     };
 
     const handleSearch = (e) => {

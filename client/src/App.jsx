@@ -21,44 +21,45 @@ import Chat from './components/chat/Chat';
 import ScrollToTop from './utils/ScrollToTop';
 import AdminGuard from './guards/AdminGuard';
 import Admin from './components/auth/admin/Admin';
+import AppGate from './utils/AppGate';
 
 function App() {
 
     return (
-        <AuthProvider>
-            <Router>
-                <ScrollToTop />
-                <Header />
-
-                <main>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route element={<UserGuard />}>
-                            <Route path="/profile/:id" element={<Profile />} />
-                            <Route path="/phones/sell" element={<SellPhone />} />
-                            <Route path="/phones/liked" element={<LikedPhones />} />
-                            <Route path="/phones/:id/edit" element={<EditPhone />} />
-                            <Route path="/chat-list" element={<ChatList />} />
-                            <Route path="/chat/:partnerId" element={<Chat />} />
-                            <Route element={<AdminGuard />}>
-                                <Route path="/admin" element={<Admin />} />
+        <Router>
+            <AppGate>
+                <AuthProvider>
+                    <ScrollToTop />
+                    <Header />
+                    <main>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route element={<UserGuard />}>
+                                <Route path="/profile/:id" element={<Profile />} />
+                                <Route path="/phones/sell" element={<SellPhone />} />
+                                <Route path="/phones/liked" element={<LikedPhones />} />
+                                <Route path="/phones/:id/edit" element={<EditPhone />} />
+                                <Route path="/chat-list" element={<ChatList />} />
+                                <Route path="/chat/:partnerId" element={<Chat />} />
+                                <Route element={<AdminGuard />}>
+                                    <Route path="/admin" element={<Admin />} />
+                                </Route>
                             </Route>
-                        </Route>
-                        <Route element={<GuestGuard />}>
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<Register />} />
-                        </Route>
-                        <Route path="/phones" element={<Catalog />} />
-                        <Route path="/phones/:id" element={<Details />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/404" element={<NotFoundPage />} />
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Routes>
-                </main>
-
-                <Footer />
-            </Router>
-        </AuthProvider>
+                            <Route element={<GuestGuard />}>
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/register" element={<Register />} />
+                            </Route>
+                            <Route path="/phones" element={<Catalog />} />
+                            <Route path="/phones/:id" element={<Details />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/404" element={<NotFoundPage />} />
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Routes>
+                    </main>
+                    <Footer />
+                </AuthProvider>
+            </AppGate>
+        </Router>
     )
 }
 
