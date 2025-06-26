@@ -4,7 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import './Chat.css';
 import { chatReducer, initialChatState } from './MessageReducer';
 import { getUserData } from '../../services/getUserProfile';
-import { getChatMessages } from '../../services/getChatMessages';
+import { listenToChatMessages } from '../../services/getChatMessages';
 import { sendChatMessage } from '../../services/sendChatMessage';
 import Loader from '../main/loader/Loader';
 
@@ -14,21 +14,8 @@ const Chat = () => {
     const navigate = useNavigate();
     const [state, dispatch] = useReducer(chatReducer, initialChatState);
     const messagesEndRef = useRef(null);
-    const [optimisticMessages, setOptimisticMessages] = useState([]);
     const [isOnline, setIsOnline] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
-    const fetchMessages = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            const messages = await getChatMessages(user.uid, partnerId);
-            dispatch({ type: 'SET_MESSAGES', payload: messages });
-        } catch (error) {
-            console.error('Error fetching messages:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [user.uid, partnerId]);
 
     const fetchPartnerData = useCallback(async () => {
         try {
@@ -41,11 +28,17 @@ const Chat = () => {
             navigate('/chats');
         }
     }, [partnerId, navigate]);
-
+    
     useEffect(() => {
-        fetchMessages();
         fetchPartnerData();
-    }, [fetchMessages, fetchPartnerData]);
+        setIsLoading(true);
+        const unsubscribe = listenToChatMessages(user.uid, partnerId, (messages) => {
+            dispatch({ type: 'SET_MESSAGES', payload: messages });
+            setIsLoading(false);
+        });
+    
+        return () => unsubscribe();
+    }, [user.uid, partnerId, fetchPartnerData]);
 
     useLayoutEffect(() => {
         if (messagesEndRef.current) {
@@ -54,7 +47,7 @@ const Chat = () => {
                 block: 'end'
             });
         }
-    }, [state.messages, optimisticMessages]);
+    }, [state.messages]);
 
     const handleSendMessage = async () => {
         if (!state.newMessage.trim()) return;
@@ -63,44 +56,26 @@ const Chat = () => {
             senderId: user.uid,
             receiverId: partnerId,
             message: state.newMessage,
-            timestamp: new Date(),
-            optimistic: true
+            timestamp: new Date()
         };
 
-        setOptimisticMessages((prev) => [...prev, newMsg]);
         dispatch({ type: 'SET_NEW_MESSAGE', payload: '' });
 
         try {
             await sendChatMessage(user, state.partner, partnerId, newMsg);
-            setOptimisticMessages((prev) => prev.filter((msg) => msg !== newMsg));
-            dispatch({ type: 'ADD_MESSAGE', payload: { ...newMsg, optimistic: false } });
         } catch (error) {
             console.error('Error sending message:', error);
-            setOptimisticMessages((prev) => prev.filter((msg) => msg !== newMsg));
-        }
-    };
-
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleSendMessage();
         }
     };
 
     const formatMessageTime = (timestamp) => {
         if (!timestamp) return '';
-        
-        // Handle Firestore Timestamp
         if (timestamp.toDate) {
             return timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
-        
-        // Handle regular Date object
         if (timestamp instanceof Date) {
             return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
-        
-        // Handle timestamp number or string
         try {
             const date = new Date(timestamp);
             if (!isNaN(date.getTime())) {
@@ -109,13 +84,11 @@ const Chat = () => {
         } catch (error) {
             console.error('Error formatting timestamp:', error);
         }
-        
         return '';
     };
 
     const formatMessageDate = (timestamp) => {
         if (!timestamp) return '';
-        
         let date;
         if (timestamp.toDate) {
             date = timestamp.toDate();
@@ -130,11 +103,9 @@ const Chat = () => {
                 return '';
             }
         }
-
         const today = new Date();
         const yesterday = new Date(today);
         yesterday.setDate(yesterday.getDate() - 1);
-
         if (date.toDateString() === today.toDateString()) {
             return 'Today';
         } else if (date.toDateString() === yesterday.toDateString()) {
@@ -150,7 +121,6 @@ const Chat = () => {
 
     const groupMessagesByDate = (messages) => {
         const groups = {};
-        
         messages.forEach(msg => {
             const date = formatMessageDate(msg.timestamp);
             if (!groups[date]) {
@@ -158,14 +128,11 @@ const Chat = () => {
             }
             groups[date].push(msg);
         });
-
         return groups;
     };
 
     const renderedMessages = useMemo(() => {
-        const allMessages = [...state.messages, ...optimisticMessages];
-        const groupedMessages = groupMessagesByDate(allMessages);
-
+        const groupedMessages = groupMessagesByDate(state.messages);
         return Object.entries(groupedMessages).map(([date, messages]) => (
             <div key={date} className="message-group">
                 <div className="date-header">
@@ -173,7 +140,7 @@ const Chat = () => {
                 </div>
                 <div className="messages-container">
                     {messages.map((msg, index) => (
-                        <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'} ${msg.optimistic ? 'pending' : ''}`}>
+                        <div key={index} className={`message ${msg.senderId === user.uid ? 'sent' : 'received'}`}>
                             <div className="message-content">
                                 <span className="message-text">{msg.message}</span>
                                 <span className="message-time">{formatMessageTime(msg.timestamp)}</span>
@@ -183,7 +150,7 @@ const Chat = () => {
                 </div>
             </div>
         ));
-    }, [state.messages, optimisticMessages, user.uid]);
+    }, [state.messages, user.uid]);
 
     return (
         <div className="chat-container">
@@ -245,7 +212,12 @@ const Chat = () => {
                         <textarea
                             value={state.newMessage}
                             onChange={(e) => dispatch({ type: 'SET_NEW_MESSAGE', payload: e.target.value })}
-                            onKeyPress={handleKeyPress}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    handleSendMessage();
+                                }
+                            }}
                             placeholder="Type a message..."
                             rows={1}
                         />

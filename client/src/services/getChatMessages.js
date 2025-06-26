@@ -1,10 +1,20 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../server/firebase";
 
-export const getChatMessages = async (userId, partnerId) => {
+export const listenToChatMessages = (userId, partnerId, onMessagesUpdate) => {
     const chatId = userId < partnerId ? userId + '_' + partnerId : partnerId + '_' + userId;
     const chatRef = doc(db, 'chats', chatId);
-    const chatDoc = await getDoc(chatRef);
-    
-    return chatDoc.exists() ? chatDoc.data().messages : [];
+
+    const unsubscribe = onSnapshot(chatRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+            const data = docSnapshot.data();
+            onMessagesUpdate(data.messages || []);
+        } else {
+            onMessagesUpdate([]); // No messages yet
+        }
+    }, (error) => {
+        console.error("Error listening to chat:", error);
+    });
+
+    return unsubscribe;
 };
