@@ -22,8 +22,13 @@ export const useErrorHandler = () => {
     };
 
     const handlePhoneDataError = (e) => {
-        const { name, value } = e.target;
-        const errorMessage = validators.phone(name, value);
+        const { name, value, files } = e.target;
+        let val = value;
+        if (name === "images") {
+            // If files exist, use their length, else use value
+            val = files ? files.length > 0 ? Array.from(files) : [] : value;
+        }
+        const errorMessage = validators.phone(name, val);
     
         setErrors((prev) => ({ ...prev, [name]: errorMessage }));
     
@@ -36,5 +41,17 @@ export const useErrorHandler = () => {
         }
     };
 
-    return { errors, visibleErrors, handleRegisterError, handlePhoneDataError };
+    const handleImagesError = (allImages) => {
+        const errorMessage = validators.phone("images", allImages);
+        setErrors((prev) => ({ ...prev, images: errorMessage }));
+        if (errorMessage) {
+            setTimeout(() => {
+                setVisibleErrors((prev) => ({ ...prev, images: true }));
+            }, 100);
+        } else {
+            setVisibleErrors((prev) => ({ ...prev, images: false }));
+        }
+    };
+
+    return { errors, visibleErrors, handleRegisterError, handlePhoneDataError, handleImagesError };
 }

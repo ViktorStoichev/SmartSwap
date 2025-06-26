@@ -35,6 +35,11 @@ export const validators = {
                 return value ? "" : "Please select memory capacity";
             case "quality":
                 return value ? "" : "Please select phone quality";
+            case "images":
+                if (!value || (Array.isArray(value) && value.length === 0) || value === "[]" || value === "") {
+                    return "Upload at least one image";
+                }
+                return "";
             default:
                 return "";
         }

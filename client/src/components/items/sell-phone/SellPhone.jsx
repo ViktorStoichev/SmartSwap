@@ -1,13 +1,13 @@
 import { useErrorHandler } from "../../../errors/handleError";
 import { useCreate } from "../../../hook-api/UseCreate";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./SellPhone.css";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
 import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
 import { uploadImage, deleteImage } from "../../../services/photoService";
 
 export default function AddItem() {
-    const { errors, visibleErrors, handlePhoneDataError } = useErrorHandler();
+    const { errors, visibleErrors, handlePhoneDataError, handleImagesError } = useErrorHandler();
     const { createAction } = useCreate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState(null);
@@ -80,6 +80,11 @@ export default function AddItem() {
         }
     };
 
+    useEffect(() => {
+        handleImagesError([...images, ...pendingImages]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [images, pendingImages]);
+
     return (
         <>
             <ConfirmModal
@@ -111,13 +116,6 @@ export default function AddItem() {
                                 </select>
                                 {errors.brand && <span className={`error-text ${visibleErrors.brand ? "show" : ""}`}>{errors.brand}</span>}
                             </div>
-
-                            <div className="input-group">
-                                <label>Model:</label>
-                                <input type="text" name="model" required onBlur={handlePhoneDataError} onChange={handleInputChange} />
-                                {errors.model && <span className={`error-text ${visibleErrors.model ? "show" : ""}`}>{errors.model}</span>}
-                            </div>
-
                             <div className="input-group">
                                 <label>Color:</label>
                                 <select name="color" required onBlur={handlePhoneDataError} onChange={handleInputChange}>
@@ -135,7 +133,29 @@ export default function AddItem() {
                                 </select>
                                 {errors.color && <span className={`error-text ${visibleErrors.color ? "show" : ""}`}>{errors.color}</span>}
                             </div>
-
+                            <div className="input-group">
+                                <label>Quality:</label>
+                                <select name="quality" required onBlur={handlePhoneDataError} onChange={handleInputChange}>
+                                    <option value="">Select Quality</option>
+                                    <option value="Used - Like New">Used - Like New</option>
+                                    <option value="Used - Good">Used - Good</option>
+                                    <option value="Used - Fair">Used - Fair</option>
+                                    <option value="Used - Poor">Used - Poor</option>
+                                </select>
+                                {errors.quality && <span className={`error-text ${visibleErrors.quality ? "show" : ""}`}>{errors.quality}</span>}
+                            </div>
+                            <div className="input-group">
+                                <label>Price:</label>
+                                <input type="number" name="price" required onBlur={handlePhoneDataError} onChange={handleInputChange} />
+                                {errors.price && <span className={`error-text ${visibleErrors.price ? "show" : ""}`}>{errors.price}</span>}
+                            </div>
+                        </div>
+                        <div className="form-column">
+                            <div className="input-group">
+                                <label>Model:</label>
+                                <input type="text" name="model" required onBlur={handlePhoneDataError} onChange={handleInputChange} />
+                                {errors.model && <span className={`error-text ${visibleErrors.model ? "show" : ""}`}>{errors.model}</span>}
+                            </div>
                             <div className="input-group">
                                 <label>Memory:</label>
                                 <select name="memory" required onBlur={handlePhoneDataError} onChange={handleInputChange}>
@@ -148,21 +168,6 @@ export default function AddItem() {
                                 </select>
                                 {errors.memory && <span className={`error-text ${visibleErrors.memory ? "show" : ""}`}>{errors.memory}</span>}
                             </div>
-                        </div>
-
-                        <div className="form-column">
-                            <div className="input-group">
-                                <label>Quality:</label>
-                                <select name="quality" required onBlur={handlePhoneDataError} onChange={handleInputChange}>
-                                    <option value="">Select Quality</option>
-                                    <option value="Used - Like New">Used - Like New</option>
-                                    <option value="Used - Good">Used - Good</option>
-                                    <option value="Used - Fair">Used - Fair</option>
-                                    <option value="Used - Poor">Used - Poor</option>
-                                </select>
-                                {errors.quality && <span className={`error-text ${visibleErrors.quality ? "show" : ""}`}>{errors.quality}</span>}
-                            </div>
-
                             <div className="input-group">
                                 <label>Images (up to 7):</label>
                                 <input
@@ -170,8 +175,10 @@ export default function AddItem() {
                                     accept="image/*"
                                     multiple
                                     onChange={handleImageChange}
+                                    /* onBlur removed, validation is now in useEffect */
                                     disabled={images.length + pendingImages.length >= 7 || uploading}
                                 />
+                                {errors.images && <span className={`error-text ${visibleErrors.images ? "show" : ""}`}>{errors.images}</span>}
                                 {uploadError && <span className="error-text show">{uploadError}</span>}
                                 <div className="image-preview-list">
                                     {images.map((img, idx) => (
@@ -188,13 +195,6 @@ export default function AddItem() {
                                     ))}
                                 </div>
                             </div>
-
-                            <div className="input-group">
-                                <label>Price:</label>
-                                <input type="number" name="price" required onBlur={handlePhoneDataError} onChange={handleInputChange} />
-                                {errors.price && <span className={`error-text ${visibleErrors.price ? "show" : ""}`}>{errors.price}</span>}
-                            </div>
-
                             <div className="input-group">
                                 <label>Description:</label>
                                 <textarea name="description" required onBlur={handlePhoneDataError} onChange={handleInputChange}></textarea>
@@ -202,7 +202,6 @@ export default function AddItem() {
                             </div>
                         </div>
                     </div>
-
                     <div className="actions">
                         <button
                             type="submit"

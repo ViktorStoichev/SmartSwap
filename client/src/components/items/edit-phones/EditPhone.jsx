@@ -10,7 +10,7 @@ import { uploadImage, deleteImage } from "../../../services/photoService";
 export default function EditPhone() {
     const { id } = useParams();
     const { editedProduct, handleEditChange, handleEditSubmit } = useEdit();
-    const { errors, visibleErrors, handlePhoneDataError } = useErrorHandler();
+    const { errors, visibleErrors, handlePhoneDataError, handleImagesError } = useErrorHandler();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const [images, setImages] = useState([]); // Start empty, will be set in useEffect
@@ -98,6 +98,11 @@ export default function EditPhone() {
             setUploading(false);
         }
     };
+
+    useEffect(() => {
+        handleImagesError([...images, ...pendingImages]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [images, pendingImages]);
 
     return (
         <>
@@ -187,6 +192,7 @@ export default function EditPhone() {
                             onChange={handleImageChange}
                             disabled={images.length >= 7 || uploading}
                         />
+                        {errors.images && <span className={`error-text ${visibleErrors.images ? "show" : ""}`}>{errors.images}</span>}
                         {uploadError && <span className="error-text show">{uploadError}</span>}
                         <div className="image-preview-list">
                             {images.map((img, idx) => (
