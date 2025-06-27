@@ -440,36 +440,6 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-    .details-product-main {
-        flex-direction: column;
-        gap: 2rem;
-    }
-
-    .details-product-image-container {
-        max-width: 100%;
-    }
-
-    .details-product-header {
-        flex-direction: column;
-    }
-
-    .details-product-specs {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .details-product-interaction-buttons {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .details-product-contact-buttons {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
 .carousel-wrapper {
     position: relative;
     width: 100%;
@@ -603,4 +573,356 @@
     transform: scale(1.06) !important;
     box-shadow: 0 0.5rem 2rem rgba(86,164,172,0.18) !important;
     z-index: 2;
+}
+
+/* Responsive styles for phones */
+@media (max-width: 37.5em) {
+    .details-product-container {
+        width: 98%;
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+    .details-product-main {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+    }
+    .details-product-image-container {
+        max-width: 100%;
+    }
+    .carousel-wrapper {
+        height: 30rem;
+    }
+    .carousel-arrow {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1rem;
+    }
+    .carousel-arrow.left {
+        left: 0.5rem;
+    }
+    .carousel-arrow.right {
+        right: 0.5rem;
+    }
+    .carousel-indicator {
+        bottom: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    .details-product-header {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+    .details-product-title {
+        font-size: 1.5rem;
+    }
+    .details-product-price {
+        font-size: 1.3rem;
+        padding: 0.4rem 0.8rem;
+    }
+    .details-product-specs {
+        flex-direction: column;
+        gap: 0.7rem;
+        padding: 0.7rem;
+    }
+    .details-product-spec-item {
+        font-size: 0.9rem;
+    }
+    .details-product-spec-item i {
+        font-size: 1rem;
+    }
+    .details-product-description {
+        padding: 1rem;
+    }
+    .details-product-description h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.7rem;
+    }
+    .details-product-description p {
+        font-size: 0.95rem;
+    }
+    .details-product-meta {
+        gap: 0.5rem;
+    }
+    .details-product-meta-item {
+        font-size: 0.85rem;
+    }
+    .details-product-owner-actions {
+        gap: 0.7rem;
+        margin-top: 0.7rem;
+    }
+    .details-product-edit-btn, .details-product-delete-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+    .details-product-interactions {
+        padding: 1rem;
+    }
+    .details-product-seller-info {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+    }
+    .details-product-profile-avatar {
+        width: 3rem;
+        height: 3rem;
+    }
+    .details-product-seller-name {
+        font-size: 1.1rem;
+    }
+    .details-product-seller-label {
+        font-size: 0.8rem;
+    }
+    .details-product-interaction-buttons {
+        flex-direction: column;
+        gap: 0.7rem;
+        margin-bottom: 1.5rem;
+    }
+    .details-product-like-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+    .details-product-contact-buttons {
+        width: 100%;
+        justify-content: center;
+        gap: 0.7rem;
+    }
+    .details-product-contact-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+    .details-product-comment-form {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+    .details-product-comment-form h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.7rem;
+    }
+    .details-product-comment-form textarea {
+        padding: 0.7rem;
+        font-size: 0.95rem;
+        min-height: 80px;
+        margin-bottom: 0.7rem;
+    }
+    .details-product-comment-form button {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+    .details-product-comments-list h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    .details-product-comment {
+        padding: 1rem;
+        margin-bottom: 0.7rem;
+    }
+    .details-product-comment-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+    .details-product-comment-username {
+        font-size: 0.9rem;
+    }
+    .details-product-comment-date {
+        font-size: 0.8rem;
+    }
+    .details-product-comment-text {
+        font-size: 0.95rem;
+    }
+    .details-product-no-comments {
+        padding: 2rem;
+    }
+    .details-product-no-comments i {
+        font-size: 2.5rem;
+        margin-bottom: 0.7rem;
+    }
+    .details-product-no-comments p {
+        font-size: 0.95rem;
+    }
+    .pending-banner {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+    .pending-banner i {
+        font-size: 1rem;
+    }
+    .details-product-admin-actions {
+        gap: 0.7rem;
+        margin-top: 0.7rem;
+    }
+    .details-product-approve-btn, .details-product-reject-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Responsive styles for tablets */
+@media (min-width: 37.51em) and (max-width: 62em) {
+    .details-product-container {
+        width: 95%;
+        padding: 1.5rem;
+        margin: 2rem auto;
+    }
+    .details-product-main {
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+    }
+    .carousel-wrapper {
+        height: 20rem;
+    }
+    .carousel-arrow {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.2rem;
+    }
+    .carousel-arrow.left {
+        left: 0.7rem;
+    }
+    .carousel-arrow.right {
+        right: 0.7rem;
+    }
+    .carousel-indicator {
+        bottom: 0.7rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    .details-product-title {
+        font-size: 2rem;
+    }
+    .details-product-price {
+        font-size: 1.7rem;
+        padding: 0.4rem 0.9rem;
+    }
+    .details-product-specs {
+        gap: 1.2rem;
+        padding: 0.9rem;
+    }
+    .details-product-spec-item {
+        font-size: 0.95rem;
+    }
+    .details-product-spec-item i {
+        font-size: 1.1rem;
+    }
+    .details-product-description {
+        padding: 1.2rem;
+    }
+    .details-product-description h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.8rem;
+    }
+    .details-product-description p {
+        font-size: 1rem;
+    }
+    .details-product-meta {
+        gap: 0.6rem;
+    }
+    .details-product-meta-item {
+        font-size: 0.9rem;
+    }
+    .details-product-owner-actions {
+        gap: 0.8rem;
+        margin-top: 0.8rem;
+    }
+    .details-product-edit-btn, .details-product-delete-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+    .details-product-interactions {
+        padding: 1.5rem;
+    }
+    .details-product-seller-info {
+        margin-bottom: 1.8rem;
+        padding-bottom: 1.2rem;
+    }
+    .details-product-profile-avatar {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+    .details-product-seller-name {
+        font-size: 1.2rem;
+    }
+    .details-product-seller-label {
+        font-size: 0.85rem;
+    }
+    .details-product-interaction-buttons {
+        gap: 0.8rem;
+        margin-bottom: 1.8rem;
+    }
+    .details-product-like-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+    .details-product-contact-buttons {
+        gap: 0.8rem;
+    }
+    .details-product-contact-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+    .details-product-comment-form {
+        margin: 1.8rem 0;
+        padding: 1.2rem;
+    }
+    .details-product-comment-form h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+    .details-product-comment-form textarea {
+        padding: 0.8rem;
+        font-size: 1rem;
+        min-height: 90px;
+        margin-bottom: 0.8rem;
+    }
+    .details-product-comment-form button {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+    .details-product-comments-list h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1.2rem;
+    }
+    .details-product-comment {
+        padding: 1.2rem;
+        margin-bottom: 0.8rem;
+    }
+    .details-product-comment-avatar {
+        width: 2.8rem;
+        height: 2.8rem;
+    }
+    .details-product-comment-username {
+        font-size: 0.95rem;
+    }
+    .details-product-comment-date {
+        font-size: 0.85rem;
+    }
+    .details-product-comment-text {
+        font-size: 1rem;
+    }
+    .details-product-no-comments {
+        padding: 2.5rem;
+    }
+    .details-product-no-comments i {
+        font-size: 2.8rem;
+        margin-bottom: 0.8rem;
+    }
+    .details-product-no-comments p {
+        font-size: 1rem;
+    }
+    .pending-banner {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+    .pending-banner i {
+        font-size: 1.1rem;
+    }
+    .details-product-admin-actions {
+        gap: 0.8rem;
+        margin-top: 0.8rem;
+    }
+    .details-product-approve-btn, .details-product-reject-btn {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
 }

@@ -98,3 +98,91 @@
         gap: 1.5rem;
     }
 }
+
+/* Responsive styles for phones */
+@media (max-width: 37.5em) {
+    .liked-phones-container {
+        width: 98%;
+        padding: 0.7rem;
+        margin: 1rem auto;
+    }
+    .liked-phones-header {
+        margin-bottom: 1rem;
+    }
+    .liked-phones-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    .liked-phones-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    .liked-phones-grid {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        margin-top: 1rem;
+    }
+    .empty-state {
+        padding: 1.5rem;
+    }
+    .empty-state i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    .empty-state h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    .empty-state p {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+    .empty-state .browse-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Responsive styles for tablets */
+@media (min-width: 37.51em) and (max-width: 62em) {
+    .liked-phones-container {
+        width: 95%;
+        padding: 1.2rem;
+        margin: 1.5rem auto;
+    }
+    .liked-phones-header {
+        margin-bottom: 1.5rem;
+    }
+    .liked-phones-title {
+        font-size: 1.7rem;
+        margin-bottom: 0.7rem;
+    }
+    .liked-phones-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+    }
+    .liked-phones-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 1.2rem;
+    }
+    .empty-state {
+        padding: 2rem;
+    }
+    .empty-state i {
+        font-size: 2.2rem;
+        margin-bottom: 0.7rem;
+    }
+    .empty-state h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.7rem;
+    }
+    .empty-state p {
+        font-size: 1rem;
+        margin-bottom: 1.2rem;
+    }
+    .empty-state .browse-button {
+        padding: 0.7rem 1.2rem;
+        font-size: 1rem;
+    }
+}

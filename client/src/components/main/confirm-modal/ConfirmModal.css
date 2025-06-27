@@ -65,3 +65,57 @@
 .cancel-button:hover {
     background-color: #aaa;
 }
+
+/* Responsive Design */
+@media (max-width: 37.5em) {
+    .modal-container {
+        width: 90%;
+        max-width: 280px;
+        padding: 1.2rem;
+        margin: 1rem;
+    }
+
+    .modal-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .modal-message {
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    .confirm-button,
+    .cancel-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+}
+
+@media (min-width: 37.51em) and (max-width: 62em) {
+    .modal-container {
+        width: 85%;
+        max-width: 350px;
+        padding: 1.3rem;
+    }
+
+    .modal-title {
+        font-size: 1.3rem;
+    }
+
+    .modal-message {
+        font-size: 0.95rem;
+    }
+
+    .confirm-button,
+    .cancel-button {
+        padding: 0.6rem 3.5rem;
+        font-size: 0.95rem;
+    }
+}

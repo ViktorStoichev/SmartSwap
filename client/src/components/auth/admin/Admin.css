@@ -61,6 +61,84 @@
     font-size: 1.1rem;
 }
 
+/* Responsive styles for phones */
+@media (max-width: 37.5em) {
+    .admin-container {
+        width: 98%;
+        padding: 0.5rem;
+        margin: 1rem auto;
+    }
+    .admin-header {
+        padding: 0.7rem;
+        margin-bottom: 0.7rem;
+    }
+    .admin-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.2rem;
+    }
+    .admin-subtitle {
+        font-size: 0.9rem;
+    }
+    .admin-phones-grid {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        padding: 0.3rem;
+    }
+    .no-pending {
+        padding: 1rem;
+    }
+    .no-pending i {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+    .no-pending h3 {
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+    }
+    .no-pending p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsive styles for tablets */
+@media (min-width: 37.51em) and (max-width: 62em) {
+    .admin-container {
+        width: 95%;
+        padding: 1rem;
+        margin: 1.5rem auto;
+    }
+    .admin-header {
+        padding: 1.2rem;
+        margin-bottom: 1.2rem;
+    }
+    .admin-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+    .admin-subtitle {
+        font-size: 0.95rem;
+    }
+    .admin-phones-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+    .no-pending {
+        padding: 1.5rem;
+    }
+    .no-pending i {
+        font-size: 1.7rem;
+        margin-bottom: 0.5rem;
+    }
+    .no-pending h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+    .no-pending p {
+        font-size: 0.95rem;
+    }
+}
+
 @media (max-width: 768px) {
     .admin-container {
         width: 95%;

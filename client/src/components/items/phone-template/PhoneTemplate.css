@@ -113,3 +113,71 @@
         font-size: 1.1rem;
     }
 }
+
+/* Responsive styles for phones */
+@media (max-width: 37.5em) {
+    .product-card {
+        min-height: 14rem;
+        padding: 1rem;
+    }
+    .image-wrapper {
+        height: 25rem;
+        margin-bottom: 0.5rem;
+    }
+    .product-info {
+        padding: 0.5rem;
+    }
+    .product-name {
+        font-size: 1.2rem;
+        margin-bottom: 0.15rem;
+    }
+    .product-specs {
+        font-size: 1.15rem;
+        margin-bottom: 0.3rem;
+    }
+    .product-details {
+        margin-top: 0.4rem;
+        padding-top: 0.3rem;
+    }
+    .delivery-info {
+        font-size: 1.1rem;
+        margin-bottom: 0.15rem;
+    }
+    .product-details .product-price {
+        font-size: 1.7rem;
+    }
+}
+
+/* Responsive styles for tablets */
+@media (min-width: 37.51em) and (max-width: 62em) {
+    .product-card {
+        min-height: 17rem;
+        padding: 1rem;
+    }
+    .image-wrapper {
+        height: 25rem;
+        margin-bottom: 0.6rem;
+    }
+    .product-info {
+        padding: 0.6rem;
+    }
+    .product-name {
+        font-size: 1.4rem;
+        margin-bottom: 0.2rem;
+    }
+    .product-specs {
+        font-size: 1.25rem;
+        margin-bottom: 0.4rem;
+    }
+    .product-details {
+        margin-top: 0.6rem;
+        padding-top: 0.4rem;
+    }
+    .delivery-info {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+    .product-details .product-price {
+        font-size: 1.8rem;
+    }
+}
