@@ -1,54 +1,31 @@
+// Profile component for displaying user information and phone listings
+
 import './Profile.css';
-import { Link, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getUserData } from '../../../services/getUserProfile';
+import { useParams } from 'react-router-dom';
+import UseProfile from '../../../hook-api/auth-hooks/UseProfile';
 import Loader from '../../main/loader/Loader';
-import { getUserPhones } from '../../../services/getUserPhones';
 import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
 
 const Profile = () => {
+    // Extract user ID from URL parameters
     const { id } = useParams();
-    const [user, setUser] = useState(null);
-    const [userPosts, setUserPosts] = useState([]);
-    const [pendingPosts, setPendingPosts] = useState([]);
-    const [approvedPosts, setApprovedPosts] = useState([]);
+    
+    // Get user data and posts from custom hook
+    const { user, pendingPosts, approvedPosts, loading } = UseProfile(id);
 
-    useEffect(() => {
-        let isMounted = true;
-
-        const fetchProfile = async () => {
-            const data = await getUserData(id);
-            if (isMounted) setUser(data);
-        };
-
-        const fetchUserPosts = async () => {     
-            const posts = await getUserPhones(id);
-            if (isMounted) {
-                setUserPosts(posts);
-                setPendingPosts(posts.filter(post => post.pending));
-                setApprovedPosts(posts.filter(post => !post.pending));
-            }
-        };
-
-        if (id) {
-            fetchProfile();
-            fetchUserPosts();
-        }
-
-        return () => {
-            isMounted = false;
-        }
-    }, [id]);
-
-    if (!user) return <Loader />;
+    // Show loading spinner while fetching data
+    if (loading || !user) return <Loader />;
 
     return (
         <div className="profile-container">
+            {/* Profile page header section */}
             <div className="profile-header">
                 <h2 className="profile-title">User Profile</h2>
             </div>
 
+            {/* User profile information section with avatar */}
             <div className="profile-content">
+                {/* User details including username, email, and location */}
                 <div className="profile-info">
                     <div className="info-item">
                         <i className="fa-solid fa-user"></i>
@@ -63,19 +40,23 @@ const Profile = () => {
                         <p><strong>Location:</strong> {user.address}</p>
                     </div>
                 </div>
+                {/* User avatar image display */}
                 <div className="profile-avatar">
                     <img src={user.avatarUrl} alt={`${user.username}'s avatar`} />
                 </div>
             </div>
 
+            {/* Pending phone listings section - only shown if there are pending posts */}
             {pendingPosts.length > 0 && (
                 <div className="user-posts pending-posts">
+                    {/* Pending posts header with count */}
                     <div className="posts-header">
                         <h3 className="posts-title">Pending Listings</h3>
                         <p className="posts-subtitle">
                             {pendingPosts.length} phone{pendingPosts.length === 1 ? '' : 's'} waiting for approval
                         </p>
                     </div>
+                    {/* Grid of pending phone cards with approval badges */}
                     <div className="posts-grid">
                         {pendingPosts.map(post => (
                             <div key={post.id} className="phone-card pending">
@@ -87,7 +68,9 @@ const Profile = () => {
                 </div>
             )}
 
+            {/* Approved phone listings section */}
             <div className="user-posts">
+                {/* Approved posts header with dynamic count */}
                 <div className="posts-header">
                     <h3 className="posts-title">Approved Listings</h3>
                     <p className="posts-subtitle">
@@ -97,6 +80,7 @@ const Profile = () => {
                     </p>
                 </div>
 
+                {/* Render approved posts grid or empty state message */}
                 {approvedPosts.length > 0 ? (
                     <div className="posts-grid">
                         {approvedPosts.map(post => (

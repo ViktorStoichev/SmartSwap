@@ -1,70 +1,58 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
 import Loader from "../../main/loader/Loader";
-import { usePhone } from "../../../hook-api/UsePhone";
-import { useState } from "react";
+import { usePhone } from "../../../hook-api/details-hooks/UsePhone";
+import { useImageCarousel } from "../../../hook-api/details-hooks/UseImageCarousel";
+import { useDetailsActions } from "../../../hook-api/details-hooks/UseDetailsActions";
+import { useDetailsPermissions } from "../../../hook-api/details-hooks/UseDetailsPermissions";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
-import { approvePhone, rejectPhone } from "../../../services/phoneService";
 
 export default function Details() {
     const { user } = useAuth();
-    const { product, comment, setComment, handleLike, handleCommentSubmit, handleDelete } = usePhone();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
-    const [currentImage, setCurrentImage] = useState(0);
+    const { product, comment, setComment, handleLike, handleCommentSubmit, handleDelete, isDeleting } = usePhone();
 
+    // Get image carousel functionality (hooks must be called before any conditional returns)
+    const { images, currentImage, maxImages, handlePrev, handleNext } = useImageCarousel(product?.images);
+    
+    // Get admin actions and modal functionality
+    const { isModalOpen, isApproving, isRejecting, handleApprove, handleReject, openModal, closeModal } = useDetailsActions(product?._id, images);
+    
+    // Get user permissions and access control
+    const { isOwner, isAdmin, canView, checkViewPermission } = useDetailsPermissions(user, product);
+
+    // Check if any loading state is active
+    const isLoading = isDeleting || isApproving || isRejecting;
+
+    // Show loading spinner while fetching product data
     if (!product) return <Loader />;
 
-    const isOwner = user && product.ownerId === user.uid;
-    const isAdmin = user && user.admin;
-    const canView = isOwner || isAdmin || !product.pending;
-
     // If not owner or admin and phone is pending, redirect to catalog
-    if (!canView) {
-        navigate('/phones');
+    if (!checkViewPermission()) {
         return null;
     }
 
-    // Carousel logic
-    let parsedImages = [];
-    if (typeof product.images === "string") {
-        try {
-            parsedImages = JSON.parse(product.images);
-        } catch {
-            parsedImages = [];
-        }
-    } else if (Array.isArray(product.images)) {
-        parsedImages = product.images;
+    // Show loader if any action is in progress
+    if (isLoading) {
+        return (
+            <div className="details-product-container">
+                <div className="loading-container">
+                    <Loader />
+                    <p className="loading-text">
+                        {isDeleting ? "Deleting phone listing..." : 
+                         isApproving ? "Approving phone listing..." :
+                         isRejecting ? "Rejecting phone listing..." : "Processing..."}
+                    </p>
+                </div>
+            </div>
+        );
     }
-    const images = parsedImages && Array.isArray(parsedImages) && parsedImages.length > 0 ? parsedImages : [{ url: null}];
-    const maxImages = Math.min(images.length, 7);
-    const handlePrev = () => setCurrentImage((prev) => (prev - 1 + maxImages) % maxImages);
-    const handleNext = () => setCurrentImage((prev) => (prev + 1) % maxImages);
-
-    const handleApprove = async () => {
-        try {
-            await approvePhone(product._id);
-            navigate('/phones');
-        } catch (error) {
-            console.error('Error approving phone:', error);
-        }
-    };
-
-    const handleReject = async () => {
-        try {
-            await rejectPhone(product._id, images);
-            navigate('/phones');
-        } catch (error) {
-            console.error('Error rejecting phone:', error);
-        }
-    };
 
     return (
         <>
             <ConfirmModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={closeModal}
                 onConfirm={handleDelete}
                 title={"Confirm Deletion"}
                 message={"Are you sure you want to delete this phone?"}
@@ -96,15 +84,15 @@ export default function Details() {
                         <div className="details-product-specs">
                             <div className="details-product-spec-item">
                                 <i className="fa-solid fa-palette"></i>
-                                <span>{product.color}</span>
+                                <span>Color: {product.color}</span>
                             </div>
                             <div className="details-product-spec-item">
                                 <i className="fa-solid fa-memory"></i>
-                                <span>{product.memory}</span>
+                                <span>Memory: {product.memory}</span>
                             </div>
                             <div className="details-product-spec-item">
                                 <i className="fa-solid fa-star"></i>
-                                <span>{product.quality}</span>
+                                <span>Quality: {product.quality}</span>
                             </div>
                         </div>
 
@@ -116,11 +104,11 @@ export default function Details() {
                         <div className="details-product-meta">
                             <div className="details-product-meta-item">
                                 <i className="fa-solid fa-calendar"></i>
-                                <span>Posted: {new Date(product.createdAt).toLocaleDateString()}</span>
+                                <span>Listed: {product.createdAt}</span>
                             </div>
                             <div className="details-product-meta-item">
-                                <i className="fa-solid fa-clock"></i>
-                                <span>Updated: {new Date(product.updatedAt).toLocaleDateString()}</span>
+                                <i className="fa-solid fa-eye"></i>
+                                <span>Views: {product.views || 0}</span>
                             </div>
                         </div>
 
@@ -130,7 +118,7 @@ export default function Details() {
                                     <i className="fa-solid fa-pen-to-square"></i>
                                     Edit
                                 </Link>
-                                <button onClick={() => setIsModalOpen(true)} className="details-product-delete-btn">
+                                <button onClick={openModal} className="details-product-delete-btn">
                                     <i className="fa-solid fa-trash"></i>
                                     Delete
                                 </button>
@@ -201,35 +189,32 @@ export default function Details() {
                             </div>
                         )}
 
-                        {!product.pending && (
-                            <div className="details-product-comments-list">
-                                <h3>Questions & Answers</h3>
-                                {product.comments?.length > 0 ? (
-                                    product.comments.map((c, index) => (
-                                        <div key={index} className="details-product-comment">
-                                            <div className="details-product-comment-header">
-                                                <Link to={`/profile/${c.userId}`} className="details-product-comment-user">
-                                                    <img src={c.avatarUrl} alt={c.username} className="details-product-comment-avatar" />
-                                                    <div className="details-product-comment-user-info">
-                                                        <span className="details-product-comment-username">{c.username}</span>
-                                                        <span className="details-product-comment-date">{new Date(c.date).toLocaleDateString()}</span>
-                                                    </div>
-                                                </Link>
+                        <div className="details-product-comments-list">
+                            <h3>Questions ({product.comments.length})</h3>
+                            {product.comments.length === 0 ? (
+                                <div className="details-product-no-comments">
+                                    <i className="fa-solid fa-comments"></i>
+                                    <p>No questions yet</p>
+                                    <p>Be the first to ask a question about this product!</p>
+                                </div>
+                            ) : (
+                                product.comments.map((comment, index) => (
+                                    <div key={index} className="details-product-comment">
+                                        <div className="details-product-comment-header">
+                                            <img src={comment.avatarUrl} alt={comment.username} className="details-product-comment-avatar" />
+                                            <div className="details-product-comment-info">
+                                                <span className="details-product-comment-username">{comment.username}</span>
+                                                <span className="details-product-comment-date">{comment.date}</span>
                                             </div>
-                                            <p className="details-product-comment-text">{c.text}</p>
                                         </div>
-                                    ))
-                                ) : (
-                                    <div className="details-product-no-comments">
-                                        <i className="fa-solid fa-comments"></i>
-                                        <p>No questions yet. Be the first to ask!</p>
+                                        <p className="details-product-comment-text">{comment.text}</p>
                                     </div>
-                                )}
-                            </div>
-                        )}
+                                ))
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
         </>
     );
-};
+}

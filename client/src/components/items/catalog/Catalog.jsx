@@ -1,10 +1,13 @@
 import Loader from "../../main/loader/Loader.jsx";
 import './Catalog.css'
-import { usePhones } from "../../../hook-api/UsePhones.js";
+import { usePhones } from "../../../hook-api/phones-hooks/UsePhones.js";
+import { usePagination } from "../../../hook-api/phones-hooks/UsePagination.js";
+import { useCatalogFilters } from "../../../hook-api/phones-hooks/UseCatalogFilters.js";
 import PhoneTemplate from "../phone-template/PhoneTemplate.jsx";
-import { useState } from "react";
+import Pagination from "./Pagination.jsx";
 
 export default function Catalog() {
+    // Get phone data and filtering functionality from the main hook
     const { 
         filteredProducts, 
         brands, 
@@ -14,113 +17,33 @@ export default function Catalog() {
         isLoading
     } = usePhones();
     
-    const [selectedBrand, setSelectedBrand] = useState("");
-    const [selectedColor, setSelectedColor] = useState("");
-    const [selectedMemory, setSelectedMemory] = useState("");
-    const [selectedPriceRange, setSelectedPriceRange] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
-    const phonesPerPage = 9;
-
-    const handleFilterChange = (type, value, setter) => {
-        setter(value);
-        handleFilter(type, value);
-        setCurrentPage(1); // Reset to first page when filter changes
-    };
-
-    // Calculate pagination
-    const indexOfLastPhone = currentPage * phonesPerPage;
-    const indexOfFirstPhone = indexOfLastPhone - phonesPerPage;
-    const currentPhones = filteredProducts.slice(indexOfFirstPhone, indexOfLastPhone);
-    const totalPages = Math.ceil(filteredProducts.length / phonesPerPage);
-
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        // Use requestAnimationFrame to ensure the scroll happens after the state update
-        requestAnimationFrame(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-    };
-
-    const renderPagination = () => {
-        const pageNumbers = [];
-        const maxVisiblePages = 5;
-        
-        let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-        let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-        
-        if (endPage - startPage + 1 < maxVisiblePages) {
-            startPage = Math.max(1, endPage - maxVisiblePages + 1);
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            pageNumbers.push(i);
-        }
-
-        return (
-            <div className="pagination">
-                <button 
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="pagination-btn"
-                    type="button"
-                >
-                    <i className="fa-solid fa-chevron-left"></i>
-                </button>
-                
-                {startPage > 1 && (
-                    <>
-                        <button 
-                            onClick={() => handlePageChange(1)} 
-                            className="pagination-btn"
-                            type="button"
-                        >
-                            1
-                        </button>
-                        {startPage > 2 && <span className="pagination-ellipsis">...</span>}
-                    </>
-                )}
-
-                {pageNumbers.map(number => (
-                    <button
-                        key={number}
-                        onClick={() => handlePageChange(number)}
-                        className={`pagination-btn ${currentPage === number ? 'active' : ''}`}
-                        type="button"
-                    >
-                        {number}
-                    </button>
-                ))}
-
-                {endPage < totalPages && (
-                    <>
-                        {endPage < totalPages - 1 && <span className="pagination-ellipsis">...</span>}
-                        <button 
-                            onClick={() => handlePageChange(totalPages)} 
-                            className="pagination-btn"
-                            type="button"
-                        >
-                            {totalPages}
-                        </button>
-                    </>
-                )}
-
-                <button 
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="pagination-btn"
-                    type="button"
-                >
-                    <i className="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
-        );
-    };
+    // Get pagination functionality
+    const {
+        currentPage,
+        currentItems,
+        totalPages,
+        pageNumbers,
+        startPage,
+        endPage,
+        handlePageChange,
+        resetToFirstPage
+    } = usePagination(filteredProducts);
+    
+    // Get filter functionality
+    const {
+        selectedBrand,
+        selectedColor,
+        selectedMemory,
+        selectedPriceRange,
+        handleBrandChange,
+        handleColorChange,
+        handleMemoryChange,
+        handlePriceRangeChange
+    } = useCatalogFilters(handleFilter, resetToFirstPage);
 
     return (
         <div className="products-container">
+            {/* Catalog header with title and statistics */}
             <div className="catalog-header">
                 <h2 className="products-title">BROWSE SECOND-HAND PHONES FROM OUR COMMUNITY</h2>
                 <p className="catalog-subtitle">Find Your Perfect Pre-Owned Smartphone</p>
@@ -141,11 +64,14 @@ export default function Catalog() {
             </div>
             
             <div className="content-wrapper">
+                {/* Filter section with dropdown menus */}
                 <div className="filters-section">
                     <h3 className="categories-title">Categories</h3>
+                    
+                    {/* Brand filter dropdown */}
                     <select 
                         value={selectedBrand} 
-                        onChange={(e) => handleFilterChange('brand', e.target.value, setSelectedBrand)}
+                        onChange={(e) => handleBrandChange(e.target.value)}
                         className="brand-select"
                     >
                         <option value="">All Brands</option>
@@ -156,9 +82,10 @@ export default function Catalog() {
                         ))}
                     </select>
 
+                    {/* Color filter dropdown */}
                     <select 
                         value={selectedColor} 
-                        onChange={(e) => handleFilterChange('color', e.target.value, setSelectedColor)}
+                        onChange={(e) => handleColorChange(e.target.value)}
                         className="brand-select"
                     >
                         <option value="">All Colors</option>
@@ -169,9 +96,10 @@ export default function Catalog() {
                         ))}
                     </select>
 
+                    {/* Memory filter dropdown */}
                     <select 
                         value={selectedMemory} 
-                        onChange={(e) => handleFilterChange('memory', e.target.value, setSelectedMemory)}
+                        onChange={(e) => handleMemoryChange(e.target.value)}
                         className="brand-select"
                     >
                         <option value="">All Memory Options</option>
@@ -182,9 +110,10 @@ export default function Catalog() {
                         ))}
                     </select>
 
+                    {/* Price range filter dropdown */}
                     <select 
                         value={selectedPriceRange} 
-                        onChange={(e) => handleFilterChange('priceRange', e.target.value, setSelectedPriceRange)}
+                        onChange={(e) => handlePriceRangeChange(e.target.value)}
                         className="brand-select"
                     >
                         <option value="">All Prices</option>
@@ -197,15 +126,19 @@ export default function Catalog() {
                     </select>
                 </div>
 
+                {/* Products section with grid and pagination */}
                 <div className="products-section">
+                    {/* Products grid */}
                     <div className="products-grid">
                         {isLoading ? (
                             <Loader />
-                        ) : currentPhones.length > 0 ? (
-                            currentPhones.map((phone) => (
+                        ) : currentItems.length > 0 ? (
+                            /* Render phone templates for current page */
+                            currentItems.map((phone) => (
                                 <PhoneTemplate key={phone._id} phone={phone} />
                             ))
                         ) : (
+                            /* Empty state when no products found */
                             <div className="no-products">
                                 <i className="fa-solid fa-mobile-screen"></i>
                                 <h3>No Products Found</h3>
@@ -213,7 +146,18 @@ export default function Catalog() {
                             </div>
                         )}
                     </div>
-                    {!isLoading && totalPages > 1 && renderPagination()}
+                    
+                    {/* Pagination component */}
+                    {!isLoading && (
+                        <Pagination 
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            pageNumbers={pageNumbers}
+                            startPage={startPage}
+                            endPage={endPage}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
                 </div>
             </div>
         </div>

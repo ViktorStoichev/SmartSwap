@@ -1,34 +1,23 @@
-import { useEffect, useState } from 'react';
-import { getPendingPhones } from '../../../services/phoneService';
+// Admin component for reviewing pending phone listings
+
+import UseAdminPhones from '../../../hook-api/auth-hooks/UseAdminPhones';
 import Loader from '../../main/loader/Loader';
 import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
 import './Admin.css';
 
 const Admin = () => {
-    const [pendingPhones, setPendingPhones] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // Get pending phones and loading state from custom hook
+    const { pendingPhones, loading } = UseAdminPhones();
 
-    useEffect(() => {
-        fetchPendingPhones();
-    }, []);
-
-    const fetchPendingPhones = async () => {
-        try {
-            const phones = await getPendingPhones();
-            setPendingPhones(phones);
-        } catch (error) {
-            console.error('Error fetching pending phones:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    // Show loading spinner while fetching data
     if (loading) return <Loader />;
 
     return (
         <div className="admin-container">
+            {/* Admin page header with dynamic subtitle */}
             <div className="admin-header">
                 <h2 className="admin-title">Pending Phone Listings</h2>
+                {/* Display dynamic subtitle based on pending phones count */}
                 <p className="admin-subtitle">
                     {pendingPhones.length > 0 
                         ? `You have ${pendingPhones.length} phone${pendingPhones.length === 1 ? '' : 's'} waiting for review`
@@ -36,8 +25,10 @@ const Admin = () => {
                 </p>
             </div>
 
+            {/* Render phone grid if there are pending phones, otherwise show empty state */}
             {pendingPhones.length > 0 ? (
                 <div className="admin-phones-grid">
+                    {/* Map through pending phones and render each as a phone template */}
                     {pendingPhones.map(phone => (
                         <PhoneTemplate key={phone._id} phone={phone} />
                     ))}

@@ -1,57 +1,30 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useActionState } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { db } from "../../../../server/firebase";
+import { Link } from "react-router-dom";
 import "./Register.css";
-import { useRegister } from "../../../hook-api/UseRegister";
-import { useErrorHandler } from "../../../errors/handleError";
-import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
-
-const registerAction = async (prevState, formData) => {
-    const { email, password, repeatPassword, username, address, avatarUrl } = Object.fromEntries(formData);
-
-    try {
-        const { register } = useRegister();
-        const user = await register(email, password);
-
-        const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, { uid: user.uid, email, username, address, avatarUrl });
-
-        return { success: true };
-    } catch (error) {
-        return { error: error.message };
-    }
-};
+import { useRegister } from "../../../hook-api/auth-hooks/UseRegister";
 
 const Register = () => {
-    const navigate = useNavigate();
-    const [state, dispatch] = useActionState(registerAction, { error: null, success: false });
-    const { errors, visibleErrors, handleRegisterError } = useErrorHandler();
-    const [termsAgreed, setTermsAgreed] = useState(false);
-
-    const handleInputChange = (e) => {
-        const { value, name } = e.target;
-        if (checkProfanity(value)) {
-            showProfanityAlert();
-            e.target.value = '';
-        }
-    };
-
-    useEffect(() => {
-        if (state.success) {
-            navigate("/");
-        }
-    }, [state.success, navigate]);
-
-    const isFormValid = !Object.values(errors).some(Boolean) && termsAgreed;
+    // Get all form state and handlers from the custom registration hook
+    const { 
+        state, 
+        dispatch, 
+        termsAgreed, 
+        setTermsAgreed, 
+        errors, 
+        visibleErrors, 
+        handleRegisterError, 
+        handleInputChange, 
+        isFormValid 
+    } = useRegister();
 
     return (
         <div className="register-container">
+            {/* Registration page header */}
             <h2 className="register-title">Create Account</h2>
             <p className="register-subtitle">Join our community of phone traders</p>
 
+            {/* Registration form with useActionState dispatch */}
             <form action={dispatch} className="register-form">
+                {/* Email input field with validation and profanity checking */}
                 <div className="input-group">
                     <label htmlFor="email" className="input-label">Email</label>
                     <input 
@@ -67,6 +40,7 @@ const Register = () => {
                     {errors.email && <span className={`error-text ${visibleErrors.email ? "show" : ""}`}>{errors.email}</span>}
                 </div>
 
+                {/* Username input field with validation and profanity checking */}
                 <div className="input-group">
                     <label htmlFor="username" className="input-label">Username</label>
                     <input 
@@ -82,6 +56,7 @@ const Register = () => {
                     {errors.username && <span className={`error-text ${visibleErrors.username ? "show" : ""}`}>{errors.username}</span>}
                 </div>
 
+                {/* Address input field with validation and profanity checking */}
                 <div className="input-group">
                     <label htmlFor="address" className="input-label">Address</label>
                     <input 
@@ -97,6 +72,7 @@ const Register = () => {
                     {errors.address && <span className={`error-text ${visibleErrors.address ? "show" : ""}`}>{errors.address}</span>}
                 </div>
 
+                {/* Profile picture URL input field with validation */}
                 <div className="input-group">
                     <label htmlFor="avatarUrl" className="input-label">Profile Picture</label>
                     <input 
@@ -112,6 +88,7 @@ const Register = () => {
                     {errors.avatarUrl && <span className={`error-text ${visibleErrors.avatarUrl ? "show" : ""}`}>{errors.avatarUrl}</span>}
                 </div>
 
+                {/* Password input field with validation */}
                 <div className="input-group">
                     <label htmlFor="password" className="input-label">Password</label>
                     <input 
@@ -127,6 +104,7 @@ const Register = () => {
                     {errors.password && <span className={`error-text ${visibleErrors.password ? "show" : ""}`}>{errors.password}</span>}
                 </div>
 
+                {/* Confirm password input field with validation */}
                 <div className="input-group">
                     <label htmlFor="repeatPassword" className="input-label">Confirm Password</label>
                     <input 
@@ -142,6 +120,7 @@ const Register = () => {
                     {errors.repeatPassword && <span className={`error-text ${visibleErrors.repeatPassword ? "show" : ""}`}>{errors.repeatPassword}</span>}
                 </div>
 
+                {/* Terms and conditions agreement section */}
                 <div className="terms-section">
                     <label className="terms-checkbox">
                         <input 
@@ -154,6 +133,7 @@ const Register = () => {
                     </label>
                 </div>
 
+                {/* Submit button with dynamic styling based on form validity */}
                 <button 
                     type="submit" 
                     className="submit-button" 
@@ -163,6 +143,7 @@ const Register = () => {
                     Create Account
                 </button>
 
+                {/* Link to login page for existing users */}
                 <div className="login-link">
                     Already have an account? <Link to="/login">Sign in here</Link>
                 </div>

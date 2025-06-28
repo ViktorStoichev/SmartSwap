@@ -1,122 +1,79 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useEdit } from "../../../hook-api/UseEdit";
+import { useParams } from "react-router-dom";
+import { useEdit } from "../../../hook-api/edit-hooks/UseEdit";
+import { useEditImageManager } from "../../../hook-api/edit-hooks/UseEditImageManager";
+import { useEditForm } from "../../../hook-api/edit-hooks/UseEditForm";
 import "./EditPhone.css";
 import { useErrorHandler } from "../../../errors/handleError";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
-import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
-import { uploadImage, deleteImage } from "../../../services/photoService";
+import Loader from "../../main/loader/Loader";
 
 export default function EditPhone() {
     const { id } = useParams();
-    const { editedProduct, handleEditChange, handleEditSubmit } = useEdit();
+    const { editedProduct, handleEditChange, handleEditSubmit, isEditing } = useEdit();
     const { errors, visibleErrors, handlePhoneDataError, handleImagesError } = useErrorHandler();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
-    const [images, setImages] = useState([]); // Start empty, will be set in useEffect
-    const [pendingImages, setPendingImages] = useState([]); // NEW: holds File objects
-    const [uploading, setUploading] = useState(false);
-    const [uploadError, setUploadError] = useState("");
-    const [originalImages, setOriginalImages] = useState([]);
-    const [formData, setFormData] = useState(null);
+    
+    // Get image management functionality
+    const {
+        images,
+        pendingImages,
+        uploading,
+        uploadError,
+        handleImageChange,
+        handleRemoveImage,
+        uploadPendingImages,
+        getAllImages
+    } = useEditImageManager(editedProduct.images);
+    
+    // Get form handling functionality
+    const {
+        isModalOpen,
+        isSubmitting,
+        handleInputChange,
+        onFormSubmit,
+        handleConfirm,
+        closeModal,
+        handleCancel
+    } = useEditForm(id, handleEditChange);
 
+    // Check if any loading state is active
+    const isLoading = isEditing || isSubmitting || uploading;
+
+    // Validate images whenever they change
     useEffect(() => {
-        if (editedProduct.images && Array.isArray(editedProduct.images)) {
-            setOriginalImages(editedProduct.images);
-            setImages(editedProduct.images); // Set current images for display
-        }
-    }, [editedProduct.images]);
-
-    const handleInputChange = (e) => {
-        const { value, name } = e.target;
-        if (checkProfanity(value)) {
-            showProfanityAlert();
-            e.target.value = '';
-            return;
-        }
-        handleEditChange(e);
-    };
-
-    const handleImageChange = (e) => {
-        const files = Array.from(e.target.files);
-        if (files.length + images.length + pendingImages.length > 7) {
-            setUploadError("You can upload up to 7 images.");
-            return;
-        }
-        setUploadError("");
-        setPendingImages((prev) => [...prev, ...files].slice(0, 7 - images.length));
-    };
-
-    const handleRemoveImage = async (idx, isPending = false) => {
-        if (isPending) {
-            setPendingImages((prev) => prev.filter((_, i) => i !== idx));
-        } else {
-            setImages((prev) => prev.filter((_, i) => i !== idx));
-        }
-    };
-
-    const onFormSubmit = (e) => {
-        e.preventDefault();
-        const form = new FormData(e.target);
-        form.append("images", JSON.stringify(images));
-        setFormData(form);
-        setIsModalOpen(true);
-    };
-
-    const handleConfirm = async () => {
-        if (!formData) return;
-        setUploading(true);
-        setUploadError("");
-        try {
-            // Upload all pending images
-            const uploaded = [];
-            for (const file of pendingImages) {
-                const data = await uploadImage(file);
-                uploaded.push(data);
-            }
-            const allImages = [...images, ...uploaded];
-            formData.set("images", JSON.stringify(allImages));
-            await handleEditSubmit(allImages);
-            // Delete removed images from Cloudinary
-            const removedImages = originalImages.filter(
-                orig => !allImages.some(img => img.public_id === orig.public_id)
-            );
-            for (const img of removedImages) {
-                if (img.public_id) {
-                    try {
-                        await deleteImage(img.public_id);
-                    } catch {}
-                }
-            }
-            setImages(allImages); // update images state
-            setPendingImages([]); // clear pending
-            setOriginalImages(allImages); // update for next edit
-            setIsModalOpen(false);
-        } catch (err) {
-            setUploadError("Failed to upload image(s).");
-        } finally {
-            setUploading(false);
-        }
-    };
-
-    useEffect(() => {
-        handleImagesError([...images, ...pendingImages]);
+        handleImagesError(getAllImages());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images, pendingImages]);
+
+    // Show loader if any loading state is active
+    if (isLoading) {
+        return (
+            <div className="edit-product-container">
+                <div className="loading-container">
+                    <Loader />
+                    <p className="loading-text">
+                        {isEditing ? "Updating your listing..." : 
+                         isSubmitting ? "Uploading images and updating listing..." :
+                         uploading ? "Uploading images..." : "Processing..."}
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <>
             <ConfirmModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onConfirm={handleConfirm}
+                onClose={closeModal}
+                onConfirm={() => handleConfirm(uploadPendingImages, handleEditSubmit)}
                 title={"Confirm Edit"}
                 message={"Are you sure you want to edit this phone?"}
             />
             <div className="edit-product-container">
                 <h2>Edit Phone</h2>
                 <p className="edit-product-subtitle">Update your phone listing details</p>
-                <form onSubmit={onFormSubmit} className="edit-product-form">
+                <form onSubmit={(e) => onFormSubmit(e, images)} className="edit-product-form">
                     <div className="input-group">
                         <label>Brand:</label>
                         <select name="brand" value={editedProduct.brand} onChange={handleInputChange} required onBlur={handlePhoneDataError}>
@@ -225,7 +182,7 @@ export default function EditPhone() {
                     <div className="edit-actions">
                         <button type="submit" className="save-btn" style={{ backgroundColor: Object.values(errors).some(Boolean) ? "grey" : "" }}
                             disabled={Object.values(errors).some(Boolean)}>Save Changes</button>
-                        <button type="button" className="cancel-btn" onClick={() => navigate(`/phones/${id}`)}>Cancel</button>
+                        <button type="button" className="cancel-btn" onClick={handleCancel}>Cancel</button>
                     </div>
                 </form>
             </div>

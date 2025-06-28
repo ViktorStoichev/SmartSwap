@@ -1,36 +1,34 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+// Login component for user authentication
+
+import { Link } from "react-router-dom";
 import './Login.css'
-import { useLogin } from "../../../hook-api/UseLogin";
+import { useLogin } from "../../../hook-api/auth-hooks/UseLogin";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [rememberMe, setRememberMe] = useState(false);
-    const navigate = useNavigate();
-    const { login } = useLogin();
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
-        try {
-            await login(email, password);
-            setError("");
-            navigate('/');
-        } catch (err) {
-            setError("Wrong email or password!");
-        }
-    };
+    // Destructure all form state and handlers from the custom login hook
+    const { 
+        email, 
+        setEmail, 
+        password, 
+        setPassword, 
+        error, 
+        rememberMe, 
+        setRememberMe, 
+        handleLogin 
+    } = useLogin();
 
     return (
         <div className="login-container">
+            {/* Main login page header */}
             <h2 className="login-title">Welcome Back!</h2>
             <p className="login-subtitle">Sign in to continue to SmartSwap</p>
             
+            {/* Display error message if login fails */}
             {error && <p className="error-message">{error}</p>}
             
+            {/* Login form with submission handler */}
             <form className="login-form" onSubmit={handleLogin}>
+                {/* Email input field with change handler */}
                 <div className="input-group">
                     <label htmlFor="email" className="input-label">Email</label>
                     <input
@@ -44,6 +42,7 @@ const Login = () => {
                     />
                 </div>
 
+                {/* Password input field with change handler */}
                 <div className="input-group">
                     <label htmlFor="password" className="input-label">Password</label>
                     <input
@@ -57,6 +56,7 @@ const Login = () => {
                     />
                 </div>
 
+                {/* Remember me checkbox and forgot password link */}
                 <div className="form-options">
                     <label className="remember-me">
                         <input
@@ -69,10 +69,12 @@ const Login = () => {
                     <Link to="/forgot-password" className="forgot-password">Forgot Password?</Link>
                 </div>
 
+                {/* Submit button for login form */}
                 <button className="submit-button" type="submit">
                     Sign In
                 </button>
 
+                {/* Link to registration page for new users */}
                 <div className="register-link">
                     Don't have an account? <Link to="/register">Register here</Link>
                 </div>

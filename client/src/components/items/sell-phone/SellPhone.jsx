@@ -1,104 +1,87 @@
+// SellPhone component - Allows users to list their phones for sale
+// Handles form submission, image upload, and validation
+
 import { useErrorHandler } from "../../../errors/handleError";
-import { useCreate } from "../../../hook-api/UseCreate";
-import { useState, useEffect } from "react";
+import { useCreate } from "../../../hook-api/sell-hooks/UseCreate";
+import { useSellImageManager } from "../../../hook-api/sell-hooks/UseSellImageManager";
+import { useSellForm } from "../../../hook-api/sell-hooks/UseSellForm";
+import { useEffect } from "react";
 import "./SellPhone.css";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
-import { checkProfanity, showProfanityAlert } from "../../../utils/profanityCheck";
-import { uploadImage, deleteImage } from "../../../services/photoService";
+import Loader from "../../main/loader/Loader";
 
 export default function AddItem() {
+    // Error handling and validation hooks
     const { errors, visibleErrors, handlePhoneDataError, handleImagesError } = useErrorHandler();
-    const { createAction } = useCreate();
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [formData, setFormData] = useState(null);
-    const [images, setImages] = useState([]);
-    const [pendingImages, setPendingImages] = useState([]);
-    const [uploading, setUploading] = useState(false);
-    const [uploadError, setUploadError] = useState("");
+    const { createAction, isCreating } = useCreate();
+    
+    // Image management functionality from custom hook
+    const {
+        images,
+        pendingImages,
+        uploading,
+        uploadError,
+        handleImageChange,
+        handleRemoveImage,
+        uploadPendingImages,
+        getAllImages
+    } = useSellImageManager();
+    
+    // Form handling functionality from custom hook
+    const {
+        isModalOpen,
+        isSubmitting,
+        handleInputChange,
+        onFormSubmit,
+        handleConfirm,
+        closeModal
+    } = useSellForm();
 
-    const handleInputChange = (e) => {
-        const { value, name } = e.target;
-        if (checkProfanity(value)) {
-            showProfanityAlert();
-            e.target.value = '';
-        }
-    };
+    // Check if any loading state is active
+    const isLoading = isCreating || isSubmitting || uploading;
 
-    const handleImageChange = (e) => {
-        const files = Array.from(e.target.files);
-        if (files.length + images.length + pendingImages.length > 7) {
-            setUploadError("You can upload up to 7 images.");
-            return;
-        }
-        setUploadError("");
-        setPendingImages((prev) => [...prev, ...files].slice(0, 7 - images.length));
-    };
-
-    const handleRemoveImage = (idx, isPending = false) => {
-        if (isPending) {
-            setPendingImages((prev) => prev.filter((_, i) => i !== idx));
-        } else {
-            const img = images[idx];
-            setImages((prev) => prev.filter((_, i) => i !== idx));
-            if (img && img.public_id) {
-                try {
-                    deleteImage(img.public_id);
-                } catch {}
-            }
-        }
-    };
-
-    const onFormSubmit = (e) => {
-        e.preventDefault();
-        const form = new FormData(e.target);
-        form.append("images", JSON.stringify(images));
-        setFormData(form);
-        setIsModalOpen(true);
-    };
-
-    const handleConfirm = async () => {
-        if (!formData) return;
-        setUploading(true);
-        setUploadError("");
-        try {
-            // Upload all pending images
-            const uploaded = [];
-            for (const file of pendingImages) {
-                const data = await uploadImage(file);
-                uploaded.push(data);
-            }
-            const allImages = [...images, ...uploaded];
-            formData.set("images", JSON.stringify(allImages));
-            await createAction(formData);
-            setImages(allImages);
-            setPendingImages([]);
-            setIsModalOpen(false);
-        } catch (err) {
-            setUploadError("Failed to upload image(s).");
-        } finally {
-            setUploading(false);
-        }
-    };
-
+    // Validate images whenever they change
     useEffect(() => {
-        handleImagesError([...images, ...pendingImages]);
+        handleImagesError(getAllImages());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images, pendingImages]);
 
+    // Show loader if any loading state is active
+    if (isLoading) {
+        return (
+            <div className="sell-phone-container">
+                <div className="loading-container">
+                    <Loader />
+                    <p className="loading-text">
+                        {isCreating ? "Creating your listing..." : 
+                         isSubmitting ? "Uploading images and creating listing..." :
+                         uploading ? "Uploading images..." : "Processing..."}
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
+            {/* Confirmation modal for form submission */}
             <ConfirmModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onConfirm={handleConfirm}
+                onClose={closeModal}
+                onConfirm={() => handleConfirm(uploadPendingImages, createAction)}
                 title={"Confirm Selling this Phone"}
                 message={"Are you sure you want to sell this phone?"}
             />
+            
+            {/* Main form container */}
             <div className="sell-phone-container">
                 <h2 className="sell-phone-title">Sell Phone</h2>
                 <p className="sell-phone-subtitle">List your phone for sale in our marketplace</p>
-                <form className="sell-phone-form" onSubmit={onFormSubmit}>
+                
+                {/* Phone listing form */}
+                <form className="sell-phone-form" onSubmit={(e) => onFormSubmit(e, images)}>
                     <div className="form-columns-container">
+                        {/* Left column - Basic phone details */}
                         <div className="form-column">
                             <div className="input-group">
                                 <label>Brand:</label>
@@ -150,6 +133,8 @@ export default function AddItem() {
                                 {errors.price && <span className={`error-text ${visibleErrors.price ? "show" : ""}`}>{errors.price}</span>}
                             </div>
                         </div>
+                        
+                        {/* Right column - Additional details and images */}
                         <div className="form-column">
                             <div className="input-group">
                                 <label>Model:</label>
@@ -180,13 +165,17 @@ export default function AddItem() {
                                 />
                                 {errors.images && <span className={`error-text ${visibleErrors.images ? "show" : ""}`}>{errors.images}</span>}
                                 {uploadError && <span className="error-text show">{uploadError}</span>}
+                                
+                                {/* Image preview section */}
                                 <div className="image-preview-list">
+                                    {/* Display uploaded images */}
                                     {images.map((img, idx) => (
                                         <div key={img.url} className="image-preview-item">
                                             <img src={img.url} alt={`Preview ${idx + 1}`} style={{ width: 80, height: 80, objectFit: 'cover' }} />
                                             <button type="button" onClick={() => handleRemoveImage(idx, false)} disabled={uploading}>Remove</button>
                                         </div>
                                     ))}
+                                    {/* Display pending images */}
                                     {pendingImages.map((file, idx) => (
                                         <div key={file.name + idx} className="image-preview-item">
                                             <img src={URL.createObjectURL(file)} alt={`Preview pending ${idx + 1}`} style={{ width: 80, height: 80, objectFit: 'cover' }} />
@@ -202,6 +191,8 @@ export default function AddItem() {
                             </div>
                         </div>
                     </div>
+                    
+                    {/* Form submission button */}
                     <div className="actions">
                         <button
                             type="submit"
