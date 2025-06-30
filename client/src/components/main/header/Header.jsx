@@ -85,7 +85,7 @@ export default function Header() {
                     <li><NavLink to="/about" className={({ isActive }) => isActive ? "active-link" : ""}>About</NavLink></li>
                     
                     {/* Contact page link */}
-                    <li><NavLink to="/contact" className={({ isActive }) => isActive ? "active-link" : ""}>Contact</NavLink></li>
+                    <li><NavLink to="/contacts" className={({ isActive }) => isActive ? "active-link" : ""}>Contacts</NavLink></li>
                     
                     {/* Sell phone link */}
                     <li><NavLink to="/phones/sell" className={({ isActive }) => isActive ? "active-link" : ""}>Sell</NavLink></li>

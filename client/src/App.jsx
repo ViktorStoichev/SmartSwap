@@ -26,6 +26,7 @@ import ScrollToTop from './utils/ScrollToTop';
 import AdminGuard from './guards/AdminGuard';
 import Admin from './components/auth/admin/Admin';
 import AppGate from './utils/AppGate';
+import Contacts from './components/main/contacts/Contacts';
 
 function App() {
 
@@ -72,6 +73,7 @@ function App() {
                             <Route path="/phones" element={<Catalog />} />
                             <Route path="/phones/:id" element={<Details />} />
                             <Route path="/about" element={<About />} />
+                            <Route path="/contacts" element={<Contacts />} />
                             
                             {/* Error handling routes */}
                             <Route path="/404" element={<NotFoundPage />} />
