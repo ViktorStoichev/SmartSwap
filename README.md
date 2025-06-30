@@ -1,75 +1,93 @@
-# SmartSwap
+# 📱 SmartSwap
 
-SmartSwap is a web application designed for users to buy and sell second-hand smartphones easily. The platform allows users to create listings, browse available devices, comment on listings, like phones, and view other users' profiles. The application is built using **React** for the frontend and **Firebase** for authentication and data storage.
+SmartSwap is a full-featured React & Firebase application that enables users to **buy and sell second-hand phones** directly with each other. The app provides a smooth, interactive, and secure experience, including posts management, user communication, real-time chat, image uploads, and an admin approval system.
 
-## Features
+---
 
-- **User Authentication:** Users can register and log in using Firebase Authentication.
-- **Phone Listings:** Users can add, edit, and delete their smartphone listings.
-- **Image Support:** Users can add images to their listings via URLs.
-- **Like System:** Users can like and dislike phone listings.
-- **Comments:** Users can leave comments on listings.
-- **User Profiles:** Users can view other users' profiles and their listed devices.
-- **Responsive Design:** The app is optimized for mobile and desktop use.
+## ✨ Features
 
-## Technologies Used
+### 🔥 User functionalities
 
-- **Frontend:** React, React Router
-- **Backend & Database:** Firebase (Firestore, Authentication)
-- **Styling:** CSS (or Tailwind, if applicable)
-- **State Management:** useState, useEffect, useContext
+- **Create, edit, and delete posts** about phones for sale.
+- Upload multiple images per post, which are displayed as a **carousel** on the post details page.
+- **Like and comment** on other users' posts.
+- **View and manage your own profile**, including:
+  - Your posted phones
+  - Your liked posts
+  - Your pending posts waiting for admin approval
+- **Browse other users' profiles** to see what else they are offering.
 
-## Installation & Setup
+---
 
-To run SmartSwap locally, follow these steps:
+### 💬 Real-time chat
 
-### Prerequisites
-- Node.js (>=16.x)
-- npm
+- Users can send **instant messages** to each other using a built-in real-time chat system.
+- Messages are delivered immediately without refreshing the page.
 
-### Steps
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/your-username/smartswap.git
-   cd client
-   ```
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-3. **Start the development server:**
-   ```bash
-   npm run dev
-   ```
+---
 
-## How the App Works
+### 🔎 Advanced browsing
 
-### User Experience
-- Upon opening the app, visitors can see available phone listings but cannot interact with them.
-- To add a listing, like a phone, or leave a comment, users must register and log in.
-- The home page displays all available phones, with sorting and filtering options.
-- Clicking on a phone listing shows details, including price, description, owner, and comments.
-- Users can edit or delete their own listings but cannot modify others' listings.
-- Each user has a profile page displaying their listed devices and basic information.
+- **Search bar in the header** to easily find phones by keywords.
+- **Filtering options** on the main phones page to filter by specific criteria (e.g., brand, condition, price).
+- **Pagination system** to prevent endless scrolling and improve user experience.
 
-### Posting a Phone for Sale
-1. Navigate to "Sell Phone" and fill out the form with details (brand, model, price, description, image URL).
-2. Submit the listing, which will be added to the marketplace.
+---
 
-### Interacting with Listings
-- **Like** a phone to show interest.
-- **Comment** on a listing to ask questions or negotiate.
-- **View the seller's profile** to see all their listings.
+### 🛡️ Data validation & security
 
-### Managing Listings
-- Users can **edit** their own listings to update information.
-- Users can **delete** their listings if the phone is no longer available.
+- Custom validations when creating posts or registering accounts to ensure data quality.
+- **Profanity filtering** using [leo-profanity](https://github.com/jojoee/leo-profanity) to prevent offensive content.
+- Posts are not publicly visible until **approved by an admin**.
 
-## Deployment
+---
 
-## Future Enhancements
-- Image upload via Firebase Storage instead of URLs.
-- Chat functionality for buyers and sellers.
-- Enhanced search and filtering options.
+### 👨‍💻 Admin system
 
-## License
+- Admins can **review, approve, or reject** each newly submitted phone listing.
+- Pending posts remain in the user's profile under a "Pending" section until approved.
+- Prevents inappropriate or malicious content from appearing on the site.
+
+---
+
+### 🌐 Responsive design
+
+- Fully responsive and optimized for **mobile phones, tablets, laptops, and desktops**.
+
+---
+
+## ⚙️ Tech stack
+
+### Frontend
+
+- **React** (with hooks and functional components)
+- **React Router** for navigation
+- CSS modules (or plain CSS) for styling
+- Custom hooks and context for global state management (if used)
+
+### Backend
+
+- **Firebase**:
+  - Firestore (database)
+  - Firebase Authentication
+  - Real-time database features for chat
+- **Node.js + Express.js**:
+  - Server for handling image uploads
+  - Saving files to **Cloudinary**
+  - Storing image URLs back to Firebase
+
+### Cloud services
+
+- **Cloudinary** for image hosting and transformation
+
+---
+
+## 🖼️ Image uploads
+
+- Users can upload multiple images (stored in Cloudinary).
+- Images are resized automatically and optimized for performance.
+- Image links are saved in Firebase and displayed using a carousel on the post details page.
+
+---
+
+## 🧑‍💻 Access to the application
