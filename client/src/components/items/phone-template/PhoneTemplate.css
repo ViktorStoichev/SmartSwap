@@ -117,7 +117,7 @@
 /* Responsive styles for phones */
 @media (max-width: 37.5em) {
     .product-card {
-        min-height: 14rem;
+        max-height: 25rem;
         padding: 1rem;
     }
     .image-wrapper {

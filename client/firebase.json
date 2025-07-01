@@ -8,19 +8,8 @@
     ],
     "rewrites": [
       {
-        "source": "/**",
+        "source": "**",
         "destination": "/index.html"
-      }
-    ],
-    "headers": [
-      {
-        "source": "/src/**/*.jsx",
-        "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript"
-          }
-        ]
       }
     ]
   }

@@ -88,7 +88,9 @@ export default function Header() {
                     <li><NavLink to="/contacts" className={({ isActive }) => isActive ? "active-link" : ""}>Contacts</NavLink></li>
                     
                     {/* Sell phone link */}
-                    <li><NavLink to="/phones/sell" className={({ isActive }) => isActive ? "active-link" : ""}>Sell</NavLink></li>
+                    {user && (
+                    <li><NavLink to="/phones/sell" className={({ isActive }) => isActive ? "active-link green-link" : "green-link"}>Sell</NavLink></li>
+                    )}
                 </ul>
             </nav>
         </header>

@@ -51,7 +51,7 @@ export default function Home() {
             <h2>Latest Listings</h2>
 
             {/* Products grid with conditional rendering */}
-            <div className="products-grid">
+            <div className="home-products-grid">
                 {isLoading ? (
                     // Show loader while data is being fetched
                     <Loader />

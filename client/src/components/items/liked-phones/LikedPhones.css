@@ -94,7 +94,7 @@
     }
 
     .liked-phones-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr)!important;
         gap: 1.5rem;
     }
 }
@@ -118,8 +118,8 @@
         margin-bottom: 1rem;
     }
     .liked-phones-grid {
-        grid-template-columns: 1fr;
-        gap: 0.7rem;
+        grid-template-columns: repeat(2, 1fr)!important;
+        gap: 2rem;
         margin-top: 1rem;
     }
     .empty-state {
@@ -162,8 +162,8 @@
         margin-bottom: 1.2rem;
     }
     .liked-phones-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr)!important;
+        gap: 2rem;
         margin-top: 1.2rem;
     }
     .empty-state {

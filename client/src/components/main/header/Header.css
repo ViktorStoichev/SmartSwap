@@ -73,17 +73,17 @@ header>nav>ul>li>a:active {
     background-color: #d3e0f0;
 }
 
-.main-links li:last-child a {
+.main-links .green-link {
     padding: 0.5rem 2rem;
     background-color: green;
     color: white;
 }
 
-.main-links li:last-child a:hover {
+.main-links .green-link:hover {
     background-color: rgb(0, 122, 0);
 }
 
-.main-links li:last-child a:active {
+.main-links .green-link:active {
     background-color: rgb(0, 165, 0);
 }
 

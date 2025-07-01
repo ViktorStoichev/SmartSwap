@@ -216,7 +216,7 @@
 @media (max-width: 37.5em) {
     .chat-list {
         width: 95%;
-        height: 100vh;
+        height: 60vh;
         margin: 0;
     }
     .chat-list-header {

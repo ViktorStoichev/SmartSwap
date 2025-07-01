@@ -7,7 +7,7 @@
 }
 
 html {
-  font-size: clamp(8px, 2vw, 14px);
+  font-size: clamp(10px, 2vw, 14px);
   line-height: 1.5;
   font-family: Arial, sans-serif;
   -webkit-text-size-adjust: 100%;

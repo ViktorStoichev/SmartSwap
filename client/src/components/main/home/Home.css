@@ -85,7 +85,7 @@
     border-radius: 2px;
 }
 
-.products-grid {
+.home-products-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
@@ -189,10 +189,14 @@
         margin: 2rem 0 1.5rem;
     }
 
-    .products-grid {
+    .home-products-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
         margin: 1.5rem 0;
+    }
+
+    .home-products-grid .product-card {
+        max-height: 50rem!important;
     }
 
     .browse-btn {
@@ -234,8 +238,8 @@
         margin: 2.5rem 0 1.8rem;
     }
 
-    .products-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .home-products-grid {
+        grid-template-columns: 1fr;
         gap: 1.8rem;
     }
 
