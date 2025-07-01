@@ -63,7 +63,7 @@ SmartSwap is a full-featured React & Firebase application that enables users to 
 - **React** (with hooks and functional components)
 - **React Router** for navigation
 - CSS modules (or plain CSS) for styling
-- Custom hooks and context for global state management (if used)
+- Custom hooks and context for global state management
 
 ### Backend
 
@@ -91,3 +91,5 @@ SmartSwap is a full-featured React & Firebase application that enables users to 
 ---
 
 ## 🧑‍💻 Access to the application
+
+- https://thrift-shop-686da.web.app/
