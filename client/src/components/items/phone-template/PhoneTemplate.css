@@ -127,12 +127,15 @@
     .product-info {
         padding: 0.5rem;
     }
+    .product-image {
+        object-fit: contain;
+    }
     .product-name {
         font-size: 1.2rem;
         margin-bottom: 0.15rem;
     }
     .product-specs {
-        font-size: 1.15rem;
+        font-size: 1rem;
         margin-bottom: 0.3rem;
     }
     .product-details {

@@ -270,7 +270,7 @@
     }
     .products-grid {
         grid-template-columns: repeat(2, 1fr)!important; 
-        gap: 2rem;
+        gap: 1.5rem;
     }
     .pagination {
         gap: 0.2rem;
@@ -334,7 +334,7 @@
     }
     .products-grid {
         grid-template-columns: repeat(2, 1fr)!important;
-        gap: 2rem;
+        gap: 1.5rem;
     }
     .pagination {
         gap: 0.3rem;

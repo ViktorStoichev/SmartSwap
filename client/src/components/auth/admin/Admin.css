@@ -81,7 +81,7 @@
     }
     .admin-phones-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
+        gap: 1.5rem;
         padding: 0.3rem;
     }
     .no-pending {
@@ -120,7 +120,7 @@
     }
     .admin-phones-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
+        gap: 1.5rem;
         padding: 0.5rem;
     }
     .no-pending {

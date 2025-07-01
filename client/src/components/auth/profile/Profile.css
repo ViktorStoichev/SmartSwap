@@ -251,8 +251,8 @@
         font-size: 0.95rem;
     }
     .posts-grid {
-        grid-template-columns: 1fr;
-        gap: 0.7rem;
+        grid-template-columns: repeat(2, 1fr)!important;
+        gap: 1.5rem;
         margin-top: 1rem;
     }
     .post-image {
@@ -333,8 +333,8 @@
         font-size: 1rem;
     }
     .posts-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr)!important;
+        gap: 1.5rem;
         margin-top: 1.2rem;
     }
     .post-image {
