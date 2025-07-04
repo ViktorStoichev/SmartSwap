@@ -13,11 +13,13 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
-  background-color: #DBE6F3;
+  background: #edf7f2;
+  background: radial-gradient(circle, rgba(237, 247, 242, 1) 65%, rgba(86, 164, 172, 1) 100%);
   color: #0F2B31;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -26,7 +28,10 @@ a {
   color: inherit;
 }
 
-button, input, textarea, select {
+button,
+input,
+textarea,
+select {
   font: inherit;
   border: none;
   background: none;
