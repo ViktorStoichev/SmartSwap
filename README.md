@@ -93,3 +93,11 @@ SmartSwap is a full-featured React & Firebase application that enables users to 
 ## 🧑‍💻 Access to the application
 
 - https://thrift-shop-686da.web.app/
+
+## Getting Started (Local Development)
+
+```bash
+cd client
+npm install
+npm run dev
+```
