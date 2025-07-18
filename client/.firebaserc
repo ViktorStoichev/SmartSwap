@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "thrift-shop-686da"
-  }
+    "default": "thrift-shop-686da",
+    "smartswap": "thrift-shop-686da"
+  },
+  "targets": {},
+  "etags": {}
 }
