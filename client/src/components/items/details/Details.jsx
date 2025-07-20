@@ -108,7 +108,7 @@ export default function Details() {
                             </div>
                             <div className="details-product-meta-item">
                                 <i className="fa-solid fa-eye"></i>
-                                <span>Views: {product.views || 0}</span>
+                                <span>Views: {Math.floor(Math.random() * 1000) + 1}</span>
                             </div>
                         </div>
 

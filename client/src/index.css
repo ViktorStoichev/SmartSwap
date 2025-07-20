@@ -13,11 +13,13 @@ html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
-  background-color: #DBE6F3;
+  /* Detailed blue and white gradient background */
+  background: linear-gradient(120deg, #f8fbff 0%, #e3f0ff 30%, #b3d8fd 60%, #7ecbfa 85%, #e3f0ff 100%);
   color: #0F2B31;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -26,7 +28,10 @@ a {
   color: inherit;
 }
 
-button, input, textarea, select {
+button,
+input,
+textarea,
+select {
   font: inherit;
   border: none;
   background: none;
