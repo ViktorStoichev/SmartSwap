@@ -2,7 +2,7 @@
 // Manages phone listing editing process, data fetching, and form state
 // Handles authorization checks, data loading, and submission of edited phone data
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { getOnePhone } from "../../services/get-phones-services/getOnePhone";
@@ -79,19 +79,18 @@ export const useEdit = () => {
         }
     }, [id, navigate, user]);
 
-    // Handle form input changes
-    const handleEditChange = (e) => {
+    // Memoized handler for input changes
+    const handleEditChange = useCallback((e) => {
         const { name, value } = e.target;
         setEditedProduct((prev) => ({
             ...prev,
             [name]: value,
         }));
-    };
+    }, []);
 
-    // Handle form submission with updated phone data
-    const handleEditSubmit = async (imagesArg) => {
+    // Memoized handler for form submission
+    const handleEditSubmit = useCallback(async (imagesArg) => {
         setIsEditing(true);
-        
         try {
             // Prepare updated product data
             const updatedProduct = {
@@ -112,7 +111,7 @@ export const useEdit = () => {
         } finally {
             setIsEditing(false);
         }
-    };
+    }, [editedProduct, id, navigate]);
 
     // Return form state and handler functions
     return { editedProduct, handleEditChange, handleEditSubmit, isEditing };

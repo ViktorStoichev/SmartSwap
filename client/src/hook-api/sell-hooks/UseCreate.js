@@ -2,7 +2,7 @@
 // Manages phone listing creation process and data preparation
 // Handles form data processing, metadata addition, and navigation after creation
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import formatDate from "../../utils/formatDate";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ export const useCreate = () => {
     const [isCreating, setIsCreating] = useState(false);
 
     // Main function to create a new phone listing
-    const createAction = async (formData) => {
+    const createAction = useCallback(async (formData) => {
         setIsCreating(true);
         
         try {
@@ -59,7 +59,7 @@ export const useCreate = () => {
         } finally {
             setIsCreating(false);
         }
-    };
+    }, [navigate, user]);
 
     // Return the create action function and loading state
     return { createAction, isCreating };

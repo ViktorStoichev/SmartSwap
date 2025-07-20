@@ -1,3 +1,4 @@
+import React, { useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
 import { useRegister } from "../../../hook-api/auth-hooks/UseRegister";
@@ -15,6 +16,11 @@ const Register = () => {
         handleInputChange, 
         isFormValid 
     } = useRegister();
+
+    // Memoize the checkbox handler to avoid unnecessary re-renders
+    const handleTermsChange = useCallback((e) => {
+        setTermsAgreed(e.target.checked);
+    }, [setTermsAgreed]);
 
     return (
         <div className="register-container">
@@ -127,7 +133,7 @@ const Register = () => {
                             type="checkbox" 
                             required 
                             checked={termsAgreed}
-                            onChange={(e) => setTermsAgreed(e.target.checked)}
+                            onChange={handleTermsChange}
                         />
                         <span>I agree to the <Link to="/terms">Terms of Service</Link> and <Link to="/privacy">Privacy Policy</Link></span>
                     </label>
@@ -152,4 +158,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default React.memo(Register);

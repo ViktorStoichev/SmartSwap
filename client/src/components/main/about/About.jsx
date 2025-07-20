@@ -1,10 +1,11 @@
 // About Page Component
 // Displays information about SmartSwap platform, mission, and features
 
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import './About.css';
 
-export default function About() {
+function About() {
     // Hook for programmatic navigation back to home
     const navigate = useNavigate();
 
@@ -99,4 +100,6 @@ export default function About() {
             </div>
         </div>
     );
-};
+}
+
+export default React.memo(About);

@@ -40,7 +40,7 @@ export const useChatList = () => {
     }, [fetchChats]);
 
     // Format last message time for display
-    const formatLastMessageTime = (timestamp) => {
+    const formatLastMessageTime = useCallback((timestamp) => {
         if (!timestamp) return '';
         
         // Convert timestamp to Date object
@@ -60,7 +60,7 @@ export const useChatList = () => {
         else {
             return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
         }
-    };
+    }, []);
 
     // Filter chats based on search term
     const filteredChats = useMemo(() => {
@@ -73,14 +73,14 @@ export const useChatList = () => {
     }, [chats, searchTerm]);
 
     // Handle search input changes
-    const handleSearchChange = (e) => {
+    const handleSearchChange = useCallback((e) => {
         setSearchTerm(e.target.value);
-    };
+    }, []);
 
     // Refresh chat list
-    const refreshChats = () => {
+    const refreshChats = useCallback(() => {
         fetchChats();
-    };
+    }, [fetchChats]);
 
     // Return all state values and handlers for the component to use
     return {
@@ -97,4 +97,4 @@ export const useChatList = () => {
         handleSearchChange,
         refreshChats
     };
-}; 
+};

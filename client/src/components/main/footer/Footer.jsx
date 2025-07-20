@@ -1,10 +1,11 @@
 // Footer Component
 // Site-wide footer with navigation links, contact information, and social media
 
+import React from "react";
 import './Footer.css'
 import { Link } from 'react-router-dom';
 
-export default function Footer() {
+function Footer() {
     return (
         <footer className="footer">
             {/* Main footer content with multiple sections */}
@@ -65,3 +66,5 @@ export default function Footer() {
         </footer>
     );
 }
+
+export default React.memo(Footer);

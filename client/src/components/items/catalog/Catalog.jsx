@@ -1,3 +1,4 @@
+import React, { useMemo, useCallback } from "react";
 import Loader from "../../main/loader/Loader.jsx";
 import './Catalog.css'
 import { usePhones } from "../../../hook-api/phones-hooks/UsePhones.js";
@@ -6,7 +7,7 @@ import { useCatalogFilters } from "../../../hook-api/phones-hooks/UseCatalogFilt
 import PhoneTemplate from "../phone-template/PhoneTemplate.jsx";
 import Pagination from "./Pagination.jsx";
 
-export default function Catalog() {
+function Catalog() {
     // Get phone data and filtering functionality from the main hook
     const { 
         filteredProducts, 
@@ -41,6 +42,38 @@ export default function Catalog() {
         handlePriceRangeChange
     } = useCatalogFilters(handleFilter, resetToFirstPage);
 
+    // Memoize filter option lists
+    const brandOptions = useMemo(() => brands.map((brand) => (
+        <option key={brand} value={brand}>
+            {brand}
+        </option>
+    )), [brands]);
+
+    const colorOptions = useMemo(() => colors.map((color) => (
+        <option key={color} value={color}>
+            {color}
+        </option>
+    )), [colors]);
+
+    const memoryOptions = useMemo(() => memories.map((memory) => (
+        <option key={memory} value={memory}>
+            {memory}
+        </option>
+    )), [memories]);
+
+    // Memoize filter change handlers
+    const onBrandChange = useCallback((e) => handleBrandChange(e.target.value), [handleBrandChange]);
+    const onColorChange = useCallback((e) => handleColorChange(e.target.value), [handleColorChange]);
+    const onMemoryChange = useCallback((e) => handleMemoryChange(e.target.value), [handleMemoryChange]);
+    const onPriceRangeChange = useCallback((e) => handlePriceRangeChange(e.target.value), [handlePriceRangeChange]);
+
+    // Memoize rendered phone templates
+    const renderedPhones = useMemo(() => (
+        currentItems.map((phone) => (
+            <PhoneTemplate key={phone._id} phone={phone} />
+        ))
+    ), [currentItems]);
+
     return (
         <div className="products-container">
             {/* Catalog header with title and statistics */}
@@ -71,49 +104,37 @@ export default function Catalog() {
                     {/* Brand filter dropdown */}
                     <select 
                         value={selectedBrand} 
-                        onChange={(e) => handleBrandChange(e.target.value)}
+                        onChange={onBrandChange}
                         className="brand-select"
                     >
                         <option value="">All Brands</option>
-                        {brands.map((brand) => (
-                            <option key={brand} value={brand}>
-                                {brand}
-                            </option>
-                        ))}
+                        {brandOptions}
                     </select>
 
                     {/* Color filter dropdown */}
                     <select 
                         value={selectedColor} 
-                        onChange={(e) => handleColorChange(e.target.value)}
+                        onChange={onColorChange}
                         className="brand-select"
                     >
                         <option value="">All Colors</option>
-                        {colors.map((color) => (
-                            <option key={color} value={color}>
-                                {color}
-                            </option>
-                        ))}
+                        {colorOptions}
                     </select>
 
                     {/* Memory filter dropdown */}
                     <select 
                         value={selectedMemory} 
-                        onChange={(e) => handleMemoryChange(e.target.value)}
+                        onChange={onMemoryChange}
                         className="brand-select"
                     >
                         <option value="">All Memory Options</option>
-                        {memories.map((memory) => (
-                            <option key={memory} value={memory}>
-                                {memory}
-                            </option>
-                        ))}
+                        {memoryOptions}
                     </select>
 
                     {/* Price range filter dropdown */}
                     <select 
                         value={selectedPriceRange} 
-                        onChange={(e) => handlePriceRangeChange(e.target.value)}
+                        onChange={onPriceRangeChange}
                         className="brand-select"
                     >
                         <option value="">All Prices</option>
@@ -134,9 +155,7 @@ export default function Catalog() {
                             <Loader />
                         ) : currentItems.length > 0 ? (
                             /* Render phone templates for current page */
-                            currentItems.map((phone) => (
-                                <PhoneTemplate key={phone._id} phone={phone} />
-                            ))
+                            renderedPhones
                         ) : (
                             /* Empty state when no products found */
                             <div className="no-products">
@@ -163,3 +182,5 @@ export default function Catalog() {
         </div>
     );
 }
+
+export default React.memo(Catalog);

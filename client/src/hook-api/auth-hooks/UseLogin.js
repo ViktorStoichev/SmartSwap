@@ -1,6 +1,6 @@
 // Custom hook for handling user login with complete form state management
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { logUser } from "../../services/auth-services/logUser";
 
@@ -21,7 +21,7 @@ export const useLogin = () => {
     const navigate = useNavigate();
 
     // Handle complete login process including form submission and navigation
-    const handleLogin = async (e) => {
+    const handleLogin = useCallback(async (e) => {
         // Prevent default form submission behavior
         e.preventDefault();
 
@@ -38,7 +38,7 @@ export const useLogin = () => {
             // Set error message for failed login attempts
             setError("Wrong email or password!");
         }
-    };
+    }, [email, password, navigate]);
 
     // Return all state values and handlers for the component to use
     return { 

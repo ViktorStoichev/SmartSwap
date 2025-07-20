@@ -1,6 +1,6 @@
 // Custom hook for handling user permissions and access control
 
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const useDetailsPermissions = (user, product) => {
@@ -28,13 +28,13 @@ export const useDetailsPermissions = (user, product) => {
     }, [user, product]);
 
     // Redirect if user doesn't have permission to view
-    const checkViewPermission = () => {
+    const checkViewPermission = useCallback(() => {
         if (!permissions.canView) {
             navigate('/phones');
             return false;
         }
         return true;
-    };
+    }, [permissions.canView, navigate]);
 
     // Return permissions and permission checking function
     return {
@@ -44,4 +44,4 @@ export const useDetailsPermissions = (user, product) => {
         // Permission checking function
         checkViewPermission
     };
-}; 
+};

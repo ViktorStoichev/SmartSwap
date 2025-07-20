@@ -1,5 +1,6 @@
 // Profile component for displaying user information and phone listings
 
+import React, { useMemo } from 'react';
 import './Profile.css';
 import { useParams } from 'react-router-dom';
 import UseProfile from '../../../hook-api/auth-hooks/UseProfile';
@@ -12,6 +13,23 @@ const Profile = () => {
     
     // Get user data and posts from custom hook
     const { user, pendingPosts, approvedPosts, loading } = UseProfile(id);
+
+    // Memoize the rendered pending posts
+    const renderedPendingPosts = useMemo(() => (
+        pendingPosts.map(post => (
+            <div key={post.id} className="phone-card pending">
+                <PhoneTemplate phone={post} />
+                <div className="pending-badge">Pending Approval</div>
+            </div>
+        ))
+    ), [pendingPosts]);
+
+    // Memoize the rendered approved posts
+    const renderedApprovedPosts = useMemo(() => (
+        approvedPosts.map(post => (
+            <PhoneTemplate key={post.id} phone={post} />
+        ))
+    ), [approvedPosts]);
 
     // Show loading spinner while fetching data
     if (loading || !user) return <Loader />;
@@ -58,12 +76,7 @@ const Profile = () => {
                     </div>
                     {/* Grid of pending phone cards with approval badges */}
                     <div className="posts-grid">
-                        {pendingPosts.map(post => (
-                            <div key={post.id} className="phone-card pending">
-                                <PhoneTemplate phone={post} />
-                                <div className="pending-badge">Pending Approval</div>
-                            </div>
-                        ))}
+                        {renderedPendingPosts}
                     </div>
                 </div>
             )}
@@ -83,9 +96,7 @@ const Profile = () => {
                 {/* Render approved posts grid or empty state message */}
                 {approvedPosts.length > 0 ? (
                     <div className="posts-grid">
-                        {approvedPosts.map(post => (
-                            <PhoneTemplate key={post.id} phone={post} />
-                        ))}
+                        {renderedApprovedPosts}
                     </div>
                 ) : (
                     <div className="no-posts">

@@ -1,10 +1,11 @@
 // 404 Not Found Page Component
 // Displays a user-friendly error page when users navigate to non-existent routes
 
+import React from "react";
 import './404.css';
 import { useNavigate } from "react-router-dom";
 
-export default function NotFoundPage() {
+function NotFoundPage() {
   // Hook for programmatic navigation back to home
   const navigate = useNavigate();
 
@@ -39,4 +40,6 @@ export default function NotFoundPage() {
       </div>
     </div>
   );
-};
+}
+
+export default React.memo(NotFoundPage);

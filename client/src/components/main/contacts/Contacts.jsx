@@ -1,10 +1,11 @@
 // Contacts Page Component
 // Displays contact information and ways to reach SmartSwap support
 
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import './Contacts.css';
 
-export default function Contacts() {
+function Contacts() {
     // Hook for programmatic navigation back to home
     const navigate = useNavigate();
 
@@ -66,4 +67,6 @@ export default function Contacts() {
             </div>
         </div>
     );
-} 
+}
+
+export default React.memo(Contacts);

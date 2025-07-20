@@ -1,9 +1,10 @@
 // PhoneTemplate component for displaying individual phone cards in grids and lists
 
+import React from "react";
 import { Link } from "react-router-dom";
 import './PhoneTemplate.css';
 
-export default function PhoneTemplate({ phone }) {
+function PhoneTemplate({ phone }) {
     // Initialize image URL variable
     let imageUrl = null;
 
@@ -57,3 +58,5 @@ export default function PhoneTemplate({ phone }) {
         </Link>
     );
 }
+
+export default React.memo(PhoneTemplate);

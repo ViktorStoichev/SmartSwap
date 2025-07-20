@@ -2,7 +2,7 @@
 // Manages individual phone listing details, interactions, and state
 // Handles likes, comments, deletion, and data fetching for phone details page
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import formatDate from "../../utils/formatDate";
@@ -56,7 +56,7 @@ export const usePhone = () => {
     }, [phoneId]);
 
     // Handle like/unlike functionality
-    const handleLike = async () => {
+    const handleLike = useCallback(async () => {
         // Return early if user is not authenticated
         if (!user) return;
 
@@ -71,10 +71,10 @@ export const usePhone = () => {
             ...prev,
             likes: isLiked ? prev.likes.filter((uid) => uid !== user.uid) : [...prev.likes, user.uid],
         }));
-    };
+    }, [user, phoneId, product]);
 
     // Handle comment submission
-    const handleCommentSubmit = async () => {
+    const handleCommentSubmit = useCallback(async () => {
         // Return early if user is not authenticated or comment is empty
         if (!user || !comment.trim()) return;
 
@@ -98,10 +98,10 @@ export const usePhone = () => {
         
         // Clear comment input field
         setComment("");
-    };
+    }, [user, comment, phoneId]);
 
     // Handle phone deletion
-    const handleDelete = async () => {
+    const handleDelete = useCallback(async () => {
         setIsDeleting(true);
         
         try {
@@ -120,7 +120,7 @@ export const usePhone = () => {
         } finally {
             setIsDeleting(false);
         }
-    };
+    }, [phoneId, product, navigate]);
 
     // Return phone data and interaction handlers
     return {

@@ -1,5 +1,6 @@
 // Admin component for reviewing pending phone listings
 
+import React, { useMemo } from 'react';
 import UseAdminPhones from '../../../hook-api/auth-hooks/UseAdminPhones';
 import Loader from '../../main/loader/Loader';
 import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
@@ -8,6 +9,13 @@ import './Admin.css';
 const Admin = () => {
     // Get pending phones and loading state from custom hook
     const { pendingPhones, loading } = UseAdminPhones();
+
+    // Memoize the rendered phone list to avoid unnecessary re-renders
+    const renderedPhones = useMemo(() => (
+        pendingPhones.map(phone => (
+            <PhoneTemplate key={phone._id} phone={phone} />
+        ))
+    ), [pendingPhones]);
 
     // Show loading spinner while fetching data
     if (loading) return <Loader />;
@@ -29,9 +37,7 @@ const Admin = () => {
             {pendingPhones.length > 0 ? (
                 <div className="admin-phones-grid">
                     {/* Map through pending phones and render each as a phone template */}
-                    {pendingPhones.map(phone => (
-                        <PhoneTemplate key={phone._id} phone={phone} />
-                    ))}
+                    {renderedPhones}
                 </div>
             ) : (
                 <div className="no-pending">
@@ -44,4 +50,4 @@ const Admin = () => {
     );
 };
 
-export default Admin; 
+export default React.memo(Admin);

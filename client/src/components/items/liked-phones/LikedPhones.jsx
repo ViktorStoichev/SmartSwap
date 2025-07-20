@@ -1,5 +1,6 @@
 // LikedPhones component for displaying user's favorite phone listings
 
+import React, { useMemo } from "react";
 import "./LikedPhones.css";
 import { useAuth } from "../../../contexts/AuthContext";
 import { usePhones } from "../../../hook-api/phones-hooks/UsePhones";
@@ -7,7 +8,7 @@ import PhoneTemplate from "../phone-template/PhoneTemplate";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../main/loader/Loader";
 
-export default function LikedPhones() {
+function LikedPhones() {
     // Get current user from authentication context
     const { user } = useAuth();
     
@@ -16,6 +17,14 @@ export default function LikedPhones() {
     
     // React Router navigation hook for redirecting to catalog
     const navigate = useNavigate();
+
+    // Memoize rendered liked phones
+    const renderedLikedPhones = useMemo(() =>
+        likedPhones.map(phone => (
+            <PhoneTemplate key={phone._id} phone={phone} />
+        )),
+        [likedPhones]
+    );
 
     // Show loading spinner while fetching liked phones data
     if (isLoading) {
@@ -34,28 +43,23 @@ export default function LikedPhones() {
                 </p>
             </div>
 
-            {/* Conditional rendering based on whether user has liked phones */}
-            {likedPhones.length < 1 ? (
-                /* Empty state when no phones are liked */
-                <div className="empty-state">
-                    <i className="fa-solid fa-heart"></i>
-                    <h3>No Favorites Yet</h3>
-                    <p>Browse our catalog and add phones to your favorites to keep track of the ones you love!</p>
-                    <button 
-                        className="browse-button"
-                        onClick={() => navigate("/phones")}
-                    >
-                        Browse Phones
-                    </button>
+            {/* Grid of liked phones or empty state */}
+            {likedPhones.length > 0 ? (
+                <div className="liked-phones-grid">
+                    {renderedLikedPhones}
                 </div>
             ) : (
-                /* Grid display of liked phones */
-                <div className="liked-phones-grid">
-                    {likedPhones.map((phone) => (
-                        <PhoneTemplate phone={phone} key={phone._id} />
-                    ))}
+                <div className="empty-state">
+                    <i className="fa-solid fa-heart-crack"></i>
+                    <h3>No Favorites Yet</h3>
+                    <p>Browse our catalog and add phones to your favorites!</p>
+                    <button className="browse-button" onClick={() => navigate("/phones")}>
+                        Browse Phones
+                    </button>
                 </div>
             )}
         </div>
     );
-};
+}
+
+export default React.memo(LikedPhones);

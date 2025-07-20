@@ -1,6 +1,6 @@
 // Custom hook for handling image carousel functionality
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { parseProductImages, calculateMaxImages, getPreviousImage, getNextImage } from '../../services/image-services/imageCarouselService';
 
 export const useImageCarousel = (productImages) => {
@@ -18,14 +18,14 @@ export const useImageCarousel = (productImages) => {
     }, [images]);
 
     // Navigate to previous image
-    const handlePrev = () => {
+    const handlePrev = useCallback(() => {
         setCurrentImage((prev) => getPreviousImage(prev, maxImages));
-    };
+    }, [maxImages]);
 
     // Navigate to next image
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         setCurrentImage((prev) => getNextImage(prev, maxImages));
-    };
+    }, [maxImages]);
 
     // Return carousel data and handlers
     return {
@@ -38,4 +38,4 @@ export const useImageCarousel = (productImages) => {
         handlePrev,
         handleNext
     };
-}; 
+};

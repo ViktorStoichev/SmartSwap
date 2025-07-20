@@ -2,7 +2,7 @@
 // Manages phone catalog data, filtering, search, and user interactions
 // Handles data fetching, filtering logic, search functionality, and liked phones tracking
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { getAllPhones } from "../../services/get-phones-services/getAllPhones";
 import { useSearchParams } from "react-router-dom";
 
@@ -87,7 +87,42 @@ export const usePhones = (user = {}) => {
         return () => {
             isMounted = false;
         }
-    }, []);
+    }, [user.uid]);
+
+    // Memoize applyFilters to avoid unnecessary re-creations
+    const applyFilters = useCallback((filters) => {
+        let filtered = [...products];
+        if (filters.brand) {
+            filtered = filtered.filter(product => product.brand === filters.brand);
+        }
+        if (filters.color) {
+            filtered = filtered.filter(product => product.color === filters.color);
+        }
+        if (filters.memory) {
+            filtered = filtered.filter(product => product.memory === filters.memory);
+        }
+        if (filters.quality) {
+            filtered = filtered.filter(product => product.quality === filters.quality);
+        }
+        if (filters.priceRange) {
+            const [min, max] = filters.priceRange.split('-').map(Number);
+            filtered = filtered.filter(product => {
+                const price = Number(product.price);
+                return price >= min && price <= max;
+            });
+        }
+        setFilteredProducts(filtered);
+    }, [products]);
+
+    // Memoize handleFilter to avoid unnecessary re-creations
+    const handleFilter = useCallback((type, value) => {
+        const newFilters = {
+            ...activeFilters,
+            [type]: value
+        };
+        setActiveFilters(newFilters);
+        applyFilters(newFilters);
+    }, [activeFilters, applyFilters]);
 
     // Handle search and filtering based on URL parameters and product changes
     useEffect(() => {
@@ -107,56 +142,7 @@ export const usePhones = (user = {}) => {
             // Apply active filters when no search query is present
             applyFilters(activeFilters);
         }
-    }, [searchParams, products]);
-
-    // Apply multiple filters to the products
-    const applyFilters = (filters) => {
-        let filtered = [...products];
-
-        // Filter by brand
-        if (filters.brand) {
-            filtered = filtered.filter(product => product.brand === filters.brand);
-        }
-        
-        // Filter by color
-        if (filters.color) {
-            filtered = filtered.filter(product => product.color === filters.color);
-        }
-        
-        // Filter by memory capacity
-        if (filters.memory) {
-            filtered = filtered.filter(product => product.memory === filters.memory);
-        }
-        
-        // Filter by quality condition
-        if (filters.quality) {
-            filtered = filtered.filter(product => product.quality === filters.quality);
-        }
-        
-        // Filter by price range (min-max format)
-        if (filters.priceRange) {
-            const [min, max] = filters.priceRange.split('-').map(Number);
-            filtered = filtered.filter(product => {
-                const price = Number(product.price);
-                return price >= min && price <= max;
-            });
-        }
-
-        setFilteredProducts(filtered);
-    };
-
-    // Handle individual filter changes
-    const handleFilter = (type, value) => {
-        // Update active filters with new selection
-        const newFilters = {
-            ...activeFilters,
-            [type]: value
-        };
-        setActiveFilters(newFilters);
-
-        // Apply all active filters to update results
-        applyFilters(newFilters);
-    };
+    }, [searchParams, products, activeFilters, applyFilters]);
 
     // Return filtered data, filter options, and handler functions
     return { 

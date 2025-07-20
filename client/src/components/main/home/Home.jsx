@@ -1,13 +1,14 @@
 // Home Page Component
 // Landing page that showcases SmartSwap platform and displays latest phone listings
 
+import React from "react";
 import { Link } from 'react-router-dom';
 import './Home.css'
 import Loader from '../loader/Loader';
 import { usePhones } from '../../../hook-api/phones-hooks/UsePhones';
 import PhoneTemplate from '../../items/phone-template/PhoneTemplate';
 
-export default function Home() {
+function Home() {
     // Get phones data and loading state from custom hook
     const { filteredProducts, isLoading } = usePhones();
 
@@ -71,3 +72,5 @@ export default function Home() {
         </section>
     );
 }
+
+export default React.memo(Home);

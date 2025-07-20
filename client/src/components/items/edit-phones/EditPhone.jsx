@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useEdit } from "../../../hook-api/edit-hooks/UseEdit";
 import { useEditImageManager } from "../../../hook-api/edit-hooks/UseEditImageManager";
@@ -8,7 +9,7 @@ import { useEffect } from "react";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
 import Loader from "../../main/loader/Loader";
 
-export default function EditPhone() {
+function EditPhone() {
     const { id } = useParams();
     const { editedProduct, handleEditChange, handleEditSubmit, isEditing } = useEdit();
     const { errors, visibleErrors, handlePhoneDataError, handleImagesError } = useErrorHandler();
@@ -189,3 +190,5 @@ export default function EditPhone() {
         </>
     );
 }
+
+export default React.memo(EditPhone);

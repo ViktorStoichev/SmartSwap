@@ -1,12 +1,13 @@
 // Header Component
 // Main navigation header with search functionality, user authentication, and site navigation
 
+import React from "react";
 import { NavLink } from 'react-router-dom';
 import './Header.css'
 import { useAuth } from '../../../contexts/AuthContext';
 import { useHeader } from '../../../hook-api/header-hooks/UseHeader';
 
-export default function Header() {
+function Header() {
     // Authentication context for user state
     const { user } = useAuth();
     
@@ -96,3 +97,5 @@ export default function Header() {
         </header>
     );
 }
+
+export default React.memo(Header);

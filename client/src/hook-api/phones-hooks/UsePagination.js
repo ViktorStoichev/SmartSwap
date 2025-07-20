@@ -1,6 +1,6 @@
 // Custom hook for handling pagination functionality
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { calculatePagination, generatePageNumbers, scrollToTop } from '../../services/get-phones-services/paginationService';
 
 export const usePagination = (items, itemsPerPage = 9) => {
@@ -18,18 +18,18 @@ export const usePagination = (items, itemsPerPage = 9) => {
     }, [currentPage, paginationData.totalPages]);
 
     // Handle page change
-    const handlePageChange = (pageNumber) => {
+    const handlePageChange = useCallback((pageNumber) => {
         // Update current page
         setCurrentPage(pageNumber);
         
         // Scroll to top of page
         scrollToTop();
-    };
+    }, []);
 
     // Reset to first page (useful when filters change)
-    const resetToFirstPage = () => {
+    const resetToFirstPage = useCallback(() => {
         setCurrentPage(1);
-    };
+    }, []);
 
     // Return pagination data and handlers
     return {
@@ -45,4 +45,4 @@ export const usePagination = (items, itemsPerPage = 9) => {
         handlePageChange,
         resetToFirstPage
     };
-}; 
+};

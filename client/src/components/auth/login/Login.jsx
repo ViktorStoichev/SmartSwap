@@ -1,5 +1,6 @@
 // Login component for user authentication
 
+import React from "react";
 import { Link } from "react-router-dom";
 import './Login.css'
 import { useLogin } from "../../../hook-api/auth-hooks/UseLogin";
@@ -83,4 +84,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default React.memo(Login);

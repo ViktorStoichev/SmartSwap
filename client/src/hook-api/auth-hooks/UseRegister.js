@@ -1,6 +1,6 @@
 // Custom hook for handling user registration with complete functionality
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useActionState } from "react";
 import { registerUser } from "../../services/auth-services/registerUser";
@@ -38,7 +38,7 @@ export const useRegister = () => {
     const [termsAgreed, setTermsAgreed] = useState(false);
 
     // Handle input changes with profanity checking
-    const handleInputChange = (e) => {
+    const handleInputChange = useCallback((e) => {
         const { value, name } = e.target;
         
         // Check for profanity in the input value
@@ -47,7 +47,7 @@ export const useRegister = () => {
             showProfanityAlert();
             e.target.value = '';
         }
-    };
+    }, []);
 
     // Navigate to home page when registration is successful
     useEffect(() => {

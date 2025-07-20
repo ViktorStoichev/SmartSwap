@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import './Details.css'
@@ -8,21 +9,39 @@ import { useDetailsActions } from "../../../hook-api/details-hooks/UseDetailsAct
 import { useDetailsPermissions } from "../../../hook-api/details-hooks/UseDetailsPermissions";
 import ConfirmModal from "../../main/confirm-modal/ConfirmModal";
 
-export default function Details() {
+function Details() {
     const { user } = useAuth();
     const { product, comment, setComment, handleLike, handleCommentSubmit, handleDelete, isDeleting } = usePhone();
 
     // Get image carousel functionality (hooks must be called before any conditional returns)
     const { images, currentImage, maxImages, handlePrev, handleNext } = useImageCarousel(product?.images);
-    
+
     // Get admin actions and modal functionality
     const { isModalOpen, isApproving, isRejecting, handleApprove, handleReject, openModal, closeModal } = useDetailsActions(product?._id, images);
-    
+
     // Get user permissions and access control
     const { isOwner, isAdmin, canView, checkViewPermission } = useDetailsPermissions(user, product);
 
     // Check if any loading state is active
     const isLoading = isDeleting || isApproving || isRejecting;
+
+    // Memoize rendered comments for performance
+    const renderedComments = useMemo(() => (
+        product && product.comments
+            ? product.comments.map((comment, index) => (
+                <div key={index} className="details-product-comment">
+                    <div className="details-product-comment-header">
+                        <img src={comment.avatarUrl} alt={comment.username} className="details-product-comment-avatar" />
+                        <div className="details-product-comment-info">
+                            <span className="details-product-comment-username">{comment.username}</span>
+                            <span className="details-product-comment-date">{comment.date}</span>
+                        </div>
+                    </div>
+                    <p className="details-product-comment-text">{comment.text}</p>
+                </div>
+            ))
+            : null
+    ), [product]);
 
     // Show loading spinner while fetching product data
     if (!product) return <Loader />;
@@ -39,9 +58,9 @@ export default function Details() {
                 <div className="loading-container">
                     <Loader />
                     <p className="loading-text">
-                        {isDeleting ? "Deleting phone listing..." : 
-                         isApproving ? "Approving phone listing..." :
-                         isRejecting ? "Rejecting phone listing..." : "Processing..."}
+                        {isDeleting ? "Deleting phone listing..." :
+                            isApproving ? "Approving phone listing..." :
+                                isRejecting ? "Rejecting phone listing..." : "Processing..."}
                     </p>
                 </div>
             </div>
@@ -198,18 +217,7 @@ export default function Details() {
                                     <p>Be the first to ask a question about this product!</p>
                                 </div>
                             ) : (
-                                product.comments.map((comment, index) => (
-                                    <div key={index} className="details-product-comment">
-                                        <div className="details-product-comment-header">
-                                            <img src={comment.avatarUrl} alt={comment.username} className="details-product-comment-avatar" />
-                                            <div className="details-product-comment-info">
-                                                <span className="details-product-comment-username">{comment.username}</span>
-                                                <span className="details-product-comment-date">{comment.date}</span>
-                                            </div>
-                                        </div>
-                                        <p className="details-product-comment-text">{comment.text}</p>
-                                    </div>
-                                ))
+                                renderedComments
                             )}
                         </div>
                     </div>
@@ -218,3 +226,5 @@ export default function Details() {
         </>
     );
 }
+
+export default React.memo(Details);

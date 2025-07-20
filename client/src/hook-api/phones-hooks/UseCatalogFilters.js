@@ -1,6 +1,6 @@
 // Custom hook for handling catalog filtering functionality
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export const useCatalogFilters = (handleFilter, resetPagination) => {
     // State for filter selections
@@ -10,7 +10,7 @@ export const useCatalogFilters = (handleFilter, resetPagination) => {
     const [selectedPriceRange, setSelectedPriceRange] = useState("");
 
     // Handle filter change with pagination reset
-    const handleFilterChange = (type, value, setter) => {
+    const handleFilterChange = useCallback((type, value, setter) => {
         // Update the filter state
         setter(value);
         
@@ -19,30 +19,30 @@ export const useCatalogFilters = (handleFilter, resetPagination) => {
         
         // Reset pagination to first page when filter changes
         resetPagination();
-    };
+    }, [handleFilter, resetPagination]);
 
     // Handle brand filter change
-    const handleBrandChange = (value) => {
+    const handleBrandChange = useCallback((value) => {
         handleFilterChange('brand', value, setSelectedBrand);
-    };
+    }, [handleFilterChange]);
 
     // Handle color filter change
-    const handleColorChange = (value) => {
+    const handleColorChange = useCallback((value) => {
         handleFilterChange('color', value, setSelectedColor);
-    };
+    }, [handleFilterChange]);
 
     // Handle memory filter change
-    const handleMemoryChange = (value) => {
+    const handleMemoryChange = useCallback((value) => {
         handleFilterChange('memory', value, setSelectedMemory);
-    };
+    }, [handleFilterChange]);
 
     // Handle price range filter change
-    const handlePriceRangeChange = (value) => {
+    const handlePriceRangeChange = useCallback((value) => {
         handleFilterChange('priceRange', value, setSelectedPriceRange);
-    };
+    }, [handleFilterChange]);
 
     // Reset all filters
-    const resetFilters = () => {
+    const resetFilters = useCallback(() => {
         setSelectedBrand("");
         setSelectedColor("");
         setSelectedMemory("");
@@ -56,7 +56,7 @@ export const useCatalogFilters = (handleFilter, resetPagination) => {
         
         // Reset pagination
         resetPagination();
-    };
+    }, [handleFilter, resetPagination]);
 
     // Return filter state and handlers
     return {
@@ -73,4 +73,4 @@ export const useCatalogFilters = (handleFilter, resetPagination) => {
         handlePriceRangeChange,
         resetFilters
     };
-}; 
+};

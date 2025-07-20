@@ -1,7 +1,7 @@
 // Custom hook for managing image handling in SellPhone component
 // Handles image upload, removal, validation, and state management
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { uploadImage, deleteImage } from '../../services/image-services/photoService';
 
 export const useSellImageManager = () => {
@@ -12,7 +12,7 @@ export const useSellImageManager = () => {
     const [uploadError, setUploadError] = useState("");
 
     // Handle image file selection with validation
-    const handleImageChange = (e) => {
+    const handleImageChange = useCallback((e) => {
         const files = Array.from(e.target.files);
         // Validate maximum image limit (7 images total)
         if (files.length + images.length + pendingImages.length > 7) {
@@ -22,10 +22,10 @@ export const useSellImageManager = () => {
         setUploadError("");
         // Add new files to pending images, respecting the 7-image limit
         setPendingImages((prev) => [...prev, ...files].slice(0, 7 - images.length));
-    };
+    }, [images, pendingImages.length]);
 
     // Remove image from either current images or pending images
-    const handleRemoveImage = (idx, isPending = false) => {
+    const handleRemoveImage = useCallback((idx, isPending = false) => {
         if (isPending) {
             // Remove from pending images (files not yet uploaded)
             setPendingImages((prev) => prev.filter((_, i) => i !== idx));
@@ -39,10 +39,10 @@ export const useSellImageManager = () => {
                 } catch {}
             }
         }
-    };
+    }, [images]);
 
     // Upload pending images and handle form submission
-    const uploadPendingImages = async (formData, createAction) => {
+    const uploadPendingImages = useCallback(async (formData, createAction) => {
         setUploading(true);
         setUploadError("");
         try {
@@ -70,12 +70,12 @@ export const useSellImageManager = () => {
         } finally {
             setUploading(false);
         }
-    };
+    }, [pendingImages, images]);
 
     // Get all current images for validation purposes
-    const getAllImages = () => {
+    const getAllImages = useCallback(() => {
         return [...images, ...pendingImages];
-    };
+    }, [images, pendingImages]);
 
     return {
         // State
@@ -90,4 +90,4 @@ export const useSellImageManager = () => {
         uploadPendingImages,
         getAllImages
     };
-}; 
+};

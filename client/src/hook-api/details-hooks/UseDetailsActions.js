@@ -1,6 +1,6 @@
 // Custom hook for handling Details component actions and modal functionality
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { approvePhone, rejectPhone } from '../../services/get-phones-services/phoneService';
 
@@ -16,7 +16,7 @@ export const useDetailsActions = (productId, images) => {
     const navigate = useNavigate();
 
     // Handle phone approval by admin
-    const handleApprove = async () => {
+    const handleApprove = useCallback(async () => {
         setIsApproving(true);
         
         try {
@@ -28,10 +28,10 @@ export const useDetailsActions = (productId, images) => {
         } finally {
             setIsApproving(false);
         }
-    };
+    }, [navigate, productId]);
 
     // Handle phone rejection by admin
-    const handleReject = async () => {
+    const handleReject = useCallback(async () => {
         setIsRejecting(true);
         
         try {
@@ -43,19 +43,19 @@ export const useDetailsActions = (productId, images) => {
         } finally {
             setIsRejecting(false);
         }
-    };
+    }, [navigate, productId, images]);
 
     // Open confirmation modal
-    const openModal = () => {
+    const openModal = useCallback(() => {
         setIsModalOpen(true);
-    };
+    }, []);
 
     // Close confirmation modal
-    const closeModal = () => {
+    const closeModal = useCallback(() => {
         if (!isApproving && !isRejecting) {
             setIsModalOpen(false);
         }
-    };
+    }, [isApproving, isRejecting]);
 
     // Return modal state and action handlers
     return {
@@ -72,4 +72,4 @@ export const useDetailsActions = (productId, images) => {
         openModal,
         closeModal
     };
-}; 
+};

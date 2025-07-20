@@ -1,9 +1,10 @@
 // Confirmation Modal Component
 // Reusable modal for confirming user actions with customizable title and message
 
+import React from "react";
 import './ConfirmModal.css';
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, title, message }) {
+function ConfirmModal({ isOpen, onClose, onConfirm, title, message }) {
     // Early return if modal is not open - no rendering
     if (!isOpen) return null;
 
@@ -28,3 +29,5 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
         </div>
     );
 }
+
+export default React.memo(ConfirmModal);

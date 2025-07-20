@@ -1,6 +1,6 @@
 // Custom hook for managing image handling in EditPhone component
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { uploadImage, deleteImage } from '../../services/image-services/photoService';
 
 export const useEditImageManager = (editedProductImages) => {
@@ -19,8 +19,8 @@ export const useEditImageManager = (editedProductImages) => {
         }
     }, [editedProductImages]);
 
-    // Handle image file selection
-    const handleImageChange = (e) => {
+    // Memoized image change handler
+    const handleImageChange = useCallback((e) => {
         const files = Array.from(e.target.files);
         if (files.length + images.length + pendingImages.length > 7) {
             setUploadError("You can upload up to 7 images.");
@@ -28,19 +28,19 @@ export const useEditImageManager = (editedProductImages) => {
         }
         setUploadError("");
         setPendingImages((prev) => [...prev, ...files].slice(0, 7 - images.length));
-    };
+    }, [images, pendingImages.length]);
 
-    // Remove image from either current images or pending images
-    const handleRemoveImage = async (idx, isPending = false) => {
+    // Memoized remove image handler
+    const handleRemoveImage = useCallback(async (idx, isPending = false) => {
         if (isPending) {
             setPendingImages((prev) => prev.filter((_, i) => i !== idx));
         } else {
             setImages((prev) => prev.filter((_, i) => i !== idx));
         }
-    };
+    }, []);
 
-    // Upload pending images and handle image management
-    const uploadPendingImages = async (formData, handleEditSubmit) => {
+    // Memoized upload handler
+    const uploadPendingImages = useCallback(async (formData, handleEditSubmit) => {
         setUploading(true);
         setUploadError("");
         try {
@@ -78,12 +78,12 @@ export const useEditImageManager = (editedProductImages) => {
         } finally {
             setUploading(false);
         }
-    };
+    }, [pendingImages, images, originalImages]);
 
-    // Get all current images for validation
-    const getAllImages = () => {
+    // Memoized getter for all images
+    const getAllImages = useCallback(() => {
         return [...images, ...pendingImages];
-    };
+    }, [images, pendingImages]);
 
     return {
         // State
@@ -98,4 +98,4 @@ export const useEditImageManager = (editedProductImages) => {
         uploadPendingImages,
         getAllImages
     };
-}; 
+};

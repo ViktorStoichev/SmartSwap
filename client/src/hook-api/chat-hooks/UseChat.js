@@ -68,7 +68,7 @@ export const useChat = () => {
     }, [state.messages]);
 
     // Handle sending new messages
-    const handleSendMessage = async () => {
+    const handleSendMessage = useCallback(async () => {
         // Don't send empty messages
         if (!state.newMessage.trim()) return;
 
@@ -90,10 +90,10 @@ export const useChat = () => {
             // Log error if message sending fails
             console.error('Error sending message:', error);
         }
-    };
+    }, [user, partnerId, state.newMessage, state.partner]);
 
     // Format message timestamp to readable time
-    const formatMessageTime = (timestamp) => {
+    const formatMessageTime = useCallback((timestamp) => {
         if (!timestamp) return '';
         
         // Handle Firestore timestamp objects
@@ -116,10 +116,10 @@ export const useChat = () => {
             console.error('Error formatting timestamp:', error);
         }
         return '';
-    };
+    }, []);
 
     // Format message date for grouping messages
-    const formatMessageDate = (timestamp) => {
+    const formatMessageDate = useCallback((timestamp) => {
         if (!timestamp) return '';
         
         let date;
@@ -155,10 +155,10 @@ export const useChat = () => {
                 day: 'numeric'
             });
         }
-    };
+    }, []);
 
     // Group messages by date for better organization
-    const groupMessagesByDate = (messages) => {
+    const groupMessagesByDate = useCallback((messages) => {
         const groups = {};
         messages.forEach(msg => {
             const date = formatMessageDate(msg.timestamp);
@@ -168,30 +168,30 @@ export const useChat = () => {
             groups[date].push(msg);
         });
         return groups;
-    };
+    }, [formatMessageDate]);
 
     // Memoized grouped messages data to prevent unnecessary recalculations
     const groupedMessages = useMemo(() => {
         return groupMessagesByDate(state.messages);
-    }, [state.messages]);
+    }, [state.messages, groupMessagesByDate]);
 
     // Handle Enter key press for sending messages
-    const handleKeyPress = (e) => {
+    const handleKeyPress = useCallback((e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSendMessage();
         }
-    };
+    }, [handleSendMessage]);
 
     // Handle input change for new message
-    const handleInputChange = (e) => {
+    const handleInputChange = useCallback((e) => {
         dispatch({ type: 'SET_NEW_MESSAGE', payload: e.target.value });
-    };
+    }, []);
 
     // Navigate back to chat list
-    const handleBackNavigation = () => {
+    const handleBackNavigation = useCallback(() => {
         navigate('/chat-list');
-    };
+    }, [navigate]);
 
     // Return all state values and handlers for the component to use
     return {
@@ -212,4 +212,4 @@ export const useChat = () => {
         handleInputChange,
         handleBackNavigation
     };
-}; 
+};

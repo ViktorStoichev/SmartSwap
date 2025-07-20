@@ -1,6 +1,6 @@
 // Custom hook for managing form handling in EditPhone component
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { checkProfanity, showProfanityAlert } from '../../utils/profanityCheck';
 
@@ -13,28 +13,28 @@ export const useEditForm = (id, handleEditChange) => {
     // React Router navigation hook
     const navigate = useNavigate();
 
-    // Handle input changes with profanity check
-    const handleInputChange = (e) => {
-        const { value, name } = e.target;
+    // Memoized input handler
+    const handleInputChange = useCallback((e) => {
+        const { value } = e.target;
         if (checkProfanity(value)) {
             showProfanityAlert();
             e.target.value = '';
             return;
         }
         handleEditChange(e);
-    };
+    }, [handleEditChange]);
 
-    // Handle form submission
-    const onFormSubmit = (e, images) => {
+    // Memoized form submit handler
+    const onFormSubmit = useCallback((e, images) => {
         e.preventDefault();
         const form = new FormData(e.target);
         form.append("images", JSON.stringify(images));
         setFormData(form);
         setIsModalOpen(true);
-    };
+    }, []);
 
-    // Handle confirmation and final submission
-    const handleConfirm = async (uploadPendingImages, handleEditSubmit) => {
+    // Memoized confirm handler
+    const handleConfirm = useCallback(async (uploadPendingImages, handleEditSubmit) => {
         if (!formData) return;
         
         setIsSubmitting(true);
@@ -48,19 +48,19 @@ export const useEditForm = (id, handleEditChange) => {
         } finally {
             setIsSubmitting(false);
         }
-    };
+    }, [formData]);
 
-    // Close modal
-    const closeModal = () => {
+    // Memoized close modal handler
+    const closeModal = useCallback(() => {
         if (!isSubmitting) {
             setIsModalOpen(false);
         }
-    };
+    }, [isSubmitting]);
 
-    // Navigate back to phone details
-    const handleCancel = () => {
+    // Memoized cancel handler
+    const handleCancel = useCallback(() => {
         navigate(`/phones/${id}`);
-    };
+    }, [navigate, id]);
 
     return {
         // State
@@ -74,4 +74,4 @@ export const useEditForm = (id, handleEditChange) => {
         closeModal,
         handleCancel
     };
-}; 
+};
