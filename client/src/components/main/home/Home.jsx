@@ -24,7 +24,7 @@ function Home() {
     return (
         <section className="welcome-section">
             {/* Main welcome heading with brand name */}
-            <h1>Welcome to <span className="brand-name">SmartSwap</span> – Your Trusted Peer-to-Peer Phone Marketplace! 📱</h1>
+            <h1>Welcome to <span className="brand-name">SmartSwap</span> – Your Trusted Peer-to-Peer Phone Marketplace!</h1>
             
             {/* Platform description */}
             <p>Connect directly with other users to buy and sell pre-owned smartphones. SmartSwap provides a secure platform where you can list your phone, chat with potential buyers, and arrange safe transactions.</p>
@@ -48,8 +48,8 @@ function Home() {
                 </li>
             </div>
 
-            {/* Latest listings section */}
-            <h2>Latest Listings</h2>
+            {/* Random listings section */}
+            <h2>Some Of The Listings</h2>
 
             {/* Products grid with conditional rendering */}
             <div className="home-products-grid">
@@ -67,7 +67,7 @@ function Home() {
 
             {/* Call-to-action button to browse all phones */}
             <div style={{ textAlign: 'center' }}>
-                <Link to="/phones" className="browse-btn">Start Trading Now 🚀</Link>
+                <Link to="/phones" className="browse-btn">Start Trading Now</Link>
             </div>
         </section>
     );
