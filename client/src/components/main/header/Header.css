@@ -1,5 +1,5 @@
 header {
-    background-color: #1e3c42;
+    background-color: #56A4AC;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -29,14 +29,14 @@ header>nav>ul>li>a {
 }
 
 header>nav>ul>li>a:hover {
-    background-color: #56A4AC;
-    color: #0F2B31;
+    background-color: #0F2B31;
+    color: #56A4AC;
     opacity: 0.8;
 }
 
 header>nav>ul>li>a:active {
-    background-color: #56A4AC;
-    color: #0F2B31;
+    background-color: #0F2B31;
+    color: #56A4AC;
     opacity: 0.5;
 }
 
@@ -59,14 +59,14 @@ header>nav>ul>li>a:active {
 }
 
 .active-link {
-    color: #0F2B31;
+    color: #56A4AC;
     font-weight: bold;
     border-radius: 1rem;
     padding: 0.5rem 1rem;
 }
 
 .user-links .active-link {
-    background-color: #56A4AC;
+    background-color: #0F2B31;
 }
 
 .main-links .active-link {
@@ -98,7 +98,7 @@ header>nav>ul>li>a:active {
 }
 
 .logo-search > h1 {
-    color: #56A4AC;
+    color: #1e3c42;
     margin-left: 2rem;
     font-style: italic;
     font-size: 2rem;
